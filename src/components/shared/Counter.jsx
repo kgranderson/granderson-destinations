@@ -2,7 +2,19 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export function Counter({ to = 0, duration = 1400, format = (n) => n, className }) {
+/**
+ * Animated number counter. Strings only as props (suffix / prefix /
+ * decimals) — Server Components can't pass functions across the
+ * client-component boundary in Next 14.
+ */
+export function Counter({
+  to = 0,
+  duration = 1400,
+  suffix = '',
+  prefix = '',
+  decimals = 0,
+  className,
+}) {
   const [val, setVal] = useState(0);
   const startedRef = useRef(false);
   const ref = useRef(null);
@@ -19,9 +31,8 @@ export function Counter({ to = 0, duration = 1400, format = (n) => n, className 
         const p = Math.min(1, (t - t0) / duration);
         const eased = 1 - Math.pow(1 - p, 3);
         const next = to * eased;
-        // Only push a render when the displayed integer changes (Counter is
-        // typically wrapped in Math.round). Cuts re-renders to ~`to` total.
-        if (Math.round(next) !== Math.round(lastRendered)) {
+        const factor = 10 ** decimals;
+        if (Math.round(next * factor) !== Math.round(lastRendered * factor)) {
           lastRendered = next;
           setVal(next);
         }
@@ -36,11 +47,14 @@ export function Counter({ to = 0, duration = 1400, format = (n) => n, className 
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [to, duration]);
+  }, [to, duration, decimals]);
 
+  const display = val.toFixed(decimals);
   return (
     <span ref={ref} className={className}>
-      {format(val)}
+      {prefix}
+      {display}
+      {suffix}
     </span>
   );
 }

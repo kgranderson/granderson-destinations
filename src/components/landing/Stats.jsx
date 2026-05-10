@@ -18,7 +18,7 @@ export function Stats() {
             {STATS.map((s) => (
               <div key={s.label}>
                 <p className="display text-display-md text-brand-cloud">
-                  <Counter to={s.value} format={(n) => `${Math.round(n)}${s.suffix}`} />
+                  <Counter to={s.value} suffix={s.suffix} />
                 </p>
                 <p className="mt-3 text-sm leading-snug text-brand-cloud/70">{s.label}</p>
               </div>
