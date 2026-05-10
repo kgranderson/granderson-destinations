@@ -27,27 +27,38 @@ export async function perplexityChat({
     };
   }
 
-  const res = await fetch(`${BASE}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
-        { role: 'user', content: prompt },
-      ],
-      max_tokens: maxTokens,
-      search_recency_filter: searchRecencyFilter,
-      return_citations: true,
-    }),
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+          { role: 'user', content: prompt },
+        ],
+        max_tokens: maxTokens,
+        search_recency_filter: searchRecencyFilter,
+        return_citations: true,
+      }),
+    });
+  } catch (err) {
+    // Network failure — fall through to stub so the page renders.
+    return { stub: true, content: '', citations: [], error: String(err) };
+  }
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Perplexity API ${res.status}: ${text.slice(0, 300)}`);
+    const text = await res.text().catch(() => '');
+    return {
+      stub: true,
+      content: '',
+      citations: [],
+      error: `Perplexity ${res.status}: ${text.slice(0, 200)}`,
+    };
   }
 
   const data = await res.json();

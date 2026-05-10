@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { syncEventOverrides } from '@/lib/pricelabs/sync';
 import { PROPERTIES } from '@/lib/constants';
+import { withAdmin } from '@/lib/auth/admin';
 
-export async function POST(request) {
+export const POST = withAdmin(async (request) => {
   const { propertySlug } = await request.json();
   const property = PROPERTIES.find((p) => p.slug === propertySlug);
   if (!property) {
@@ -14,4 +15,4 @@ export async function POST(request) {
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
   }
-}
+});

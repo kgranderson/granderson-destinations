@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
-const PROTECTED_PREFIXES = ['/dashboard', '/account', '/trips', '/admin', '/economics', '/social', '/pricing-engine', '/intel'];
+// /intel is public marketing — must not be gated.
+// /economics, /social, /pricing-engine are admin dashboards but currently
+// render synthetic/stub data; once M7 ships the real auth UI + magic-link
+// flow, they re-enter PROTECTED_PREFIXES alongside a tier === 'admin' check.
+// /api/social/generate-caption and /api/pricing/push-overrides retain their
+// own admin-tier gates at the route handler level so the public can't burn
+// our Anthropic/PriceLabs credits even while these pages are open.
+const PROTECTED_PREFIXES = ['/dashboard', '/account', '/trips', '/admin'];
 
 export async function middleware(request) {
   // Refresh Supabase session if configured; otherwise pass through unchanged.

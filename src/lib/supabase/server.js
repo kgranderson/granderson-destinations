@@ -4,18 +4,36 @@ import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
 /**
+ * Validate that an env value looks like a real http(s) URL. If a
+ * malformed URL slips into Vercel envs we want to fall back to stub
+ * mode rather than crash every page that touches Supabase.
+ */
+function validSupabaseUrl(u) {
+  if (!u || typeof u !== 'string') return null;
+  const trimmed = u.trim();
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    return trimmed;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Per-request server client (cookie-bound for auth).
  * NOTE: cookies() opts the calling route into dynamic rendering.
  * For public reads from cacheable pages, use getPublicReadClient().
- * Returns null in stub mode.
+ * Returns null in stub mode OR when SUPABASE_URL is malformed.
  */
 export function getServerClient() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  const url = validSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  if (!url || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return null;
   }
   const cookieStore = cookies();
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    url,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
@@ -40,10 +58,11 @@ export function getServerClient() {
  * (properties, hotspots, anchor_events, intel_items).
  */
 export function getPublicReadClient() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  const url = validSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  if (!url || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return null;
   }
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+  return createClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 }

@@ -3,6 +3,9 @@ import 'server-only';
  * Economics data loader. Tries Supabase monthly_financials first;
  * falls back to the synthetic seed so the dashboard renders
  * end-to-end before real Rent Manager exports are loaded.
+ *
+ * NOTE: cache key MUST include propertySlug — earlier versions cached
+ * unkeyed and bled the first property's result across slugs.
  */
 import { unstable_cache } from 'next/cache';
 import { getAdminClient } from '@/lib/supabase/admin';
@@ -15,31 +18,44 @@ import {
 async function _loadMonthly(propertySlug) {
   const supabase = getAdminClient();
   if (supabase) {
-    const { data, error } = await supabase
-      .from('monthly_financials')
-      .select('month, revenue, expense, expense_category, source')
-      .order('month', { ascending: true });
-    if (!error && data?.length) {
-      const rows = data.map((r) => ({
-        month: r.month,
-        revenue: r.revenue || 0,
-        expense: r.expense || 0,
-        expenseCategory: r.expense_category,
-      }));
-      // Compute baselines from the live rows (last 12 mo per category, excluding most recent)
-      const byCategory = {};
-      const expenseRows = rows.filter((r) => r.expenseCategory);
-      for (const r of expenseRows) {
-        (byCategory[r.expenseCategory] = byCategory[r.expenseCategory] || []).push(r);
+    // Resolve slug → property uuid so we can filter the financials table.
+    // If the property hasn't been loaded into Supabase yet, fall through
+    // to the synthetic seed rather than returning the unfiltered union.
+    const { data: prop } = await supabase
+      .from('properties')
+      .select('id')
+      .eq('slug', propertySlug)
+      .maybeSingle();
+
+    if (prop?.id) {
+      const { data, error } = await supabase
+        .from('monthly_financials')
+        .select('month, revenue, expense, expense_category, source')
+        .eq('property_id', prop.id)
+        .order('month', { ascending: true });
+
+      if (!error && data?.length) {
+        const rows = data.map((r) => ({
+          month: r.month,
+          revenue: r.revenue || 0,
+          expense: r.expense || 0,
+          expenseCategory: r.expense_category,
+        }));
+        // Compute baselines from live rows (last 12 mo per category, excluding most recent)
+        const byCategory = {};
+        const expenseRows = rows.filter((r) => r.expenseCategory);
+        for (const r of expenseRows) {
+          (byCategory[r.expenseCategory] = byCategory[r.expenseCategory] || []).push(r);
+        }
+        const baselines = {};
+        for (const [cat, list] of Object.entries(byCategory)) {
+          const sorted = [...list].sort((a, b) => a.month.localeCompare(b.month));
+          const last12 = sorted.slice(-13, -1);
+          baselines[cat] =
+            last12.reduce((s, r) => s + r.expense, 0) / Math.max(1, last12.length);
+        }
+        return { stub: false, rows, baselines };
       }
-      const baselines = {};
-      for (const [cat, list] of Object.entries(byCategory)) {
-        const sorted = [...list].sort((a, b) => a.month.localeCompare(b.month));
-        const last12 = sorted.slice(-13, -1);
-        baselines[cat] =
-          last12.reduce((s, r) => s + r.expense, 0) / Math.max(1, last12.length);
-      }
-      return { stub: false, rows, baselines };
     }
   }
   // Fall back to seed
@@ -51,7 +67,14 @@ async function _loadMonthly(propertySlug) {
   };
 }
 
-export const loadMonthly = unstable_cache(_loadMonthly, ['economics-monthly'], {
-  revalidate: 600,
-  tags: ['economics'],
-});
+/**
+ * Per-slug cached loader. The cache key includes the slug so each
+ * property's data is isolated.
+ */
+export function loadMonthly(propertySlug) {
+  return unstable_cache(
+    () => _loadMonthly(propertySlug),
+    ['economics-monthly', propertySlug],
+    { revalidate: 600, tags: ['economics', `economics:${propertySlug}`] },
+  )();
+}

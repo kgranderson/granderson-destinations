@@ -3,7 +3,8 @@ import { PROPERTIES, ANCHOR_EVENTS_SEED, MARKETS } from '@/lib/constants';
 export default function sitemap() {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
   const now = new Date();
-  const fixed = ['', '/destinations', '/events', '/intel', '/about', '/contact', '/auth/login', '/auth/signup'];
+  // /auth/* excluded until the real sign-in flow ships in M7.
+  const fixed = ['', '/destinations', '/events', '/intel', '/about', '/contact'];
   return [
     ...fixed.map((path) => ({ url: `${base}${path}`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 })),
     ...PROPERTIES.map((p) => ({

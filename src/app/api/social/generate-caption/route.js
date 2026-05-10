@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import { generateCaption } from '@/lib/ai/claude';
 import { buildHashtags } from '@/lib/social/hashtags';
 import { PROPERTIES } from '@/lib/constants';
+import { withAdmin } from '@/lib/auth/admin';
 
-export async function POST(request) {
+export const POST = withAdmin(async (request) => {
   try {
     const { propertySlug, theme = 'lifestyle' } = await request.json();
     const property = PROPERTIES.find((p) => p.slug === propertySlug);
@@ -22,4 +23,4 @@ export async function POST(request) {
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
-}
+});

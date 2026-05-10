@@ -370,7 +370,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.45,
     minStayNights: 4,
     notes: 'Highest-demand weekend of the year. Min-stay should anchor to Thu–Mon.',
-    image: '/events/coachella.jpg',
+    image: null,
   },
   {
     slug: 'coachella-2026-w2',
@@ -382,7 +382,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.4,
     minStayNights: 4,
     notes: 'Slightly softer than W1 but still 1.4×+ baseline ADR.',
-    image: '/events/coachella.jpg',
+    image: null,
   },
   {
     slug: 'stagecoach-2026',
@@ -394,7 +394,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.42,
     minStayNights: 3,
     notes: 'Country music draw — different guest profile than Coachella, similar ADR lift.',
-    image: '/events/stagecoach.jpg',
+    image: null,
   },
   {
     slug: 'bnp-paribas-2026',
@@ -406,7 +406,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.35,
     minStayNights: 3,
     notes: 'ATP/WTA Masters 1000 — 12 days of sustained demand. Strong for week-long stays.',
-    image: '/events/indian-wells.jpg',
+    image: null,
   },
   {
     slug: 'modernism-week-2026',
@@ -418,7 +418,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.30,
     minStayNights: 3,
     notes: 'Architectural pilgrimage — ideal guest match for a midcentury home.',
-    image: '/events/modernism-week.jpg',
+    image: null,
   },
   // San Miguel de Allende
   {
@@ -431,7 +431,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.35,
     minStayNights: 3,
     notes: 'Headquartered in Guanajuato city but spills into SMA — strong arts crowd.',
-    image: '/events/cervantino.jpg',
+    image: null,
   },
   {
     slug: 'dia-de-muertos-2026',
@@ -443,7 +443,7 @@ export const ANCHOR_EVENTS_SEED = [
     occupancyUpliftPct: 0.45,
     minStayNights: 3,
     notes: 'SMA has one of the most photographed Día de Muertos celebrations in Mexico.',
-    image: '/events/dia-de-muertos.jpg',
+    image: null,
   },
   {
     slug: 'jazz-festival-2026',
@@ -454,7 +454,7 @@ export const ANCHOR_EVENTS_SEED = [
     adrUpliftPct: 1.20,
     occupancyUpliftPct: 0.30,
     minStayNights: 3,
-    image: '/events/sma-jazz.jpg',
+    image: null,
   },
 ];
 

@@ -16,14 +16,22 @@ const BASE = process.env.AIRDNA_BASE_URL || 'https://api.airdna.co/v1';
 
 async function adFetch(path) {
   if (!FEATURE_FLAGS.airdnaLive()) return { stub: true };
-  const res = await fetch(`${BASE}${path}`, {
-    headers: {
-      Authorization: `Bearer ${process.env.AIRDNA_API_KEY}`,
-      'X-Client-Id': process.env.AIRDNA_CLIENT_ID || '',
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) throw new Error(`AirDNA ${path} → ${res.status}`);
+  let res;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.AIRDNA_API_KEY}`,
+        'X-Client-Id': process.env.AIRDNA_CLIENT_ID || '',
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (err) {
+    return { stub: true, error: String(err) };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    return { stub: true, error: `AirDNA ${path} → ${res.status}: ${text.slice(0, 200)}` };
+  }
   return res.json();
 }
 

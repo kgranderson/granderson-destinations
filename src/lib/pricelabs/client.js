@@ -18,15 +18,24 @@ async function plFetch(path, init = {}) {
   if (!FEATURE_FLAGS.pricelabsLive()) {
     return { stub: true };
   }
-  const res = await fetch(`${DEFAULT_BASE}${path}`, {
-    ...init,
-    headers: {
-      'X-API-Key': process.env.PRICELABS_API_KEY,
-      'Content-Type': 'application/json',
-      ...(init.headers || {}),
-    },
-  });
-  if (!res.ok) throw new Error(`PriceLabs ${path} → ${res.status}`);
+  let res;
+  try {
+    res = await fetch(`${DEFAULT_BASE}${path}`, {
+      ...init,
+      headers: {
+        'X-API-Key': process.env.PRICELABS_API_KEY,
+        'Content-Type': 'application/json',
+        ...(init.headers || {}),
+      },
+    });
+  } catch (err) {
+    // Network failure — fall through to stub so the dashboard renders.
+    return { stub: true, error: String(err) };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    return { stub: true, error: `PriceLabs ${path} → ${res.status}: ${text.slice(0, 200)}` };
+  }
   return res.json();
 }
 

@@ -27,12 +27,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const p = PROPERTIES.find((x) => x.slug === params.slug);
   if (!p) return {};
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
   return {
     title: `${p.name} · ${p.city}`,
     description: p.tagline,
+    alternates: {
+      canonical: `${baseUrl}/destinations/${p.slug}`,
+    },
     openGraph: {
       title: `${p.name} — ${p.city}`,
       description: p.tagline,
+      url: `${baseUrl}/destinations/${p.slug}`,
       images: [{ url: p.coverImage, width: 1200, height: 800 }],
     },
     twitter: {
