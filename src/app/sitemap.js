@@ -1,4 +1,4 @@
-import { PROPERTIES } from '@/lib/constants';
+import { PROPERTIES, ANCHOR_EVENTS_SEED, MARKETS } from '@/lib/constants';
 
 export default function sitemap() {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
@@ -11,6 +11,18 @@ export default function sitemap() {
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.9,
+    })),
+    ...Object.keys(MARKETS).map((city) => ({
+      url: `${base}/experiences/${city}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    })),
+    ...ANCHOR_EVENTS_SEED.map((e) => ({
+      url: `${base}/events/${e.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.6,
     })),
   ];
 }

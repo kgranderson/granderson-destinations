@@ -23,7 +23,7 @@ export function vacationRentalJsonLd({ property, baseUrl }) {
   };
 }
 
-export function eventJsonLd({ event, baseUrl }) {
+export function eventJsonLd({ event, baseUrl, venue, marketLabel }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
@@ -34,8 +34,13 @@ export function eventJsonLd({ event, baseUrl }) {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: {
       '@type': 'Place',
-      name: event.market.replace(/-/g, ' '),
+      name: venue || marketLabel || event.market.replace(/-/g, ' '),
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: marketLabel || event.market.replace(/-/g, ' '),
+      },
     },
+    url: `${baseUrl}/events/${event.slug}`,
     image: event.image ? `${baseUrl}${event.image}` : undefined,
   };
 }

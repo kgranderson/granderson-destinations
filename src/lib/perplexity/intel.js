@@ -5,6 +5,7 @@
  * road work, festivals, large entitlements) that are likely to
  * affect short-term-rental demand or daily rate in a given market.
  */
+import { unstable_cache } from 'next/cache';
 import { perplexityChat } from './client';
 
 const SYSTEM = `You are a senior real-estate research analyst specializing in short-term rental markets.
@@ -31,7 +32,7 @@ Return ONLY a JSON object with this exact shape (no prose, no markdown fence):
   ]
 }`;
 
-export async function fetchMarketIntel({ market, marketLabel, lookaheadMonths = 12 } = {}) {
+async function _fetchMarketIntel({ market, marketLabel, lookaheadMonths = 12 } = {}) {
   const userPrompt = `Find upcoming developments over the next ${lookaheadMonths} months that are likely to
 affect short-term rental demand or ADR in ${marketLabel}. Focus on: new hotel/condo openings, major restaurant
 openings, festival or sporting-event additions, road/airport/transit projects, new entitlements affecting
@@ -68,6 +69,15 @@ Return strict JSON per the schema in the system prompt.`;
     };
   }
 }
+
+// Cache fetched intel for 1 hour, keyed by market — prevents the same
+// page render kicking off two Perplexity calls for the same data, and
+// caps cron-driven cold revalidation cost.
+export const fetchMarketIntel = unstable_cache(
+  _fetchMarketIntel,
+  ['market-intel'],
+  { revalidate: 3600, tags: ['intel'] },
+);
 
 function stubIntel(market) {
   const base = {

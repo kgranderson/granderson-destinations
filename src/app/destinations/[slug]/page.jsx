@@ -7,7 +7,9 @@ import { PropertyHighlights } from '@/components/property/PropertyHighlights';
 import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyAmenities } from '@/components/property/PropertyAmenities';
 import { PropertyNeighborhood } from '@/components/property/PropertyNeighborhood';
+import { PropertyHotspots } from '@/components/property/PropertyHotspots';
 import { PropertyEvents } from '@/components/property/PropertyEvents';
+import { PropertyIntel } from '@/components/property/PropertyIntel';
 import { PropertyReviews } from '@/components/property/PropertyReviews';
 import { PropertyFAQ } from '@/components/property/PropertyFAQ';
 import { BookingWidget } from '@/components/property/BookingWidget';
@@ -85,8 +87,10 @@ export default function PropertyPage({ params }) {
         <PropertyHighlights property={property} />
         <PropertyGallery property={property} />
         <PropertyAmenities property={property} />
+        <PropertyHotspots property={property} />
         <PropertyNeighborhood property={property} />
         <PropertyEvents property={property} />
+        <PropertyIntel property={property} />
         <PropertyReviews property={property} />
         <PropertyFAQ property={property} />
 
