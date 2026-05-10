@@ -1,25 +1,37 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { dateRange } from '@/lib/utils/format';
 
+/**
+ * Client component for graceful image-error fallback (some Unsplash
+ * IDs in seed data may 404; future Google Place / Supabase URLs may
+ * also fail).
+ */
 export function EventCard({ event, detail }) {
+  const [failed, setFailed] = useState(false);
+  const showGradient = !detail?.image || failed;
+
   return (
     <Link
       href={`/events/${event.slug}`}
       className="group relative block overflow-hidden rounded-2xl bg-brand-ink shadow-soft transition-shadow hover:shadow-lift"
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden">
-        {detail?.image ? (
+        {showGradient ? (
+          <div className="h-full w-full bg-[radial-gradient(120%_80%_at_30%_30%,#3F4A56,#0E1116)]" />
+        ) : (
           <Image
             src={detail.image}
             alt={event.name}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover opacity-90 transition-transform duration-[1200ms] ease-out-quint group-hover:scale-[1.06]"
+            onError={() => setFailed(true)}
           />
-        ) : (
-          <div className="h-full w-full bg-[radial-gradient(120%_80%_at_30%_30%,#3F4A56,#0E1116)]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/40 to-transparent" />
       </div>

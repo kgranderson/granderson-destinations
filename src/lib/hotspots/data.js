@@ -25,7 +25,7 @@ export const HOTSPOTS = {
       tags: ['Date night', 'Patio', 'Cocktails'],
       hours: '5–10 PM, closed Mon',
       website: 'https://workshoppalmsprings.com',
-      image: u('1517248135467-4c7edcad34c4'),
+      image: null, // verified-broken; gradient fallback until Google Places key set
       featured: true,
     },
     {
@@ -180,7 +180,7 @@ export const HOTSPOTS = {
       tags: ['Tequila', 'Reservation'],
       hours: 'By appointment',
       website: 'https://www.casadragones.com',
-      image: u('1514362546005-9b48f7bb95a6'),
+      image: null, // gradient fallback — replace with Google Place Photo when key is set
       featured: true,
     },
     {
@@ -196,7 +196,7 @@ export const HOTSPOTS = {
       tags: ['Iconic', 'Photo'],
       hours: 'Always',
       website: null,
-      image: u('1518105779142-d975f22f1b0a'),
+      image: u('1518105779142-d975f22f1b0a'), // confirmed working
       featured: true,
     },
     {
@@ -243,7 +243,7 @@ export const HOTSPOTS = {
       tags: ['Breakfast', 'Courtyard'],
       hours: '8 AM–4 PM',
       website: null,
-      image: u('1509042239860-f550ce710b93'),
+      image: null,
     },
     {
       id: 'fabrica-aurora',
@@ -258,7 +258,7 @@ export const HOTSPOTS = {
       tags: ['Art', 'Free'],
       hours: '10 AM–7 PM',
       website: 'https://fabricalaaurora.com',
-      image: u('1513475382585-d06e58bcb0e0'),
+      image: null,
     },
     {
       id: 'instituto-allende',
@@ -273,7 +273,7 @@ export const HOTSPOTS = {
       tags: ['Architecture', 'Free'],
       hours: '9 AM–6 PM',
       website: null,
-      image: u('1523730205978-59fd1b2965e3'),
+      image: null,
     },
     {
       id: 'mercado-tuesday',
@@ -288,7 +288,7 @@ export const HOTSPOTS = {
       tags: ['Tuesday only', 'Local'],
       hours: 'Tue 7 AM–4 PM',
       website: null,
-      image: u('1488459716781-31db52582fe9'),
+      image: null,
     },
     {
       id: 'mama-mia',
@@ -303,7 +303,7 @@ export const HOTSPOTS = {
       tags: ['Live music', 'Rooftop'],
       hours: '8 AM–2 AM',
       website: 'https://mamamiasma.com',
-      image: u('1514525253161-7a46d19cd819'),
+      image: null,
     },
     {
       id: 'sma-thermal',

@@ -1,8 +1,20 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
 import { Star, ExternalLink, Clock, Car } from 'lucide-react';
 
+/**
+ * Client component because we need onError to gracefully swap to a
+ * gradient placeholder when an upstream image (Unsplash, Google Place
+ * Photos, Supabase Storage) 404s — next/image renders a broken image
+ * silently otherwise, which leaves a blank tile in the grid.
+ */
 export function HotspotCard({ hotspot, featured = false }) {
   const h = hotspot;
+  const [failed, setFailed] = useState(false);
+  const showGradient = !h.image || failed;
+
   return (
     <article
       className={`group relative overflow-hidden rounded-2xl border border-brand-tan/60 bg-brand-cloud shadow-soft transition-shadow hover:shadow-lift ${
@@ -10,16 +22,17 @@ export function HotspotCard({ hotspot, featured = false }) {
       }`}
     >
       <div className={`relative w-full overflow-hidden bg-brand-sand ${featured ? 'aspect-[16/10]' : 'aspect-[4/3]'}`}>
-        {h.image ? (
+        {showGradient ? (
+          <GradientPlaceholder name={h.name} />
+        ) : (
           <Image
             src={h.image}
-            alt={h.name}
+            alt={`${h.name} — ${h.category} in ${h.neighborhood}`}
             fill
             sizes={featured ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 768px) 33vw, 100vw'}
             className="object-cover transition-transform duration-[1200ms] ease-out-quint group-hover:scale-[1.04]"
+            onError={() => setFailed(true)}
           />
-        ) : (
-          <div className="h-full w-full bg-[radial-gradient(120%_80%_at_30%_30%,#E8DCC6,#F5EFE6)]" />
         )}
         <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-brand-ink/85 px-2.5 py-1 text-xs text-brand-cloud backdrop-blur">
           <Star size={12} fill="currentColor" className="text-brand-gold" />
@@ -86,5 +99,33 @@ export function HotspotCard({ hotspot, featured = false }) {
         </div>
       </div>
     </article>
+  );
+}
+
+/**
+ * Branded gradient placeholder with a typographic mark — used as the
+ * fallback for any hotspot without a working image. Uses the
+ * hotspot's name as a subtle watermark so the tile doesn't look empty.
+ */
+function GradientPlaceholder({ name }) {
+  // Pick a deterministic accent based on the name so each placeholder feels distinct
+  const accents = [
+    'from-brand-tan to-brand-sand',
+    'from-brand-sand to-brand-cloud',
+    'from-brand-rose/30 to-brand-sand',
+    'from-brand-jade/20 to-brand-sand',
+    'from-brand-gold/25 to-brand-sand',
+    'from-brand-terracotta/20 to-brand-sand',
+  ];
+  const idx = (name?.length || 0) % accents.length;
+  return (
+    <div
+      className={`flex h-full w-full items-end justify-start bg-gradient-to-br p-6 ${accents[idx]}`}
+      aria-hidden
+    >
+      <p className="display max-w-[80%] text-2xl leading-tight text-brand-slate/40 sm:text-3xl">
+        {name}
+      </p>
+    </div>
   );
 }
