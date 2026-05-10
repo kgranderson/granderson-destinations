@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * PriceLabs client (Feature 5 — dynamic pricing backend).
  *

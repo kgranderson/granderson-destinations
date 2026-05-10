@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * Anthropic Claude integration.
  *  - Concierge replies (guest itineraries, neighborhood answers)

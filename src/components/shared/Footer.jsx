@@ -31,7 +31,7 @@ export function Footer() {
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/70">Contact</p>
             <ul className="mt-4 space-y-2 text-sm text-brand-ink/80">
               <li><a href={`mailto:${BRAND.bookingEmail}`}>{BRAND.bookingEmail}</a></li>
-              <li>WhatsApp: {BRAND.whatsapp}</li>
+              {BRAND.whatsapp && <li>WhatsApp: {BRAND.whatsapp}</li>}
               <li><a href={`https://instagram.com/${BRAND.instagram}`}>@{BRAND.instagram}</a></li>
             </ul>
           </div>

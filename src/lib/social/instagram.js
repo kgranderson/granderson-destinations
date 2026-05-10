@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * Meta Graph / Instagram Business publisher (Feature 4).
  *

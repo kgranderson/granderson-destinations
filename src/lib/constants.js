@@ -20,8 +20,10 @@ export const BRAND = {
   founderName: 'Kwame J. Granderson',
   contactEmail: 'hello@destinationgh.com',
   bookingEmail: 'reservations@destinationgh.com',
-  phone: '+1 (323) 555-0142',
-  whatsapp: '+1 (323) 555-0142',
+  // NOTE: phone is intentionally null until provisioned — Footer/Contact
+  // render "Coming soon" rather than a placeholder. Set when ready.
+  phone: null,
+  whatsapp: null,
   instagram: 'destinationgh',
   facebook: 'destinationgh',
   pinterest: 'destinationgh',

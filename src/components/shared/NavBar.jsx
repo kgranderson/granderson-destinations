@@ -59,6 +59,8 @@ export function NavBar() {
 
         <button
           aria-label="Toggle navigation"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
           className="md:hidden"
           onClick={() => setOpen((o) => !o)}
         >
@@ -67,7 +69,7 @@ export function NavBar() {
       </div>
 
       {open && (
-        <div className="border-t border-brand-tan/60 bg-brand-cloud md:hidden">
+        <div id="mobile-nav" className="border-t border-brand-tan/60 bg-brand-cloud md:hidden">
           <div className="flex flex-col gap-1 px-6 py-4">
             {LINKS.map((l) => (
               <Link

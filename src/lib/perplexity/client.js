@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * Perplexity Sonar client. Used for:
  *  - City council / entitlement intel (Feature 1)

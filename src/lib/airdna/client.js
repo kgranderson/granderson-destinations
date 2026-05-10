@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * AirDNA MarketMinder client (Feature 6 — economic model comps).
  *

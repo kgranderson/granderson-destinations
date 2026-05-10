@@ -110,6 +110,12 @@ alter table public.bookings enable row level security;
 create policy "bookings_self_read"
   on public.bookings for select
   using (auth.uid() = user_id);
+create policy "bookings_self_insert"
+  on public.bookings for insert
+  with check (auth.uid() = user_id);
+create policy "bookings_self_update"
+  on public.bookings for update
+  using (auth.uid() = user_id and status in ('pending'));
 
 -- =============================================================
 -- stripe_events — webhook idempotency table
@@ -216,6 +222,12 @@ create policy "fin_admin_only_read"
   on public.monthly_financials for select
   using (exists (select 1 from public.profiles p
                  where p.id = auth.uid() and p.tier = 'admin'));
+create policy "fin_admin_only_write"
+  on public.monthly_financials for all
+  using (exists (select 1 from public.profiles p
+                 where p.id = auth.uid() and p.tier = 'admin'))
+  with check (exists (select 1 from public.profiles p
+                      where p.id = auth.uid() and p.tier = 'admin'));
 
 -- =============================================================
 -- ig_posts — Feature 4 social cadence scheduler

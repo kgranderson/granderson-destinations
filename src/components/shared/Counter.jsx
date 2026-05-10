@@ -14,10 +14,17 @@ export function Counter({ to = 0, duration = 1400, format = (n) => n, className 
       if (startedRef.current) return;
       startedRef.current = true;
       const t0 = performance.now();
+      let lastRendered = -Infinity;
       const tick = (t) => {
         const p = Math.min(1, (t - t0) / duration);
         const eased = 1 - Math.pow(1 - p, 3);
-        setVal(to * eased);
+        const next = to * eased;
+        // Only push a render when the displayed integer changes (Counter is
+        // typically wrapped in Math.round). Cuts re-renders to ~`to` total.
+        if (Math.round(next) !== Math.round(lastRendered)) {
+          lastRendered = next;
+          setVal(next);
+        }
         if (p < 1) requestAnimationFrame(tick);
         else setVal(to);
       };
