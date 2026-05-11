@@ -57,6 +57,7 @@ export const PROPERTIES = [
     coverImage: '/properties/palm-springs/hero.jpg',
     welcomeBook: {
       url: '/welcome-books/palm-springs.pdf',
+      coverImage: '/welcome-books/palm-springs-cover.jpg',
       pages: 14,
       sizeMb: 38,
     },
