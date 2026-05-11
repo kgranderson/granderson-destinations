@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { Reveal } from '../shared/Reveal';
 
 export function LandingCTA() {
   return (
-    <section className="cta-section container">
+    <Reveal as="section" className="cta-section container">
       <div className="eyebrow">Ready when you are</div>
       <h2>Pick a city. We&rsquo;ll handle the rest.</h2>
       <p className="italic-sub">
@@ -12,6 +13,6 @@ export function LandingCTA() {
         <Link href="/destinations" className="btn btn-primary btn-large">Browse homes</Link>
         <Link href="/contact" className="btn btn-secondary btn-large">Talk to a concierge</Link>
       </div>
-    </section>
+    </Reveal>
   );
 }

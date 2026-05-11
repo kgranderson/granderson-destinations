@@ -1,17 +1,25 @@
 /**
- * Static marquee strip. Sits between the hero and the first content
- * section as a city ledger. Per the design system motion rules,
- * no animation — the strip is declarative.
+ * Slow-drifting city ledger. The track is duplicated so the
+ * translateX(-50%) keyframe creates a seamless loop. Hover pauses
+ * the drift; prefers-reduced-motion disables it.
  */
 export function Marquee({ items = [] }) {
-  return (
-    <div className="marquee" aria-label="Markets">
+  const renderRow = (k) => (
+    <span key={k} style={{ display: 'inline-flex', alignItems: 'center' }}>
       {items.map((item, i) => (
-        <span key={item}>
+        <span key={`${k}-${i}`} style={{ display: 'inline-flex', alignItems: 'center' }}>
           <span>{item}</span>
-          {i < items.length - 1 && <span className="dot">/</span>}
+          <span className="dot" aria-hidden>/</span>
         </span>
       ))}
+    </span>
+  );
+  return (
+    <div className="marquee" aria-label="Markets">
+      <div className="marquee-track">
+        {renderRow('a')}
+        {renderRow('b')}
+      </div>
     </div>
   );
 }

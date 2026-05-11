@@ -12,20 +12,31 @@ export default function HomePage() {
     <>
       <NavBar />
       <main>
+        {/* Cinematic dark hero (full-bleed photo, ken-burns + parallax) */}
         <LandingHero />
-        <Marquee
-          items={[
-            'Palm Springs',
-            'San Miguel de Allende',
-            'Coming · Jamaica',
-            'Coming · Tulum',
-            'Coming · Joshua Tree',
-          ]}
-        />
-        <PropertyShowcase />
-        <FeatureGrid />
+
+        {/* Editorial bone band — content lives in the light */}
+        <div className="surface-bone">
+          <Marquee
+            items={[
+              'Palm Springs',
+              'San Miguel de Allende',
+              'Coming · Jamaica',
+              'Coming · Tulum',
+              'Coming · Joshua Tree',
+            ]}
+          />
+          <PropertyShowcase />
+          <FeatureGrid />
+        </div>
+
+        {/* Single dark moment of punctuation — the receipts */}
         <Stats />
-        <LandingCTA />
+
+        {/* Final ask in bone */}
+        <div className="surface-bone">
+          <LandingCTA />
+        </div>
       </main>
       <Footer />
     </>

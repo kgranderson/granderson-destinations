@@ -592,6 +592,121 @@ body {
 .footer .bottom .divider { color: var(--color-rule); }
 
 /* -------------------------------------------------------------
+   Surface scope: invert the semantic tokens on a wrapper element
+   so the SAME component CSS can render correctly on bone OR ink
+   without any per-component changes. Use:
+     <div class="surface-bone"> ... </div>
+     <div class="surface-ink">  ... </div>
+   ------------------------------------------------------------- */
+
+.surface-bone {
+  --color-surface:           var(--c-bone-100);
+  --color-surface-raised:    var(--c-bone-200);
+  --color-surface-elevated:  var(--c-bone-300);
+
+  --color-text:              var(--c-ink-1000);
+  --color-text-muted:        rgba(14, 17, 22, 0.62);
+  --color-text-quiet:        rgba(14, 17, 22, 0.42);
+  --color-text-disabled:     rgba(14, 17, 22, 0.24);
+
+  --color-rule:              rgba(14, 17, 22, 0.12);
+  --color-rule-strong:       rgba(14, 17, 22, 0.24);
+  --color-border:            rgba(14, 17, 22, 0.10);
+  --color-border-strong:     rgba(14, 17, 22, 0.20);
+
+  /* Champagne deepens on bone so it holds AA contrast for eyebrow type */
+  --color-accent:            var(--c-champagne-600);
+  --color-accent-soft:       var(--c-champagne-500);
+  --color-accent-deep:       var(--c-champagne-700);
+
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.surface-ink {
+  /* Explicit default — useful when nested under a .surface-bone wrapper */
+  --color-surface:           var(--c-ink-1000);
+  --color-surface-raised:    var(--c-ink-900);
+  --color-text:              var(--c-bone-100);
+  --color-text-muted:        rgba(242, 234, 216, 0.72);
+  --color-text-quiet:        rgba(242, 234, 216, 0.48);
+  --color-rule:              rgba(201, 168, 106, 0.18);
+  --color-rule-strong:       rgba(201, 168, 106, 0.35);
+  --color-border:            rgba(242, 234, 216, 0.12);
+  --color-accent:            var(--c-champagne-500);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* -------------------------------------------------------------
+   Motion — ken-burns hero, marquee drift, scroll reveals.
+   All exponential out, all opacity + transform only (no layout
+   property animation), all respect prefers-reduced-motion.
+   ------------------------------------------------------------- */
+
+/* Hero background image gets a slow zoom + drift so the photo
+   feels alive without ever calling attention to itself. */
+@keyframes ken-burns {
+  0%   { transform: scale(1.00) translate(0, 0); }
+  100% { transform: scale(1.06) translate(-1.5%, -1.5%); }
+}
+.hero .hero-image {
+  animation: ken-burns 22s var(--ease-out-quart) forwards;
+  will-change: transform;
+}
+
+/* Marquee strip drifts horizontally; 80s loop is slow enough
+   to read as ambient, not a moving message. Pauses on hover
+   so the cities can be read by anyone planning a trip. */
+@keyframes marquee-drift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee {
+  position: relative;
+}
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee-drift 80s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Scroll-triggered reveal. Default state is invisible + lifted 8px.
+   The IntersectionObserver in <Reveal> toggles .in-view to fade up. */
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out-expo),
+    transform var(--duration-reveal) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger helper — apply alongside .in-view on a parent to delay
+   each direct child by ~80ms, creating a gentle cascade. */
+.stagger > .reveal { transition-delay: 0ms; }
+.stagger.in-view > *:nth-child(1) { transition-delay: 0ms; }
+.stagger.in-view > *:nth-child(2) { transition-delay: 80ms; }
+.stagger.in-view > *:nth-child(3) { transition-delay: 160ms; }
+.stagger.in-view > *:nth-child(4) { transition-delay: 240ms; }
+.stagger.in-view > *:nth-child(5) { transition-delay: 320ms; }
+.stagger.in-view > *:nth-child(6) { transition-delay: 400ms; }
+
+/* Subtle parallax handle: components set --parallax-y from JS
+   (hero on scroll) and the bg image receives that translate. */
+.hero .hero-image.parallax {
+  transform: translateY(var(--parallax-y, 0));
+  transition: none;
+}
+
+/* -------------------------------------------------------------
    Reduced motion
    ------------------------------------------------------------- */
 
@@ -601,5 +716,15 @@ body {
   *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .hero .hero-image {
+    animation: none;
   }
 }

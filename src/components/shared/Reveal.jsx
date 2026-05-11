@@ -1,30 +1,36 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils/cn';
 
 /**
- * Scroll-triggered reveal. Uses IntersectionObserver, respects
- * prefers-reduced-motion. Stagger via the `delayMs` prop or by
- * wrapping children in a `.stagger-grid` parent.
+ * Scroll-triggered reveal. Uses IntersectionObserver to add an
+ * `.in-view` class when the element enters the viewport, triggering
+ * the opacity + 8px Y-translate transition defined in globals.css.
+ * Respects prefers-reduced-motion via CSS.
  */
-export function Reveal({ children, className, delayMs = 0, as: Tag = 'div' }) {
+export function Reveal({
+  as: Tag = 'div',
+  stagger = false,
+  delayMs = 0,
+  once = true,
+  className = '',
+  children,
+  ...rest
+}) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      el.classList.add('reveal-in');
-      return;
-    }
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setTimeout(() => el.classList.add('reveal-in'), delayMs);
-            io.unobserve(el);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (delayMs > 0) setTimeout(() => el.classList.add('in-view'), delayMs);
+            else el.classList.add('in-view');
+            if (once) io.unobserve(el);
+          } else if (!once) {
+            el.classList.remove('in-view');
           }
         });
       },
@@ -32,10 +38,14 @@ export function Reveal({ children, className, delayMs = 0, as: Tag = 'div' }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [delayMs]);
+  }, [delayMs, once]);
 
   return (
-    <Tag ref={ref} className={cn('reveal-init', className)}>
+    <Tag
+      ref={ref}
+      className={`reveal ${stagger ? 'stagger' : ''} ${className}`}
+      {...rest}
+    >
       {children}
     </Tag>
   );
