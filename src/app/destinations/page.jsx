@@ -1,9 +1,10 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { Reveal } from '@/components/shared/Reveal';
-import { PROPERTIES, ACCENT_HEX } from '@/lib/constants';
+import { PROPERTIES } from '@/lib/constants';
 
 export const metadata = {
   title: 'Destinations',
@@ -24,26 +25,33 @@ export default function DestinationsIndex() {
           </p>
 
           <div className="mt-14 grid gap-6 stagger-grid md:grid-cols-2">
-            {PROPERTIES.map((p) => (
+            {PROPERTIES.map((p, idx) => (
               <Reveal key={p.slug}>
                 <Link
                   href={`/destinations/${p.slug}`}
-                  className="group relative block overflow-hidden rounded-2xl bg-brand-sand shadow-soft"
+                  className="group relative block overflow-hidden rounded-2xl bg-brand-ink shadow-soft"
                   style={{ aspectRatio: '4/5' }}
                 >
+                  {p.coverImage && (
+                    <Image
+                      src={p.coverImage}
+                      alt={`${p.name} — ${p.city}`}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      priority={idx === 0}
+                      className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.04]"
+                    />
+                  )}
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] group-hover:scale-[1.04]"
-                    style={{
-                      backgroundImage: `linear-gradient(180deg, rgba(14,17,22,0) 35%, rgba(14,17,22,0.65) 100%), linear-gradient(135deg, ${ACCENT_HEX[p.accent] || '#C9A24E'}33 0%, #0E1116 100%)`,
-                    }}
+                    className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/30 to-transparent"
                   />
                   <div className="absolute inset-0 flex flex-col justify-end p-8 text-brand-cloud">
-                    <p className="text-xs uppercase tracking-[0.28em] text-brand-cloud/80">
+                    <p className="text-xs uppercase tracking-[0.28em] text-brand-cloud/85">
                       {p.city} · {p.country}
                     </p>
                     <h3 className="display mt-2 text-3xl">{p.name}</h3>
-                    <p className="mt-2 max-w-md text-sm text-brand-cloud/85">{p.tagline}</p>
+                    <p className="mt-2 max-w-md text-sm text-brand-cloud/90">{p.tagline}</p>
                   </div>
                 </Link>
               </Reveal>
