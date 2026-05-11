@@ -39,13 +39,19 @@ export async function GET() {
     note: 'flag-only; hit /api/social/generate-caption to test',
   };
 
-  // Google Places — try a single textsearch (cached 24h)
+  // Google Places — try a single textsearch (cached 24h). Surface the
+  // upstream error string so misconfigurations (wrong API enabled,
+  // referrer restrictions, billing not propagated) are diagnosable.
   if (!FEATURE_FLAGS.googlePlacesLive()) {
     checks.googlePlaces = { live: false, reason: 'GOOGLE_PLACES_API_KEY missing' };
   } else {
     try {
       const r = await findPlace({ query: 'Workshop Kitchen Palm Springs' });
-      checks.googlePlaces = { live: true, gotPlaceId: !!r.placeId };
+      checks.googlePlaces = {
+        live: true,
+        gotPlaceId: !!r.placeId,
+        ...(r.error ? { upstreamError: r.error } : {}),
+      };
     } catch (err) {
       checks.googlePlaces = { live: false, error: String(err) };
     }

@@ -3,29 +3,44 @@ import { unstable_cache } from 'next/cache';
 import { FEATURE_FLAGS } from '@/lib/constants';
 
 /**
- * Google Places integration. We only need two operations:
- *   1. findPlace(query, locationBias) → place_id (used to anchor results)
- *   2. getFirstPhotoUrl(place_id, maxWidth) → fully-formed photo URL
+ * Google Places API (NEW) integration.
+ *
+ * Migration note: this used to call the LEGACY Places API at
+ * maps.googleapis.com/maps/api/place/*. The new API at
+ * places.googleapis.com/v1/* requires the X-Goog-Api-Key header
+ * (not ?key=) and an X-Goog-FieldMask declaring which fields the
+ * caller wants. The endpoint shapes are different too — Text Search
+ * is POST with { textQuery }, not GET with ?query=.
  *
  * Cached aggressively (24h) — hotspot imagery changes rarely.
  */
 
-const TEXTSEARCH = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
-const DETAILS = 'https://maps.googleapis.com/maps/api/place/details/json';
-const PHOTO = 'https://maps.googleapis.com/maps/api/place/photo';
+const TEXTSEARCH = 'https://places.googleapis.com/v1/places:searchText';
+const PLACE_DETAILS = (placeId) => `https://places.googleapis.com/v1/places/${placeId}`;
+const PHOTO_BASE = 'https://places.googleapis.com/v1';
 
-async function _findPlace({ query, locationBias }) {
+async function _findPlace({ query }) {
   if (!FEATURE_FLAGS.googlePlacesLive()) return { stub: true, placeId: null };
-  const params = new URLSearchParams({
-    query,
-    key: process.env.GOOGLE_PLACES_API_KEY,
-    fields: 'place_id,name',
-  });
-  if (locationBias) params.set('location', locationBias);
-  const res = await fetch(`${TEXTSEARCH}?${params}`);
-  if (!res.ok) return { stub: false, placeId: null, error: `${res.status}` };
+  let res;
+  try {
+    res = await fetch(TEXTSEARCH, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY,
+        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress',
+      },
+      body: JSON.stringify({ textQuery: query, pageSize: 1 }),
+    });
+  } catch (err) {
+    return { stub: false, placeId: null, error: String(err) };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    return { stub: false, placeId: null, error: `${res.status}: ${text.slice(0, 200)}` };
+  }
   const data = await res.json();
-  const placeId = data.results?.[0]?.place_id ?? null;
+  const placeId = data.places?.[0]?.id ?? null;
   return { stub: false, placeId };
 }
 
@@ -33,50 +48,57 @@ async function _getFirstPhotoRef({ placeId }) {
   if (!FEATURE_FLAGS.googlePlacesLive() || !placeId) {
     return { stub: true, photoReference: null };
   }
-  const params = new URLSearchParams({
-    place_id: placeId,
-    key: process.env.GOOGLE_PLACES_API_KEY,
-    fields: 'photos,name,formatted_address,rating,user_ratings_total',
-  });
-  const res = await fetch(`${DETAILS}?${params}`);
-  if (!res.ok) return { stub: false, photoReference: null, error: `${res.status}` };
+  let res;
+  try {
+    res = await fetch(PLACE_DETAILS(placeId), {
+      headers: {
+        'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY,
+        'X-Goog-FieldMask': 'displayName,formattedAddress,rating,userRatingCount,photos',
+      },
+    });
+  } catch (err) {
+    return { stub: false, photoReference: null, error: String(err) };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    return { stub: false, photoReference: null, error: `${res.status}: ${text.slice(0, 200)}` };
+  }
   const data = await res.json();
-  const photoReference = data.result?.photos?.[0]?.photo_reference ?? null;
+  // Place Photos API (New) returns photo references as
+  // `places/{place_id}/photos/{photo_id}`. We need the FULL name.
+  const photoName = data.photos?.[0]?.name ?? null;
   return {
     stub: false,
-    photoReference,
-    rating: data.result?.rating,
-    ratingCount: data.result?.user_ratings_total,
+    photoReference: photoName,
+    rating: data.rating,
+    ratingCount: data.userRatingCount,
   };
 }
 
-export const findPlace = unstable_cache(_findPlace, ['places-find'], {
+export const findPlace = unstable_cache(_findPlace, ['places-find-v1'], {
   revalidate: 86400,
   tags: ['places'],
 });
 
-export const getFirstPhotoRef = unstable_cache(_getFirstPhotoRef, ['places-photo-ref'], {
+export const getFirstPhotoRef = unstable_cache(_getFirstPhotoRef, ['places-photo-ref-v1'], {
   revalidate: 86400,
   tags: ['places'],
 });
 
 /**
- * Build the public photo URL. Note: Google's photo endpoint returns
- * a 302 redirect to a googleusercontent.com URL — we proxy the
- * reference back through our /api/places/photo handler so we don't
- * leak the API key in img src.
+ * Build the public photo URL. The actual fetch goes through
+ * /api/places/photo so the API key never reaches the client.
  */
-export function buildPhotoProxyUrl(photoReference, { maxWidth = 1200 } = {}) {
-  if (!photoReference) return null;
-  return `/api/places/photo?ref=${encodeURIComponent(photoReference)}&w=${maxWidth}`;
+export function buildPhotoProxyUrl(photoName, { maxWidth = 1200 } = {}) {
+  if (!photoName) return null;
+  return `/api/places/photo?name=${encodeURIComponent(photoName)}&w=${maxWidth}`;
 }
 
 /**
- * One-shot: query → place_id → photo reference → proxy URL.
- * Returns null if anything fails or stub mode is active.
+ * One-shot: query → place_id → photo name → proxy URL.
  */
-export async function lookupPhotoUrl({ query, locationBias, maxWidth }) {
-  const { placeId } = await findPlace({ query, locationBias });
+export async function lookupPhotoUrl({ query, maxWidth }) {
+  const { placeId } = await findPlace({ query });
   if (!placeId) return null;
   const { photoReference } = await getFirstPhotoRef({ placeId });
   return buildPhotoProxyUrl(photoReference, { maxWidth });

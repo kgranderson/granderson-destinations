@@ -2,24 +2,34 @@ import { NextResponse } from 'next/server';
 import { FEATURE_FLAGS } from '@/lib/constants';
 
 /**
- * Proxies a Google Place Photo request so we don't expose the API key
- * in <img src>. Caches at the CDN edge for 7 days.
+ * Proxies a Google Place Photo request (NEW Places API) so we don't
+ * expose the API key in <img src>. Caches at the CDN edge for 7 days.
+ *
+ * The "photo name" is the full resource path returned by Place
+ * Details, e.g. "places/{place_id}/photos/{photo_id}".
  */
 export async function GET(request) {
   const url = new URL(request.url);
-  const ref = url.searchParams.get('ref');
+  const name = url.searchParams.get('name');
   const maxWidth = url.searchParams.get('w') || '1200';
 
-  if (!FEATURE_FLAGS.googlePlacesLive() || !ref) {
+  if (!FEATURE_FLAGS.googlePlacesLive() || !name) {
     return new NextResponse(null, { status: 404 });
   }
 
-  const upstream = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${encodeURIComponent(
-    ref,
-  )}&maxwidth=${maxWidth}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+  // Places API (New): GET https://places.googleapis.com/v1/{name}/media?maxWidthPx=N
+  // Auth via X-Goog-Api-Key header. Returns a binary image stream.
+  const upstream = `https://places.googleapis.com/v1/${encodeURI(name)}/media?maxWidthPx=${maxWidth}`;
 
-  // Google returns a 302 to googleusercontent — follow and stream back.
-  const res = await fetch(upstream, { redirect: 'follow' });
+  let res;
+  try {
+    res = await fetch(upstream, {
+      headers: { 'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY },
+      redirect: 'follow',
+    });
+  } catch {
+    return new NextResponse(null, { status: 502 });
+  }
   if (!res.ok) return new NextResponse(null, { status: res.status });
 
   const headers = new Headers();
