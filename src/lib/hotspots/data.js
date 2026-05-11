@@ -21,10 +21,10 @@ export const HOTSPOTS = {
       rating: 4.6,
       minutesDrive: 7,
       description:
-        "James Beard-nominated New American — open kitchen, raw bar, and the desert's most precise cocktail program. Reserve 2 weeks out for the patio.",
+        "Michelin-recommended New American (four years running) — open kitchen, wood-fired hearth, and the desert's most precise cocktail program. Reserve two weeks out for the patio.",
       tags: ['Date night', 'Patio', 'Cocktails'],
-      hours: '5–10 PM, closed Mon',
-      website: 'https://workshoppalmsprings.com',
+      hours: '5–10 PM daily · Sun brunch 10 AM–2 PM',
+      website: 'https://www.workshopkitchenbar.com',
       image: null, // verified-broken; gradient fallback until Google Places key set
       featured: true,
     },
@@ -55,7 +55,7 @@ export const HOTSPOTS = {
         'A red-leather, low-light Old Hollywood steakhouse — the dry-aged ribeye and a Sazerac is the Palm Springs date.',
       tags: ['Old Hollywood', 'Steak'],
       hours: '5:30–10 PM',
-      website: 'https://mrlyonsps.com',
+      website: 'https://www.mrlyonsf10.com',
       image: null, // gradient fallback — replace with Google Place Photo when key is set
     },
     {
@@ -117,7 +117,7 @@ export const HOTSPOTS = {
         'Classic + pre-Prohibition cocktails done with obsessive precision. Sister-bar to Workshop. Bartender\'s choice never disappoints.',
       tags: ['Cocktails', 'Pre-Prohibition'],
       hours: '5 PM–close',
-      website: 'https://trussandtwineps.com',
+      website: 'https://www.trussandtwine.com',
       image: u('1514362545857-3bc16c4c7d1b'),
     },
     {
@@ -211,7 +211,7 @@ export const HOTSPOTS = {
         'Rooftop with the single best Parroquia view in town — go at 7 PM, order the mezcal flight, stay through the bell-tower hour.',
       tags: ['Rooftop', 'Sunset'],
       hours: '5 PM–1 AM',
-      website: 'https://www.laazoteasanmiguel.com',
+      website: 'https://www.instagram.com/laazoteasma/',
       image: null,
     },
     {
@@ -302,7 +302,7 @@ export const HOTSPOTS = {
         'SMA institution — courtyard dinner downstairs, live mariachi or jazz on the rooftop after 10. The locals\' late-night.',
       tags: ['Live music', 'Rooftop'],
       hours: '8 AM–2 AM',
-      website: 'https://mamamiasma.com',
+      website: 'https://mamamia.com.mx',
       image: null,
     },
     {
