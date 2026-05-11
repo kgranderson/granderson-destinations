@@ -1,0 +1,25 @@
+property_slug,month,type,category,amount
+palm-springs,2024-05,revenue,,52400
+palm-springs,2024-05,expense,Cleaning,6030
+palm-springs,2024-05,expense,Property management,4192
+palm-springs,2024-05,expense,Utilities,2882
+palm-springs,2024-05,expense,Pool & landscaping,2358
+palm-springs,2024-05,expense,Maintenance,2096
+palm-springs,2024-05,expense,Insurance,1310
+palm-springs,2024-05,expense,Property tax,3144
+palm-springs,2024-05,expense,Lodging tax remitted,6026
+palm-springs,2024-05,expense,Marketing & OTA fees,4716
+palm-springs,2024-05,expense,Supplies & restock,1153
+palm-springs,2024-05,expense,Concierge,944
+san-miguel-de-allende,2024-05,revenue,,28100
+san-miguel-de-allende,2024-05,expense,Cleaning,2951
+san-miguel-de-allende,2024-05,expense,Property management,2389
+san-miguel-de-allende,2024-05,expense,Utilities,1124
+san-miguel-de-allende,2024-05,expense,Gardener & courtyard,843
+san-miguel-de-allende,2024-05,expense,Maintenance,984
+san-miguel-de-allende,2024-05,expense,Insurance,562
+san-miguel-de-allende,2024-05,expense,Property tax,703
+san-miguel-de-allende,2024-05,expense,Lodging tax remitted,2248
+san-miguel-de-allende,2024-05,expense,Marketing & OTA fees,2389
+san-miguel-de-allende,2024-05,expense,Supplies & restock,703
+san-miguel-de-allende,2024-05,expense,Concierge,618

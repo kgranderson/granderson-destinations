@@ -8,6 +8,8 @@ import { updateSession } from '@/lib/supabase/middleware';
 // /api/social/generate-caption and /api/pricing/push-overrides retain their
 // own admin-tier gates at the route handler level so the public can't burn
 // our Anthropic/PriceLabs credits even while these pages are open.
+// /admin/* requires an authenticated session AND admin tier — the
+// tier check happens at the page level (see app/admin/import/page.jsx).
 const PROTECTED_PREFIXES = ['/dashboard', '/account', '/trips', '/admin'];
 
 export async function middleware(request) {

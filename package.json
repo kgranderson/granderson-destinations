@@ -11,7 +11,9 @@
     "type-check": "echo 'Project uses JavaScript with JSDoc; tsc not required.'",
     "db:push": "supabase db push",
     "db:reset": "supabase db reset",
-    "scrape:destinationgh": "node scripts/scrape-destinationgh.mjs"
+    "scrape:destinationgh": "node scripts/scrape-destinationgh.mjs",
+    "seed:properties": "node scripts/seed-properties.mjs",
+    "import:financials": "node scripts/import-financials.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",
@@ -29,6 +31,7 @@
     "recharts": "^2.12.7",
     "stripe": "^16.0.0",
     "tailwind-merge": "^2.5.4",
+    "xlsx": "^0.18.5",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

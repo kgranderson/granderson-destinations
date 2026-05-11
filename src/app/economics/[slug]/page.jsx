@@ -9,6 +9,7 @@ import { ExpenseBreakdown } from '@/components/economics/ExpenseBreakdown';
 import { CompPanel } from '@/components/economics/CompPanel';
 import { ExpenseAnomalies } from '@/components/economics/ExpenseAnomalies';
 import { WhatIfPanel } from '@/components/economics/WhatIfPanel';
+import { ImportTriggerLink } from '@/components/economics/ImportTriggerLink';
 import { PROPERTIES, MARKETS } from '@/lib/constants';
 import { loadMonthly } from '@/lib/economics/loader';
 import { rollupMonthly, withDerived, compRank, flagExpenses } from '@/lib/economics/model';
@@ -148,6 +149,7 @@ export default async function EconomicsPage({ params }) {
                     : 'Stub AirDNA'}
                 </span>
               )}
+              <ImportTriggerLink propertySlug={property.slug} />
               <Link
                 href={`/destinations/${property.slug}`}
                 className="rounded-full border border-brand-ink px-4 py-2 text-xs font-medium text-brand-ink hover:bg-brand-ink hover:text-brand-cloud"
