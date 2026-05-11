@@ -8,13 +8,13 @@ import { PROPERTIES } from '@/lib/constants';
 const CATEGORIES = ['plumbing', 'electrical', 'hvac', 'pool', 'landscape', 'appliance', 'general'];
 const PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
-export function MaintenanceForm() {
+export function MaintenanceForm({ initialPropertySlug }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState({ kind: 'idle' });
   const [form, setForm] = useState({
-    propertySlug: PROPERTIES[0].slug,
+    propertySlug: initialPropertySlug || PROPERTIES[0].slug,
     title: '',
     description: '',
     priority: 'normal',
@@ -50,7 +50,7 @@ export function MaintenanceForm() {
     }
     setStatus({ kind: 'success' });
     setForm({
-      propertySlug: PROPERTIES[0].slug,
+      propertySlug: initialPropertySlug || PROPERTIES[0].slug,
       title: '',
       description: '',
       priority: 'normal',

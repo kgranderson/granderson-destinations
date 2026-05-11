@@ -6,6 +6,7 @@ import { AdminNav } from '@/components/shared/AdminNav';
 import { assertAdmin } from '@/components/shared/AdminGuard';
 import { OccupancyKPIs } from '@/components/occupancy/OccupancyKPIs';
 import { OccupancyChart } from '@/components/occupancy/OccupancyChart';
+import { PropertyAdminTabs } from '@/components/shared/PropertyAdminTabs';
 import { PROPERTIES } from '@/lib/constants';
 import { loadOccupancy } from '@/lib/hospitable/loader';
 
@@ -54,7 +55,11 @@ export default async function OccupancyPropertyPage({ params }) {
               </div>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-8">
+              <PropertyAdminTabs propertySlug={property.slug} />
+            </div>
+
+            <div className="mt-8">
               <OccupancyKPIs rows={rows} />
             </div>
 

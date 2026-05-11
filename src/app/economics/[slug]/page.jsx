@@ -10,6 +10,7 @@ import { CompPanel } from '@/components/economics/CompPanel';
 import { ExpenseAnomalies } from '@/components/economics/ExpenseAnomalies';
 import { WhatIfPanel } from '@/components/economics/WhatIfPanel';
 import { ImportTriggerLink } from '@/components/economics/ImportTriggerLink';
+import { PropertyAdminTabs } from '@/components/shared/PropertyAdminTabs';
 import { PROPERTIES, MARKETS } from '@/lib/constants';
 import { loadMonthly } from '@/lib/economics/loader';
 import { rollupMonthly, withDerived, compRank, flagExpenses } from '@/lib/economics/model';
@@ -159,8 +160,13 @@ export default async function EconomicsPage({ params }) {
             </div>
           </div>
 
+          {/* Property tool tabs */}
+          <div className="mt-8">
+            <PropertyAdminTabs propertySlug={property.slug} />
+          </div>
+
           {/* KPIs */}
-          <div className="mt-10">
+          <div className="mt-8">
             <KPICards kpis={kpis} />
           </div>
 
