@@ -75,15 +75,56 @@ async function _getFirstPhotoRef({ placeId }) {
   };
 }
 
-export const findPlace = unstable_cache(_findPlace, ['places-find-v1'], {
+// Wrap _findPlace + _getFirstPhotoRef in unstable_cache, but skip
+// caching when the response has an error — otherwise a transient 403
+// (e.g. while waiting for API-key restriction propagation) sticks for
+// 24 hours and forces a code bump to recover.
+async function _findPlaceCacheGuard(args) {
+  const res = await _findPlace(args);
+  if (res.error) {
+    // throw to bypass the cache; caller catches and surfaces the error
+    const err = new Error(res.error);
+    err.placesResponse = res;
+    throw err;
+  }
+  return res;
+}
+
+async function _getFirstPhotoRefCacheGuard(args) {
+  const res = await _getFirstPhotoRef(args);
+  if (res.error) {
+    const err = new Error(res.error);
+    err.placesResponse = res;
+    throw err;
+  }
+  return res;
+}
+
+const _cachedFindPlace = unstable_cache(_findPlaceCacheGuard, ['places-find-v2'], {
   revalidate: 86400,
   tags: ['places'],
 });
 
-export const getFirstPhotoRef = unstable_cache(_getFirstPhotoRef, ['places-photo-ref-v1'], {
+const _cachedGetFirstPhotoRef = unstable_cache(_getFirstPhotoRefCacheGuard, ['places-photo-ref-v2'], {
   revalidate: 86400,
   tags: ['places'],
 });
+
+export async function findPlace(args) {
+  try {
+    return await _cachedFindPlace(args);
+  } catch (err) {
+    return err.placesResponse || { stub: false, placeId: null, error: String(err) };
+  }
+}
+
+export async function getFirstPhotoRef(args) {
+  try {
+    return await _cachedGetFirstPhotoRef(args);
+  } catch (err) {
+    return err.placesResponse || { stub: false, photoReference: null, error: String(err) };
+  }
+}
 
 /**
  * Build the public photo URL. The actual fetch goes through
