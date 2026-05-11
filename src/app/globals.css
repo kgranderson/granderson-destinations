@@ -529,43 +529,119 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Stats (editorial; not big-number card)
+   Stats — the receipts. A dark editorial moment between the bone
+   bands. Each stat presents like a published table entry: champagne
+   tick → small-caps category → big display number → legible label.
    ------------------------------------------------------------- */
 
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-8);
-  padding: var(--space-12) 0;
-  border-top: var(--border-hair) solid var(--color-rule);
-  border-bottom: var(--border-hair) solid var(--color-rule);
+  gap: var(--space-10);
+  padding: var(--space-4) 0 0;
 }
-@media (max-width: 720px) {
-  .stats { grid-template-columns: repeat(2, 1fr); gap: var(--space-10); }
+@media (max-width: 920px) {
+  .stats { grid-template-columns: repeat(2, 1fr); gap: var(--space-12); }
 }
+@media (max-width: 560px) {
+  .stats { grid-template-columns: 1fr; gap: var(--space-10); }
+}
+
+/* Short champagne tick that sits above the category — gives each
+   stat a small visual marker without needing a numeric label. */
+.stat .stat-tick {
+  width: 28px;
+  height: 2px;
+  background: var(--color-accent);
+  margin-bottom: var(--space-5);
+}
+
+.stat .stat-cat {
+  font-family: var(--font-caps);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-caps);
+  text-indent: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+}
+
 .stat .figure {
   font-family: var(--font-display);
   font-weight: var(--weight-regular);
-  font-size: var(--text-h2);
+  font-size: var(--text-h1);
   letter-spacing: var(--tracking-display);
   color: var(--color-text);
   line-height: 1;
+  margin-bottom: var(--space-5);
 }
 .stat .figure sub {
-  font-size: var(--text-h5);
+  font-size: var(--text-h4);
   vertical-align: baseline;
   color: var(--color-accent);
   margin-left: 4px;
 }
-.stat .figure-label {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: var(--weight-light);
-  font-size: var(--text-small);
-  color: var(--color-text-muted);
-  margin-top: var(--space-3);
-  max-width: 26ch;
+
+/* The label is the lift from the old design — Inter, upright, full
+   text color, body-emphasis size. Reads cleanly even at distance,
+   where the old italic-muted-Cormorant treatment evaporated. */
+.stat .stat-label {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-medium);
   line-height: var(--leading-snug);
+  color: var(--color-text);
+  max-width: 28ch;
+}
+
+/* -------------------------------------------------------------
+   Editorial Moment — a wide cinematic photo intermission that
+   breaks the wall of text inside the bone band.
+   ------------------------------------------------------------- */
+
+.editorial-moment {
+  padding: var(--space-8) 0 var(--space-20);
+}
+.editorial-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border: var(--border-thin) solid var(--color-border);
+}
+.editorial-frame .editorial-image {
+  object-fit: cover;
+  animation: ken-burns 32s var(--ease-out-quart) forwards;
+  will-change: transform;
+}
+.editorial-caption {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  flex-wrap: wrap;
+  font-size: var(--text-micro);
+  color: var(--color-text-muted);
+}
+.editorial-caption .caps {
+  font-family: var(--font-caps);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-caps);
+  text-indent: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.editorial-caption .separator {
+  color: var(--color-rule-strong);
+}
+
+@media (max-width: 720px) {
+  .editorial-frame { aspect-ratio: 4 / 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-frame .editorial-image { animation: none; }
 }
 
 /* -------------------------------------------------------------

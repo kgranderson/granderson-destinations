@@ -4,6 +4,7 @@ import { LandingHero } from '@/components/landing/Hero';
 import { Marquee } from '@/components/shared/Marquee';
 import { PropertyShowcase } from '@/components/landing/PropertyShowcase';
 import { FeatureGrid } from '@/components/landing/FeatureGrid';
+import { EditorialMoment } from '@/components/landing/EditorialMoment';
 import { Stats } from '@/components/landing/Stats';
 import { LandingCTA } from '@/components/landing/CTA';
 
@@ -28,6 +29,9 @@ export default function HomePage() {
           />
           <PropertyShowcase />
           <FeatureGrid />
+
+          {/* Photographic intermission — one wide frame to break the text */}
+          <EditorialMoment />
         </div>
 
         {/* Single dark moment of punctuation — the receipts */}
