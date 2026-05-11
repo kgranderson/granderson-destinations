@@ -43,6 +43,7 @@ export function HotspotCard({ hotspot, featured = false }) {
             {'$'.repeat(h.priceLevel)}
           </div>
         ) : null}
+        <AccoladesStrip accolades={h.accolades} />
       </div>
 
       <div className="p-5">
@@ -99,6 +100,55 @@ export function HotspotCard({ hotspot, featured = false }) {
         </div>
       </div>
     </article>
+  );
+}
+
+/**
+ * Renders a row of small red Michelin year badges at the bottom-right
+ * of the cover image when a hotspot carries Michelin recognition.
+ * The recognition is factual attribution (nominative use of the
+ * Michelin Guide name) — the badges intentionally use a deeper red
+ * than Michelin's brand red so they read as editorial recognition
+ * marks, not counterfeits of the official Guide logo.
+ */
+function AccoladesStrip({ accolades }) {
+  if (!accolades?.length) return null;
+  const michelin = accolades.find((a) => a.brand === 'michelin');
+  if (!michelin?.years?.length) return null;
+  return (
+    <div
+      className="absolute bottom-3 right-3 flex items-center gap-1.5"
+      aria-label={`${michelin.label}: ${michelin.years.join(', ')}`}
+    >
+      {michelin.years.map((y) => (
+        <MichelinBadge key={y} year={y} />
+      ))}
+    </div>
+  );
+}
+
+function MichelinBadge({ year }) {
+  // Two-digit year inside the disc keeps the type readable at 36px.
+  const yy = String(year).slice(-2);
+  return (
+    <div
+      className="flex h-9 w-9 flex-col items-center justify-center rounded-full text-white shadow-soft ring-1 ring-white/20"
+      style={{ backgroundColor: '#A6132D' }}
+      title={`Michelin Recommended ${year}`}
+    >
+      <span
+        className="font-medium uppercase leading-none"
+        style={{ fontSize: '6px', letterSpacing: '0.08em' }}
+      >
+        Michelin
+      </span>
+      <span
+        className="mt-0.5 font-semibold leading-none"
+        style={{ fontSize: '11px' }}
+      >
+        {`'${yy}`}
+      </span>
+    </div>
   );
 }
 

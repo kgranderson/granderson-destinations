@@ -25,7 +25,14 @@ export const HOTSPOTS = {
       tags: ['Date night', 'Patio', 'Cocktails'],
       hours: '5–10 PM daily · Sun brunch 10 AM–2 PM',
       website: 'https://www.workshopkitchenbar.com',
-      image: null, // verified-broken; gradient fallback until Google Places key set
+      image: '/hotspots/palm-springs/workshop-kitchen.jpg',
+      // Source: workshopkitchenbar.com hero. Used under nominative/editorial
+      // use for concierge listing. Replace with a press-kit image or an
+      // original Granderson photograph when available.
+      photoCredit: 'Workshop Kitchen + Bar',
+      accolades: [
+        { brand: 'michelin', label: 'Michelin Recommended', years: [2022, 2023, 2024, 2025] },
+      ],
       featured: true,
     },
     {
