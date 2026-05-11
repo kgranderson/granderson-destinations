@@ -15,7 +15,7 @@ export function EditorialMoment() {
       <div className="editorial-frame">
         <Image
           src="/properties/palm-springs/palm-springs-09.jpg"
-          alt="The pool deck at Casa del Sol, Palm Springs"
+          alt="The pool deck at The Sunbath House, Palm Springs"
           fill
           sizes="100vw"
           className="editorial-image"
@@ -25,7 +25,7 @@ export function EditorialMoment() {
         <span className="caps">A glimpse inside</span>
         <span className="separator" aria-hidden>/</span>
         <span className="italic-quiet">
-          Casa del Sol, Palm Springs &nbsp;&middot;&nbsp; The pool deck, golden hour
+          The Sunbath House, Palm Springs &nbsp;&middot;&nbsp; The pool deck, golden hour
         </span>
       </div>
     </Reveal>

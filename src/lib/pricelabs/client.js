@@ -43,7 +43,7 @@ export async function listListings() {
   const live = await plFetch('/listings');
   if (live?.stub) {
     return [
-      { listing_id: 'PL-PS-001', name: 'Casa del Sol — Palm Springs', currency: 'USD' },
+      { listing_id: 'PL-PS-001', name: 'The Sunbath House — Palm Springs', currency: 'USD' },
       { listing_id: 'PL-SMA-001', name: 'Casa Talavera — San Miguel', currency: 'USD' },
     ];
   }

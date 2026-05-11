@@ -20,7 +20,7 @@ export const EVENT_DETAILS = {
       'The defining cultural weekend of the year for the Coachella Valley. Demand sets the rate ceiling for every property within an hour\'s drive.',
     body: [
       'Coachella Weekend 1 is the highest-demand weekend on the calendar — across the Coachella Valley, occupancy regularly hits 92%+ and ADRs run 1.5×–2.0× baseline. Premium properties within 25 miles of Empire Polo Club book out 60–90 days in advance.',
-      'For Casa del Sol, the optimal play is a 4-night Thursday→Monday minimum, anchored to the festival\'s arrival/departure pattern. Our concierge team handles the airport-to-house transfer (PSP is 12 minutes; LAX is a 2-hour drive that we book early to avoid Friday afternoon traffic).',
+      'For The Sunbath House, the optimal play is a 4-night Thursday→Monday minimum, anchored to the festival\'s arrival/departure pattern. Our concierge team handles the airport-to-house transfer (PSP is 12 minutes; LAX is a 2-hour drive that we book early to avoid Friday afternoon traffic).',
       'Demand for the second weekend has historically been ~10% softer than W1. We treat the two weekends as separate pricing windows.',
     ],
     operatingPlaybook: [
@@ -81,7 +81,7 @@ export const EVENT_DETAILS = {
       'Twelve days of ATP/WTA Masters 1000 tennis — sustained demand for week-long stays, not just weekends.',
     body: [
       'Indian Wells is the most attended tennis tournament in the world outside the four Slams. The 12-day window means demand pattern looks different from a festival weekend — less peaky, more sustained.',
-      'For Casa del Sol, the BNP window is a 7-night-stay opportunity: a weekly rate at 1.35× baseline beats trying to chase 2-night weekends. Concierge can book Stadium 1 access, sponsor lounges, and player-day transfers.',
+      'For The Sunbath House, the BNP window is a 7-night-stay opportunity: a weekly rate at 1.35× baseline beats trying to chase 2-night weekends. Concierge can book Stadium 1 access, sponsor lounges, and player-day transfers.',
       'The 2027 expansion (+18,000 seats, new hospitality club) is a tailwind for 2027+ pricing, per the Intel feed.',
     ],
     operatingPlaybook: [
@@ -101,7 +101,7 @@ export const EVENT_DETAILS = {
       'The architectural pilgrimage of the year — and the perfect-fit guest for a midcentury home.',
     body: [
       'Modernism Week is 11 days of architecture tours, design pop-ups, and curated dinners across Palm Springs. The guest profile is design-aware, image-conscious, and stays an average of 4–5 nights.',
-      'For Casa del Sol — a faithfully restored midcentury home — this is a marquee booking window. We feature the home\'s architectural pedigree (Wexler-influenced lines, original 1962 footprint) prominently in pricing copy.',
+      'For The Sunbath House — a freshly renovated midcentury home — this is a marquee booking window. We feature the home\'s architectural pedigree (Wexler-influenced lines, retro-chic restoration) prominently in pricing copy.',
       'Programming was approved to expand to 13 days for 2027.',
     ],
     operatingPlaybook: [

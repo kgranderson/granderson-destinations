@@ -130,7 +130,7 @@ function stubIntel(market) {
           summary:
             'Festival board approved a 13-day program (vs. 11 in 2026) including a new "Mid-Century Architecture Tour Pass" expected to lift mid-week demand.',
           revenueThesis:
-            'Adds two material demand nights mid-week. Properties with documented MCM architectural pedigree (your Casa del Sol) should see strongest premium capture.',
+            'Adds two material demand nights mid-week. Properties with documented MCM architectural pedigree (The Sunbath House) should see strongest premium capture.',
           sourceTitle: 'Modernism Week press release',
           sourceUrl: 'https://modernismweek.com/',
         },
