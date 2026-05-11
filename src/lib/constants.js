@@ -55,6 +55,11 @@ export const PROPERTIES = [
     country: 'USA',
     accent: 'terracotta',
     coverImage: '/properties/palm-springs/hero.jpg',
+    welcomeBook: {
+      url: '/welcome-books/palm-springs.pdf',
+      pages: 14,
+      sizeMb: 38,
+    },
     tagline:
       'Midcentury modern, mountain-backed, magazine-ready. Three bedrooms. Walled garden. The sun rises over the Santa Rosas at six.',
     description:

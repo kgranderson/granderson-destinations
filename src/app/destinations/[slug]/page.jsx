@@ -3,6 +3,7 @@ import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { PropertyHero } from '@/components/property/PropertyHero';
+import { WelcomeBook } from '@/components/property/WelcomeBook';
 import { PropertyHighlights } from '@/components/property/PropertyHighlights';
 import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyAmenities } from '@/components/property/PropertyAmenities';
@@ -79,6 +80,9 @@ export default function PropertyPage({ params }) {
                 <p className="mt-6 text-base leading-relaxed text-brand-slate sm:text-lg">
                   {property.description}
                 </p>
+
+                {/* Editorial entry-point to the printable welcome book */}
+                <WelcomeBook property={property} />
               </div>
               <div className="lg:col-span-5">
                 <div className="lg:sticky lg:top-24">
