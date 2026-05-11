@@ -178,11 +178,8 @@ body {
   justify-content: space-between;
   gap: var(--space-8);
 }
-.site-nav .logo svg {
-  height: 56px;
-  width: auto;
-  display: block;
-}
+.site-nav .logo { display: inline-flex; align-items: center; }
+.site-nav .logo svg { display: block; width: auto; }
 .site-nav .links {
   display: flex;
   align-items: center;
@@ -538,7 +535,7 @@ body {
   border-bottom: var(--border-hair) solid var(--color-rule);
 }
 @media (max-width: 720px) { .footer .top { grid-template-columns: 1fr 1fr; } }
-.footer .brand .logo svg { height: 48px; width: auto; }
+.footer .brand .logo svg { width: auto; display: block; }
 .footer .brand .tagline {
   font-family: var(--font-display);
   font-style: italic;

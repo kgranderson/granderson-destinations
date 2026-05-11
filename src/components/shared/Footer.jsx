@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="footer container">
       <div className="top">
         <div className="brand">
-          <div className="logo"><ArchLogo size="md" showWordmark /></div>
+          <div className="logo"><ArchLogo size="lg" showWordmark /></div>
           <p className="tagline">{BRAND.tagline}</p>
         </div>
         <div className="col">
