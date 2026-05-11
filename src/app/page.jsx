@@ -12,7 +12,7 @@ export default function HomePage() {
     <>
       <NavBar />
       <main>
-        {/* Cinematic dark hero (full-bleed photo, ken-burns + parallax) */}
+        {/* Cinematic dark hero (full-bleed photo with slow ken-burns drift) */}
         <LandingHero />
 
         {/* Editorial bone band — content lives in the light */}

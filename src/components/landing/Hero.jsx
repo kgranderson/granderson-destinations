@@ -1,36 +1,22 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
 
+/**
+ * Cinematic full-bleed hero. The hero photo lives at z-index 0 with
+ * a darkening gradient above it (z-index 1) and the editorial copy
+ * floating in front (z-index 2). Slow ken-burns drift on the photo
+ * is defined in globals.css and respects prefers-reduced-motion.
+ */
 export function LandingHero() {
-  const imageRef = useRef(null);
-
-  // Subtle parallax — translate the hero image at 0.15× the scroll
-  // delta, capped at 80px. Honors prefers-reduced-motion via CSS.
-  useEffect(() => {
-    const el = imageRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const y = Math.min(window.scrollY * 0.15, 80);
-      el.style.setProperty('--parallax-y', `${y}px`);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
     <section className="hero">
       <Image
-        ref={imageRef}
         src="/properties/palm-springs/hero.jpg"
         alt=""
         fill
         priority
         sizes="100vw"
-        className="hero-image parallax"
+        className="hero-image"
       />
       <div className="hero-overlay" aria-hidden />
       <div>

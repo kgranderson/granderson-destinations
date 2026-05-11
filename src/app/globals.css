@@ -227,18 +227,17 @@ body {
   padding: var(--space-40) var(--space-6) var(--space-24);
   display: flex;
   align-items: flex-end;
-  isolation: isolate;
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--c-ink-1000);
 }
 .hero .hero-image,
 .hero .hero-overlay {
   position: absolute;
   inset: 0;
 }
-.hero .hero-image { z-index: -2; object-fit: cover; }
+.hero .hero-image { z-index: 0; object-fit: cover; }
 .hero .hero-overlay {
-  z-index: -1;
+  z-index: 1;
   background: linear-gradient(
     180deg,
     rgba(14, 17, 22, 0.35) 0%,
@@ -246,7 +245,7 @@ body {
     rgba(14, 17, 22, 0.88) 100%
   );
 }
-.hero > div { max-width: var(--container-wide); margin: 0 auto; width: 100%; }
+.hero > div { position: relative; z-index: 2; max-width: var(--container-wide); margin: 0 auto; width: 100%; }
 .hero h1 {
   font-family: var(--font-display);
   font-weight: var(--weight-regular);
@@ -675,7 +674,12 @@ body {
 }
 
 /* Scroll-triggered reveal. Default state is invisible + lifted 8px.
-   The IntersectionObserver in <Reveal> toggles .in-view to fade up. */
+   The IntersectionObserver in <Reveal> toggles .in-view to fade up.
+   Two patterns work:
+     1) .reveal directly on the observed element (it becomes .in-view).
+     2) .reveal on descendants of an observed wrapper — the wrapper
+        becomes .in-view and the cascade unhides any .reveal inside.
+*/
 .reveal {
   opacity: 0;
   transform: translateY(8px);
@@ -684,27 +688,21 @@ body {
     transform var(--duration-reveal) var(--ease-out-expo);
   will-change: opacity, transform;
 }
-.reveal.in-view {
+.reveal.in-view,
+.in-view .reveal {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Stagger helper — apply alongside .in-view on a parent to delay
-   each direct child by ~80ms, creating a gentle cascade. */
-.stagger > .reveal { transition-delay: 0ms; }
-.stagger.in-view > *:nth-child(1) { transition-delay: 0ms; }
-.stagger.in-view > *:nth-child(2) { transition-delay: 80ms; }
-.stagger.in-view > *:nth-child(3) { transition-delay: 160ms; }
-.stagger.in-view > *:nth-child(4) { transition-delay: 240ms; }
-.stagger.in-view > *:nth-child(5) { transition-delay: 320ms; }
-.stagger.in-view > *:nth-child(6) { transition-delay: 400ms; }
-
-/* Subtle parallax handle: components set --parallax-y from JS
-   (hero on scroll) and the bg image receives that translate. */
-.hero .hero-image.parallax {
-  transform: translateY(var(--parallax-y, 0));
-  transition: none;
-}
+/* Stagger helper — when a wrapper has .stagger.in-view, the nth
+   .reveal descendant fades up ~80ms after the last, creating a
+   gentle editorial cascade rather than a single pop. */
+.stagger.in-view .reveal:nth-child(1) { transition-delay: 0ms; }
+.stagger.in-view .reveal:nth-child(2) { transition-delay: 80ms; }
+.stagger.in-view .reveal:nth-child(3) { transition-delay: 160ms; }
+.stagger.in-view .reveal:nth-child(4) { transition-delay: 240ms; }
+.stagger.in-view .reveal:nth-child(5) { transition-delay: 320ms; }
+.stagger.in-view .reveal:nth-child(6) { transition-delay: 400ms; }
 
 /* -------------------------------------------------------------
    Reduced motion
