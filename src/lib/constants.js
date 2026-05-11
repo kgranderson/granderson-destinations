@@ -167,20 +167,32 @@ export const PROPERTIES = [
     ],
     faqs: [
       {
-        q: 'Is the pool heated?',
-        a: 'Yes — the saltwater pool and spa are both heated year-round and included in the rate.',
+        q: 'What are the check-in and check-out times?',
+        a: 'Check-in is 3 PM and check-out is 11 AM. Late check-out can usually be arranged on request — message the concierge a day or two ahead and we\'ll confirm based on the next arrival.',
       },
       {
-        q: 'Can we host events on-site?',
-        a: 'Up to 16 guests for a daytime gathering with prior approval. Overnight parties are limited to the booking party.',
+        q: 'Can we host events or parties on-site?',
+        a: 'No, per the house rules. The home accommodates the booking party only, and quiet hours begin at 9 PM out of respect for the neighbors. Small dinners with guests already on your reservation are of course welcome; for anything larger, the concierge can recommend nearby venues.',
+      },
+      {
+        q: 'Are pets allowed at the home?',
+        a: 'We love animals, but pets aren\'t permitted at this property. The concierge can point you to pet-welcoming homes in the area if you\'re traveling with one.',
+      },
+      {
+        q: 'Is smoking permitted?',
+        a: 'No smoking inside the house. The pool deck and walled garden are open-air, but please be considerate of neighbors and keep smoking away from windows and doors.',
+      },
+      {
+        q: 'How does the pool and hot tub temperature work?',
+        a: 'The pool and spa are set ahead of your arrival for guest comfort, and the heater is operated by our team rather than the wall thermostat. If you\'d like a tweak — warmer for an evening swim, cooler for an afternoon — just message the concierge and we\'ll dial it in.',
       },
       {
         q: 'How early can we check in during Coachella / Stagecoach?',
-        a: 'Standard check-in is 4 PM, but we typically open by 2 PM during festival weekends if turnover allows. Concierge will confirm 48 hours out.',
+        a: 'Standard check-in is 3 PM. During Coachella and Stagecoach weekends we\'ll open earlier if the prior guest\'s departure allows — the concierge will confirm timing 48 hours out.',
       },
       {
         q: 'Is there a minimum stay during peak events?',
-        a: 'Yes — 4 nights for Coachella/Stagecoach weekends and BNP Paribas Open opening weekend; 3 nights for Modernism Week.',
+        a: 'Minimum-stay requirements are tuned per event and refreshed through the year — the booking page shows the current minimum for your dates. For Coachella, Stagecoach, Modernism Week, and the BNP Paribas Open opening weekend, plan for a longer stay; the concierge will confirm and can hold dates while you decide.',
       },
     ],
     isPrimary: true,
