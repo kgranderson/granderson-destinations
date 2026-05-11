@@ -18,7 +18,11 @@ const LINKS = [
 export function NavBar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [authState, setAuthState] = useState({ loading: true, signedIn: false, isAdmin: false });
+  // Default to "signed out" — the Sign in link is the right
+  // affordance for anonymous visitors AND it shows immediately on
+  // first paint. The useEffect below upgrades to Admin / Account
+  // once Supabase confirms the session.
+  const [authState, setAuthState] = useState({ signedIn: false, isAdmin: false });
 
   // Scroll-state for the bar background
   useEffect(() => {
@@ -31,10 +35,7 @@ export function NavBar() {
   // Auth state — drives the right-most pill (Sign in / Admin / Account)
   useEffect(() => {
     const supabase = getBrowserClient();
-    if (!supabase) {
-      setAuthState({ loading: false, signedIn: false, isAdmin: false });
-      return;
-    }
+    if (!supabase) return;
     let alive = true;
 
     async function refresh() {
@@ -43,7 +44,7 @@ export function NavBar() {
       } = await supabase.auth.getUser();
       if (!alive) return;
       if (!user) {
-        setAuthState({ loading: false, signedIn: false, isAdmin: false });
+        setAuthState({ signedIn: false, isAdmin: false });
         return;
       }
       const { data: profile } = await supabase
@@ -53,7 +54,6 @@ export function NavBar() {
         .maybeSingle();
       if (!alive) return;
       setAuthState({
-        loading: false,
         signedIn: true,
         isAdmin: profile?.tier === 'admin',
       });
@@ -104,45 +104,44 @@ export function NavBar() {
             </Link>
           ))}
 
-          {/* Auth-aware pill: Admin / Account / Sign in */}
-          {!authState.loading &&
-            (authState.isAdmin ? (
-              <Link
-                href="/admin"
-                className={cn(
-                  'inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium tracking-wide transition-colors',
-                  scrolled
-                    ? 'bg-brand-gold/25 text-brand-ink hover:bg-brand-gold/40'
-                    : 'bg-brand-cloud/20 text-brand-cloud hover:bg-brand-cloud/30',
-                )}
-              >
-                <ShieldCheck size={12} /> Admin
-              </Link>
-            ) : authState.signedIn ? (
-              <Link
-                href="/economics"
-                className={cn(
-                  'text-sm font-medium transition-colors',
-                  scrolled
-                    ? 'text-brand-ink/85 hover:text-brand-ink'
-                    : 'text-brand-cloud/95 hover:text-brand-cloud',
-                )}
-              >
-                Account
-              </Link>
-            ) : (
-              <Link
-                href="/auth/login"
-                className={cn(
-                  'inline-flex items-center gap-1 text-sm font-medium tracking-wide transition-colors',
-                  scrolled
-                    ? 'text-brand-ink/85 hover:text-brand-ink'
-                    : 'text-brand-cloud/95 hover:text-brand-cloud',
-                )}
-              >
-                <LogIn size={12} /> Sign in
-              </Link>
-            ))}
+          {/* Auth-aware pill: Admin / Account / Sign in. Always renders. */}
+          {authState.isAdmin ? (
+            <Link
+              href="/admin"
+              className={cn(
+                'inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium tracking-wide transition-colors',
+                scrolled
+                  ? 'bg-brand-gold/25 text-brand-ink hover:bg-brand-gold/40'
+                  : 'bg-brand-cloud/20 text-brand-cloud hover:bg-brand-cloud/30',
+              )}
+            >
+              <ShieldCheck size={12} /> Admin
+            </Link>
+          ) : authState.signedIn ? (
+            <Link
+              href="/economics"
+              className={cn(
+                'text-sm font-medium transition-colors',
+                scrolled
+                  ? 'text-brand-ink/85 hover:text-brand-ink'
+                  : 'text-brand-cloud/95 hover:text-brand-cloud',
+              )}
+            >
+              Account
+            </Link>
+          ) : (
+            <Link
+              href="/auth/login"
+              className={cn(
+                'inline-flex items-center gap-1 text-sm font-medium tracking-wide transition-colors',
+                scrolled
+                  ? 'text-brand-ink/85 hover:text-brand-ink'
+                  : 'text-brand-cloud/95 hover:text-brand-cloud',
+              )}
+            >
+              <LogIn size={12} /> Sign in
+            </Link>
+          )}
 
           <Link
             href="/destinations"
@@ -180,27 +179,25 @@ export function NavBar() {
               </Link>
             ))}
 
-            {!authState.loading && (
-              <Link
-                href={
-                  authState.isAdmin ? '/admin' : authState.signedIn ? '/economics' : '/auth/login'
-                }
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 py-2 text-base font-medium text-brand-ink"
-              >
-                {authState.isAdmin ? (
-                  <>
-                    <ShieldCheck size={14} /> Admin dashboard
-                  </>
-                ) : authState.signedIn ? (
-                  'Account'
-                ) : (
-                  <>
-                    <LogIn size={14} /> Sign in
-                  </>
-                )}
-              </Link>
-            )}
+            <Link
+              href={
+                authState.isAdmin ? '/admin' : authState.signedIn ? '/economics' : '/auth/login'
+              }
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 py-2 text-base font-medium text-brand-ink"
+            >
+              {authState.isAdmin ? (
+                <>
+                  <ShieldCheck size={14} /> Admin dashboard
+                </>
+              ) : authState.signedIn ? (
+                'Account'
+              ) : (
+                <>
+                  <LogIn size={14} /> Sign in
+                </>
+              )}
+            </Link>
 
             <Link
               href="/destinations"
