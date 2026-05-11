@@ -404,7 +404,11 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Features (3x2, hairline-cell grid, roman numeral lead)
+   Features — six pillars rendered as an editorial ledger.
+   Each cell carries an italic ghost numeral watermark, a one-stroke
+   brand glyph, a small caps kicker, a title with a drawing-in
+   champagne keyline, and a hover lift. The grid lines remain
+   hairline so the section reads as a printed table, not a card set.
    ------------------------------------------------------------- */
 
 .features-grid {
@@ -417,9 +421,14 @@ body {
 @media (max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
 
 .feature {
-  padding: var(--space-10) var(--space-8);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-12) var(--space-9) var(--space-10);
   border-right: var(--border-thin) solid var(--color-rule);
   border-bottom: var(--border-thin) solid var(--color-rule);
+  background: transparent;
+  transition: background var(--duration-base) var(--ease-out-expo),
+              transform var(--duration-base) var(--ease-out-expo);
 }
 .feature:nth-child(3n) { border-right: none; }
 @media (max-width: 920px) {
@@ -427,30 +436,96 @@ body {
   .feature:nth-child(2n) { border-right: none; }
 }
 @media (max-width: 560px) {
-  .feature { border-right: none !important; }
+  .feature { border-right: none !important; padding: var(--space-10) var(--space-6); }
 }
-.feature .num {
+
+/* Cormorant italic ghost numeral — top-right watermark that lets
+   the eye recognize cell order without leading with a label. */
+.feature .feature-ghost {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-6);
   font-family: var(--font-display);
-  font-weight: var(--weight-light);
   font-style: italic;
-  font-size: var(--text-h5);
+  font-weight: var(--weight-light);
+  font-size: 120px;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
   color: var(--color-accent);
-  margin-bottom: var(--space-4);
+  opacity: 0.10;
+  pointer-events: none;
+  user-select: none;
 }
+
+/* Brand-language glyph — one stroke, champagne, sized to feel like
+   an editorial mark rather than an icon. */
+.feature .feature-glyph {
+  width: 56px;
+  height: 28px;
+  color: var(--color-accent);
+  margin-bottom: var(--space-6);
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+.feature .feature-glyph svg { width: 100%; height: 100%; display: block; }
+
+/* Category kicker — orient the reader before the title lands. */
+.feature .feature-kicker {
+  font-family: var(--font-caps);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-caps);
+  text-indent: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-text-quiet);
+  margin-bottom: var(--space-3);
+}
+
 .feature h3 {
+  position: relative;
   font-family: var(--font-display);
   font-weight: var(--weight-regular);
   font-size: var(--text-h5);
   letter-spacing: var(--tracking-display);
   line-height: var(--leading-tight);
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-5);
+  padding-bottom: var(--space-4);
   color: var(--color-text);
 }
+
+/* Drawing-in champagne keyline beneath every title. Default 0,
+   becomes 32px when the row reveals, 56px on hover. */
+.feature h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 32px;
+  height: 1px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-base) var(--ease-out-expo),
+              width var(--duration-base) var(--ease-out-expo);
+}
+.in-view .feature h3::after { transform: scaleX(1); }
+.feature:hover h3::after    { width: 56px; }
+
 .feature p {
   margin: 0;
   color: var(--color-text-muted);
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
+  max-width: 36ch;
+}
+
+/* Hover lift — the cell brightens to bone-200 (or its ink-context
+   equivalent) and lifts a hair, with the glyph nudging right to
+   suggest the cell is responsive. */
+.feature:hover {
+  background: var(--color-surface-raised);
+}
+.feature:hover .feature-glyph {
+  transform: translateX(4px);
 }
 
 /* -------------------------------------------------------------
