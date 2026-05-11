@@ -28,7 +28,7 @@ export default function EventsPage() {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in">
+      <main className="animate-page-in bg-brand-cloud">
         {/* Hero */}
         <section className="bg-brand-ink py-32 text-brand-cloud">
           <Container>

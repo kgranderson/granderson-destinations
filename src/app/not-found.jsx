@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <>
       <NavBar />
-      <main className="min-h-[70vh] pt-40">
+      <main className="min-h-[70vh] bg-brand-cloud pt-40">
         <Container size="md" className="text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/70">404</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">

@@ -38,7 +38,7 @@ export default function LoginPage() {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in pt-32">
+      <main className="animate-page-in bg-brand-cloud pt-32">
         <Container size="sm" className="pb-20">
           <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Sign in</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">Owner & member access</h1>

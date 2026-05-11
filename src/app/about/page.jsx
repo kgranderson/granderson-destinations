@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in pt-32">
+      <main className="animate-page-in bg-brand-cloud pt-32">
         <Container size="md" className="pb-20">
           <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">About</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">A private portfolio.</h1>

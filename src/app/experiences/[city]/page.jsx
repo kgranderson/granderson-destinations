@@ -33,7 +33,7 @@ export default async function ExperiencesPage({ params }) {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in">
+      <main className="animate-page-in bg-brand-cloud">
         {/* Hero */}
         <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
           {property?.coverImage && (

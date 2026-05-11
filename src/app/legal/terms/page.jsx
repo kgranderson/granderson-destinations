@@ -8,7 +8,7 @@ export default function TermsPage() {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in pt-32">
+      <main className="animate-page-in bg-brand-cloud pt-32">
         <Container size="md" className="pb-20 prose prose-neutral">
           <h1 className="display text-display-lg">Terms</h1>
           <p>Booking and stay terms land with the booking flow in M2.</p>

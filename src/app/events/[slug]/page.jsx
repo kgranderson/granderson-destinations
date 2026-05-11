@@ -59,7 +59,7 @@ export default function EventDetailPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
       />
       <NavBar />
-      <main className="animate-page-in">
+      <main className="animate-page-in bg-brand-cloud">
         {/* Hero */}
         <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
           {detail.image && (

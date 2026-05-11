@@ -64,7 +64,7 @@ export default function PropertyPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
       />
       <NavBar />
-      <main className="animate-page-in">
+      <main className="animate-page-in bg-brand-cloud">
         <PropertyHero property={property} />
 
         {/* Two-column overview + sticky booking widget */}
