@@ -37,10 +37,11 @@ export async function middleware(request) {
     return NextResponse.redirect(url);
   }
 
-  // Auth pages — if already signed in, bounce to dashboard.
-  if (pathname.startsWith('/auth/') && session) {
+  // Auth pages — if already signed in, bounce to /economics (admins) or home.
+  // Exclude /auth/callback so the OAuth code exchange completes.
+  if (pathname.startsWith('/auth/') && !pathname.startsWith('/auth/callback') && session) {
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
+    url.pathname = '/economics';
     return NextResponse.redirect(url);
   }
 

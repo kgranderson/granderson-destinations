@@ -10,7 +10,9 @@ import { getServerClient } from '@/lib/supabase/server';
 export async function GET(request) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
-  const next = url.searchParams.get('redirect') || '/dashboard';
+  // /dashboard isn't built yet; admins generally want /economics.
+  // The login page passes ?redirect= when it wants somewhere specific.
+  const next = url.searchParams.get('redirect') || '/economics';
 
   const supabase = getServerClient();
   if (!supabase || !code) {
