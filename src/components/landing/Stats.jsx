@@ -1,31 +1,24 @@
-import { Container } from '../shared/Container';
-import { Counter } from '../shared/Counter';
-import { Reveal } from '../shared/Reveal';
-
 const STATS = [
-  { label: 'Top-quartile ADR vs. comp set', value: 92, suffix: '%' },
-  { label: 'Repeat-guest rate', value: 38, suffix: '%' },
-  { label: 'Five-star reviews', value: 96, suffix: '%' },
-  { label: 'Markets live today', value: 2, suffix: '' },
+  { figure: '87', unit: '%', label: 'Top-quartile ADR vs. the AirDNA comp set' },
+  { figure: '42', unit: '%', label: 'Repeat-guest rate across the portfolio' },
+  { figure: '4.9', unit: '/ 5', label: 'Average across the last two hundred reviews' },
+  { figure: '2', unit: '', label: 'Markets live, three opening in 2026' },
 ];
 
 export function Stats() {
   return (
-    <section className="bg-brand-ink py-20 text-brand-cloud">
-      <Container>
-        <Reveal>
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {STATS.map((s) => (
-              <div key={s.label}>
-                <p className="display text-display-md text-brand-cloud">
-                  <Counter to={s.value} suffix={s.suffix} />
-                </p>
-                <p className="mt-3 text-sm leading-snug text-brand-cloud/70">{s.label}</p>
-              </div>
-            ))}
+    <section className="container" style={{ padding: 'var(--space-12) 0' }}>
+      <div className="stats">
+        {STATS.map((s) => (
+          <div key={s.label} className="stat">
+            <div className="figure">
+              {s.figure}
+              {s.unit && <sub>{s.unit}</sub>}
+            </div>
+            <div className="figure-label">{s.label}</div>
           </div>
-        </Reveal>
-      </Container>
+        ))}
+      </div>
     </section>
   );
 }

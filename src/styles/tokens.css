@@ -1,0 +1,293 @@
+/* ============================================================================
+   Granderson Destinations · Design Tokens
+   ============================================================================
+   The canonical source of truth for the brand.
+   Import this file before any component styles:
+
+     @import "./tokens/tokens.css";
+
+   All component styles below should reference these custom properties.
+   Never hard-code a color, font, or spacing value in a component.
+   ============================================================================ */
+
+:root {
+
+  /* --------------------------------------------------------------------------
+     PRIMITIVES — Raw values. Do not reference these directly from components.
+     Use the semantic tokens further down.
+     -------------------------------------------------------------------------- */
+
+  /* Color primitives. All tinted slightly toward the brand hue;
+     never pure #000 or #fff. */
+  --c-ink-1000: #0E1116;       /* The brand black. Matches the site theme color. */
+  --c-ink-900:  #15191F;       /* Deep ink, secondary surface */
+  --c-ink-800:  #1E232B;       /* Surface elevated */
+  --c-ink-700:  #2A3038;       /* Surface raised */
+  --c-ink-600:  #3A4049;       /* Border on dark */
+
+  --c-bone-100: #F2EAD8;       /* Warm cream, the primary light surface */
+  --c-bone-200: #E8DFC8;       /* Bone shadow */
+  --c-bone-300: #D9CFB8;       /* Bone muted */
+  --c-bone-400: #B5AC97;       /* Bone deep — for ink-on-bone secondary text */
+
+  --c-champagne-500: #C9A86A;  /* The mark color, hero accent */
+  --c-champagne-400: #D6B97E;  /* Champagne soft, hover state */
+  --c-champagne-600: #B89859;  /* Champagne deep, active state */
+  --c-champagne-700: #9D7E45;  /* Champagne shadow */
+
+  --c-terracotta-500: #B86F4A; /* San Miguel accent */
+  --c-sage-500:       #7A8B7F; /* Palm Springs cactus accent */
+
+  /* --------------------------------------------------------------------------
+     SEMANTIC COLOR TOKENS — Reference these from components.
+     They describe role, not appearance.
+     -------------------------------------------------------------------------- */
+
+  /* Surfaces */
+  --color-surface:           var(--c-ink-1000);  /* Page background */
+  --color-surface-raised:    var(--c-ink-900);   /* Cards, panels */
+  --color-surface-elevated:  var(--c-ink-800);   /* Modals, popovers */
+  --color-surface-inverse:   var(--c-bone-100);  /* Light-mode page bg */
+
+  /* Text */
+  --color-text:              var(--c-bone-100);  /* Primary copy */
+  --color-text-muted:        rgba(242, 234, 216, 0.72);
+  --color-text-quiet:        rgba(242, 234, 216, 0.48);
+  --color-text-disabled:     rgba(242, 234, 216, 0.28);
+  --color-text-inverse:      var(--c-ink-1000);  /* Text on bone */
+  --color-text-inverse-muted: rgba(14, 17, 22, 0.62);
+
+  /* Accent */
+  --color-accent:            var(--c-champagne-500);
+  --color-accent-soft:       var(--c-champagne-400);
+  --color-accent-deep:       var(--c-champagne-600);
+
+  /* Borders & rules */
+  --color-rule:              rgba(201, 168, 106, 0.18);
+  --color-rule-strong:       rgba(201, 168, 106, 0.35);
+  --color-rule-inverse:      rgba(14, 17, 22, 0.12);
+  --color-border:            rgba(242, 234, 216, 0.12);
+  --color-border-strong:     rgba(242, 234, 216, 0.24);
+
+  /* Property accents — used in section-scoped tints, never in the master mark */
+  --color-property-palm-springs: var(--c-sage-500);
+  --color-property-san-miguel:   var(--c-terracotta-500);
+
+  /* States */
+  --color-focus-ring:        var(--c-champagne-500);
+  --color-success:           #8AA77E;
+  --color-warning:           #D6B97E;
+  --color-error:             #C97C6C;
+
+  /* --------------------------------------------------------------------------
+     TYPOGRAPHY
+     -------------------------------------------------------------------------- */
+
+  /* Font families */
+  --font-display: 'Cormorant Garamond', 'Didot', 'Bodoni 72', 'Playfair Display', Georgia, serif;
+  --font-caps:    'Cormorant SC', 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* Type scale — minor third 1.2 ratio, but display gets a wider scale for drama */
+  --text-micro:    11px;   /* Eyebrow labels */
+  --text-small:    13px;   /* Captions, secondary */
+  --text-base:     15px;   /* Body */
+  --text-medium:   17px;   /* Body emphasis, lede */
+  --text-large:    20px;   /* Sub-heading */
+  --text-h6:       24px;
+  --text-h5:       28px;
+  --text-h4:       34px;
+  --text-h3:       42px;
+  --text-h2:       52px;
+  --text-h1:       72px;
+  --text-display:  96px;   /* Hero only */
+
+  /* Line heights */
+  --leading-tight:   1.1;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.8;
+
+  /* Letter spacing — designed for the didone display + tracked-caps system */
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-display: 0.04em;   /* Cormorant Garamond display */
+  --tracking-caps:    0.45em;   /* Cormorant SC labels */
+  --tracking-eyebrow: 0.62em;   /* Section eyebrows */
+
+  /* Weights */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+
+  /* --------------------------------------------------------------------------
+     SPACING — 4px base scale
+     -------------------------------------------------------------------------- */
+  --space-0:    0;
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;
+  --space-5:    20px;
+  --space-6:    24px;
+  --space-8:    32px;
+  --space-10:   40px;
+  --space-12:   48px;
+  --space-14:   56px;
+  --space-16:   64px;
+  --space-20:   80px;
+  --space-24:   96px;
+  --space-32:   128px;
+  --space-40:   160px;
+  --space-48:   192px;
+
+  /* --------------------------------------------------------------------------
+     LAYOUT
+     -------------------------------------------------------------------------- */
+  --container-narrow:  640px;
+  --container-base:    960px;
+  --container-wide:    1200px;
+  --container-full:    1440px;
+
+  --content-measure:   65ch;     /* Max body text width */
+
+  /* --------------------------------------------------------------------------
+     BORDERS & RADII — minimal, sharp; luxury reads as crisp
+     -------------------------------------------------------------------------- */
+  --radius-none:   0;
+  --radius-xs:     2px;
+  --radius-sm:     4px;
+  --radius-pill:   999px;        /* Buttons, tags only — rare */
+
+  --border-hair:   0.5px;
+  --border-thin:   1px;
+  --border-bold:   1.5px;
+
+  /* --------------------------------------------------------------------------
+     MOTION — exponential ease-out, no bounce
+     -------------------------------------------------------------------------- */
+  --duration-instant:  100ms;
+  --duration-fast:     200ms;
+  --duration-base:     320ms;
+  --duration-slow:     560ms;
+  --duration-reveal:   800ms;
+
+  --ease-out-quart:    cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --------------------------------------------------------------------------
+     ELEVATION — used sparingly; we mostly compose with hairlines, not shadow
+     -------------------------------------------------------------------------- */
+  --shadow-none:    none;
+  --shadow-1:       0 1px 2px rgba(0,0,0,0.04), 0 1px 1px rgba(0,0,0,0.06);
+  --shadow-2:       0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.10);
+  --shadow-3:       0 12px 32px rgba(0,0,0,0.16), 0 4px 8px rgba(0,0,0,0.12);
+
+  /* --------------------------------------------------------------------------
+     Z-INDEX
+     -------------------------------------------------------------------------- */
+  --z-base:      0;
+  --z-raised:    10;
+  --z-nav:       100;
+  --z-overlay:   1000;
+  --z-modal:     1100;
+  --z-toast:     1200;
+}
+
+/* ============================================================================
+   BASE RESET — minimal, opinionated
+   ============================================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-relaxed);
+}
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+button { font: inherit; cursor: pointer; }
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+/* ============================================================================
+   UTILITY CLASSES — semantic, named for intent
+   ============================================================================ */
+
+/* Containers */
+.container          { width: 100%; max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--space-6); }
+.container-narrow   { width: 100%; max-width: var(--container-narrow); margin: 0 auto; padding: 0 var(--space-6); }
+.container-base     { width: 100%; max-width: var(--container-base); margin: 0 auto; padding: 0 var(--space-6); }
+
+/* Surface variants */
+.surface-ink        { background: var(--color-surface); color: var(--color-text); }
+.surface-bone       { background: var(--color-surface-inverse); color: var(--color-text-inverse); }
+
+/* Typography utilities */
+.eyebrow {
+  font-family: var(--font-caps);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-eyebrow);
+  text-indent: var(--tracking-eyebrow);
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.caps {
+  font-family: var(--font-caps);
+  letter-spacing: var(--tracking-caps);
+  text-indent: var(--tracking-caps);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-tight);
+}
+
+.italic-quiet {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--weight-light);
+  color: var(--color-text-muted);
+}
+
+/* Rules */
+.rule-hair { border: none; border-top: var(--border-hair) solid var(--color-rule); margin: 0; }
+.rule-thin { border: none; border-top: var(--border-thin) solid var(--color-rule); margin: 0; }
+.rule-vertical { border: none; border-left: var(--border-thin) solid var(--color-rule); }
+
+/* Diamond ornament — used between display and subtitle */
+.diamond {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--color-accent);
+  transform: rotate(45deg);
+  vertical-align: middle;
+}

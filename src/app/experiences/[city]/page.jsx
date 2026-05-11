@@ -81,7 +81,7 @@ export default async function ExperiencesPage({ params }) {
               <div className="rounded-3xl bg-brand-ink p-10 text-brand-cloud sm:p-14">
                 <p className="text-xs uppercase tracking-[0.32em] text-brand-cloud/70">Stay nearby</p>
                 <h2 className="display mt-3 max-w-2xl text-display-md text-brand-cloud">
-                  All of this is a short drive — or in {m.label}, a short walk — from {property.name}.
+                  All of this is a short drive, or in {m.label} a short walk, from {property.name}.
                 </h2>
                 <Link
                   href={`/destinations/${property.slug}`}

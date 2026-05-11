@@ -11,17 +11,16 @@ export default function HomePage() {
   return (
     <>
       <NavBar />
-      <main className="animate-page-in">
+      <main>
         <LandingHero />
         <Marquee
           items={[
             'Palm Springs',
             'San Miguel de Allende',
-            'Coming soon · Jamaica',
-            'Coming soon · Tulum',
-            'Coming soon · Joshua Tree',
+            'Coming · Jamaica',
+            'Coming · Tulum',
+            'Coming · Joshua Tree',
           ]}
-          dim
         />
         <PropertyShowcase />
         <FeatureGrid />

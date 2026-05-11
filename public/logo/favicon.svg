@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="64" height="64">
+  <rect width="320" height="320" fill="#0E1116"/>
+  <defs>
+    <clipPath id="a">
+      <path d="M 80 245 L 80 155 A 80 80 0 0 1 240 155 L 240 245 Z"/>
+    </clipPath>
+  </defs>
+  <path d="M 80 245 L 80 155 A 80 80 0 0 1 240 155 L 240 245" stroke="#C9A86A" stroke-width="3" fill="none"/>
+  <g clip-path="url(#a)">
+    <line x1="76" y1="170" x2="244" y2="170" stroke="#C9A86A" stroke-width="2"/>
+    <path d="M 132 170 A 28 28 0 0 1 188 170 Z" fill="#C9A86A"/>
+  </g>
+  <polygon points="160,90 165,95 160,100 155,95" fill="#C9A86A"/>
+</svg>

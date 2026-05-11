@@ -10,7 +10,7 @@ export const revalidate = 3600;
 export const metadata = {
   title: 'Events that move our markets',
   description:
-    'Coachella, Stagecoach, Indian Wells, Modernism Week, Festival Cervantino, Día de Muertos and more — image-rich event guide with property-level revenue impact.',
+    'Coachella, Stagecoach, Indian Wells, Modernism Week, Festival Cervantino, Día de Muertos and more. Image-rich event guide with property-level revenue impact.',
 };
 
 export default function EventsPage() {
@@ -38,7 +38,7 @@ export default function EventsPage() {
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-cloud/85 sm:text-lg">
               Coachella, Stagecoach, BNP Paribas Open, Modernism Week, Festival Cervantino, Día de Muertos, San
-              Miguel Jazz Festival — every property in our portfolio is priced and operated around these windows.
+              Miguel Jazz Festival. Every property in our portfolio is priced and operated around these windows.
               Click any event for the playbook + the revenue model.
             </p>
           </Container>

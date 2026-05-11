@@ -8,7 +8,7 @@ import { PROPERTIES } from '@/lib/constants';
 
 export const metadata = {
   title: 'Destinations',
-  description: 'The private portfolio of Granderson Destinations — luxury homes in Palm Springs and San Miguel de Allende.',
+  description: 'The private portfolio of Granderson Destinations. Homes in Palm Springs and San Miguel de Allende.',
 };
 
 export default function DestinationsIndex() {

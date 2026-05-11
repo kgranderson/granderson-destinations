@@ -55,7 +55,8 @@ export const PROPERTIES = [
     country: 'USA',
     accent: 'terracotta',
     coverImage: '/properties/palm-springs/hero.jpg',
-    tagline: 'Midcentury modern, mountain-backed, magazine-ready.',
+    tagline:
+      'Midcentury modern, mountain-backed, magazine-ready. Three bedrooms. Walled garden. The sun rises over the Santa Rosas at six.',
     description:
       'A faithfully restored midcentury home tucked against the San Jacinto mountains, ten minutes from the Coachella Valley\'s best tables and a short drive to Indian Wells, Coachella, and Stagecoach. Three bedrooms, a sun-drenched pool deck, a chef\'s kitchen, and an outdoor living room built for slow mornings and longer evenings.',
     bedrooms: 3,
@@ -63,6 +64,7 @@ export const PROPERTIES = [
     sleeps: 8,
     sizeSqft: 2400,
     baseAdrUsd: 720,
+    fromRateUsd: 1850,
     lat: 33.8303,
     lng: -116.5453,
     addressLine: 'Indian Canyons neighborhood, Palm Springs, CA',
@@ -81,7 +83,7 @@ export const PROPERTIES = [
       },
       {
         title: 'Architect-restored midcentury',
-        body: 'Original 1962 lines, modernized mechanicals, with quiet luxury throughout — the Modernism Week guests notice.',
+        body: 'Original 1962 lines, modernized mechanicals, quiet luxury throughout. The Modernism Week guests notice.',
         image: '/properties/palm-springs/palm-springs-50.jpg',
       },
     ],
@@ -186,7 +188,8 @@ export const PROPERTIES = [
     country: 'Mexico',
     accent: 'jade',
     coverImage: '/properties/san-miguel-de-allende/hero.jpg',
-    tagline: 'A colonial courtyard estate in Mexico\'s most beautiful city.',
+    tagline:
+      'A colonial courtyard estate in Mexico\'s most beautiful city. Four suites. Rooftop terraza. Walking distance to the Parroquia.',
     description:
       'A walled colonial estate three blocks from the Jardín, set around a tiled courtyard with a fountain. Rooftop terrace with full views of the Parroquia, hand-painted Talavera throughout, and a kitchen built for the long, slow lunches that make San Miguel itself.',
     bedrooms: 4,
@@ -194,6 +197,7 @@ export const PROPERTIES = [
     sleeps: 8,
     sizeSqft: 3200,
     baseAdrUsd: 410,
+    fromRateUsd: 1250,
     lat: 20.9143,
     lng: -100.7448,
     addressLine: 'Centro Histórico, San Miguel de Allende, Gto.',

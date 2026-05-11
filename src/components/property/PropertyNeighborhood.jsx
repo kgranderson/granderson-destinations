@@ -32,7 +32,7 @@ export function PropertyNeighborhood({ property }) {
                 Where you actually are.
               </h2>
               <p className="mt-4 text-brand-slate">
-                Driving times from the front door — accurate within a few minutes off-peak. Concierge handles
+                Driving times from the front door, accurate within a few minutes off-peak. Concierge handles
                 airport transfers, restaurant bookings, and event-day logistics.
               </p>
               <ul className="mt-8 space-y-4">

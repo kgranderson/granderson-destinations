@@ -1,53 +1,31 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { Container } from '../shared/Container';
-import { MagneticButton } from '../shared/MagneticButton';
+import Image from 'next/image';
 
 export function LandingHero() {
   return (
-    <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <Image
-          src="/properties/palm-springs/hero.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        {/* Darkening overlay so the display headline + body copy stay readable */}
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-ink/85 via-brand-ink/55 to-brand-ink/85" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-ink to-transparent" />
-      </div>
-
-      <Container className="relative flex min-h-[88vh] flex-col justify-end pb-24 pt-40 lg:min-h-[92vh]">
-        <p className="text-xs uppercase tracking-[0.32em] text-brand-cloud/80">A private portfolio</p>
-        <h1 className="display mt-5 max-w-4xl text-display-xl text-brand-cloud">
-          Curated luxury stays in the world&rsquo;s most magnetic destinations.
-        </h1>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-cloud/90 sm:text-lg">
-          A handpicked collection of design-forward homes — operated to institutional standards,
+    <section className="hero">
+      <Image
+        src="/properties/palm-springs/hero.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="hero-image"
+      />
+      <div className="hero-overlay" aria-hidden />
+      <div>
+        <div className="eyebrow">A Private Portfolio · MMXXVI</div>
+        <h1>Curated luxury stays in the world&rsquo;s most magnetic destinations.</h1>
+        <p className="lede">
+          A handpicked collection of design-forward homes, operated to institutional standards,
           priced dynamically, and concierged with care. Starting with Palm Springs and San Miguel
           de Allende, opening into the rest of the portfolio.
         </p>
-
-        <div className="mt-10 flex flex-wrap gap-4">
-          <MagneticButton
-            as={Link}
-            href="/destinations"
-            className="bg-brand-cloud px-8 py-4 text-sm font-medium text-brand-ink hover:bg-brand-tan"
-          >
-            Explore destinations
-          </MagneticButton>
-          <MagneticButton
-            as={Link}
-            href="/events"
-            className="border border-brand-cloud/40 px-8 py-4 text-sm font-medium text-brand-cloud hover:bg-brand-cloud/10"
-          >
-            Plan around events
-          </MagneticButton>
+        <div className="ctas">
+          <Link href="/destinations" className="btn btn-primary btn-large">Explore destinations</Link>
+          <Link href="/events" className="btn btn-secondary btn-large">Plan around events</Link>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

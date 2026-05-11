@@ -8,7 +8,7 @@ import { MARKETS } from '@/lib/constants';
 export const metadata = {
   title: 'Market intel',
   description:
-    'Upcoming developments — city council, entitlement filings, festival programming, hotel openings — that move ADR and occupancy in our markets.',
+    'Upcoming developments across city council, entitlement filings, festival programming, and hotel openings that move ADR and occupancy in our markets.',
 };
 
 // Refresh server-side at most once an hour. Cron also refreshes weekly via /api/intel/refresh.
@@ -35,7 +35,7 @@ export default async function IntelPage() {
               What&rsquo;s coming. What it means.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-cloud/85 sm:text-lg">
-              City-council agendas, entitlement filings, festival programming, hotel openings —
+              City-council agendas, entitlement filings, festival programming, hotel openings.
               everything we think is going to move the dial in our markets over the next twelve months.
               Refreshed weekly via Perplexity Sonar.
             </p>
