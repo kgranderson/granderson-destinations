@@ -179,6 +179,17 @@ export function ReportForm({ defaultProperty, reportedBy }) {
 
       {error && <div className="rounded-md bg-rose-50 px-4 py-3 text-sm text-rose-800">{error}</div>}
 
+      <p className="text-xs text-brand-slate/80 leading-relaxed">
+        By submitting this report, you authorize Granderson Destinations to share the
+        details with a matched maintenance vendor and to send you transactional email
+        status updates about the repair. Vendors receive SMS dispatch under a separate
+        signed agreement; message and data rates may apply to them. We do not send
+        marketing messages. Reply <strong>STOP</strong> to any SMS to opt out, reply{' '}
+        <strong>HELP</strong> for assistance. See our{' '}
+        <Link href="/legal/terms" className="underline">Terms</Link>{' '}and{' '}
+        <Link href="/legal/privacy" className="underline">Privacy Policy</Link>.
+      </p>
+
       <div className="flex items-center gap-3">
         <button
           type="submit"
