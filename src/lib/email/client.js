@@ -94,6 +94,7 @@ export function buildVendorDispatchEmail({
   ticketId,
   statusUrl,
   clickupUrl,
+  vendorPortalUrl,
 }) {
   const propertyName = property?.name || 'Property';
   const propertyCity = property?.city || '';
@@ -117,7 +118,9 @@ export function buildVendorDispatchEmail({
     reporterName ? `Reported by: ${reporterName}` : null,
     reporterEmail ? `Contact: ${reporterEmail}` : null,
     ticketId ? `Ticket ID: ${ticketId}` : null,
-    statusUrl ? `Status link: ${statusUrl}` : null,
+    vendorPortalUrl ? `Update status here (vendor portal): ${vendorPortalUrl}` : null,
+    vendorPortalUrl ? '⚠️  Do not forward this email — the vendor-portal link above is the only credential for this ticket.' : null,
+    statusUrl ? `Status link (guest view): ${statusUrl}` : null,
     clickupUrl ? `ClickUp task: ${clickupUrl}` : null,
     reason ? '' : null,
     reason ? `Why we routed this to you: ${reason}` : null,
@@ -150,9 +153,10 @@ export function buildVendorDispatchEmail({
 
         ${reason ? `<p style="margin:14px 0 0 0;font-size:12px;font-style:italic;color:#5E7C6B;line-height:1.5;">Why we routed this to you: ${escapeHtml(reason)}</p>` : ''}
 
-        <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;">
-          ${clickupUrl ? `<a href="${clickupUrl}" style="display:inline-block;background:#0E1116;color:#FAFAF7;padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;">Open ClickUp task</a>` : ''}
-          ${statusUrl ? `<a href="${statusUrl}" style="display:inline-block;border:1px solid #0E1116;color:#0E1116;padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;">Status page</a>` : ''}
+        ${vendorPortalUrl ? `<p style="margin:18px 0 6px 0;font-size:12px;color:#854F0B;padding:8px 12px;background:#FAEEDA;border-radius:8px;line-height:1.5;"><strong>Do not forward this email.</strong> The vendor-portal link below is the only credential for this ticket — anyone with the URL can update its status. If you want to delegate, log in first and reply STOP, or contact the owner.</p>` : ''}
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+          ${vendorPortalUrl ? `<a href="${vendorPortalUrl}" style="display:inline-block;background:#0E1116;color:#FAFAF7;padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;">Update status &amp; submit estimate</a>` : ''}
+          ${clickupUrl ? `<a href="${clickupUrl}" style="display:inline-block;border:1px solid #0E1116;color:#0E1116;padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;">Open ClickUp task</a>` : ''}
         </div>
 
         <hr style="border:none;border-top:1px solid #E8DCC6;margin:24px 0 16px 0;" />

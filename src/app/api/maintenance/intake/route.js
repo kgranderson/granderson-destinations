@@ -5,6 +5,7 @@ import { triageMaintenance } from '@/lib/ai/triage';
 import { createTask } from '@/lib/clickup/client';
 import { sendSms } from '@/lib/twilio/client';
 import { sendEmail, buildVendorDispatchEmail } from '@/lib/email/client';
+import { generateVendorToken, appendHistory } from '@/lib/maintenance/status';
 import { PROPERTIES, clickupListIdForProperty, MAINTENANCE_VENDORS_SEED, BRAND } from '@/lib/constants';
 
 /**
@@ -105,13 +106,25 @@ export async function POST(request) {
 
   // Insert ticket row (skip if Supabase isn't configured; we still continue
   // so the operator at least sees a ClickUp task + SMS).
+  // We pre-generate a vendor_token so the dispatch email can include the
+  // vendor portal URL on first send (no follow-up update round-trip).
+  const vendorToken = generateVendorToken();
+  // If triage already matched a vendor, we open + auto-advance to 'assigned'
+  // in a single insert so the timeline reflects the dispatch without a
+  // round-trip update.
+  const initialStatus = triage.matchedVendorId ? 'assigned' : 'open';
+  const reporter = reportedBy === 'owner' ? 'owner' : 'guest';
+  let initialHistory = appendHistory([], 'open', reporter);
+  if (initialStatus === 'assigned') {
+    initialHistory = appendHistory(initialHistory, 'assigned', 'system');
+  }
   let ticket = null;
   if (supabase && propertyRowId) {
     const ins = {
       property_id: propertyRowId,
       title: triage.title,
       description,
-      status: 'open',
+      status: initialStatus,
       priority: triage.priority || 'normal',
       severity: triage.severity || null,
       category: triage.category || null,
@@ -120,6 +133,8 @@ export async function POST(request) {
       reported_by: reportedBy,
       photos,
       triage_meta: triage,
+      vendor_token: vendorToken,
+      status_history: initialHistory,
     };
     const { data, error } = await supabase
       .from('maintenance_requests').insert(ins).select().single();
@@ -162,6 +177,7 @@ export async function POST(request) {
       ticketId: ticket?.id || null,
       statusUrl: ticket?.id ? `${siteUrl}/maintenance/status/${ticket.id}` : null,
       clickupUrl: clickup.url || null,
+      vendorPortalUrl: ticket ? `${siteUrl}/maintenance/vendor/${vendorToken}` : null,
     });
     email = await sendEmail({
       to: matched.email,

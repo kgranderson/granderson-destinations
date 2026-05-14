@@ -393,7 +393,20 @@ alter table public.maintenance_requests
   add column if not exists vendor_sms_sid text,
   add column if not exists vendor_sms_sent_at timestamptz,
   add column if not exists vendor_email_id text,
-  add column if not exists vendor_email_sent_at timestamptz;
+  add column if not exists vendor_email_sent_at timestamptz,
+  add column if not exists vendor_token text unique,        -- URL-safe random token used for vendor-portal auth
+  add column if not exists vendor_notes text,                -- free-form notes from the vendor in their portal
+  add column if not exists owner_notes text,                 -- private notes from the owner, visible only on /maintenance/admin
+  add column if not exists cost_estimate_cents bigint,       -- vendor-submitted estimate (cents — bigint to avoid 2.1M overflow on big repairs)
+  add column if not exists cost_final_cents bigint,          -- final cost after work complete
+  add column if not exists status_history jsonb default '[]'::jsonb,  -- append-only log: [{status, at, by}]
+  add column if not exists eta_at timestamptz;               -- vendor-promised time of arrival/completion
+
+create index if not exists idx_maintenance_requests_vendor_token
+  on public.maintenance_requests(vendor_token) where vendor_token is not null;
+
+create index if not exists idx_maintenance_requests_status_created
+  on public.maintenance_requests(status, created_at desc);
 
 -- Allow the public intake route to insert (server uses service role; this is
 -- just a safety net so a properly-shaped client insert would also be blocked
