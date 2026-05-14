@@ -349,3 +349,55 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- =============================================================
+-- maintenance_vendors — vendor roster used for triage matching + SMS
+-- =============================================================
+create table if not exists public.maintenance_vendors (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  phone text,                                  -- E.164 format e.g. +17605551234
+  email text,
+  specialties text[] default '{}'::text[],     -- ['HVAC','Plumbing']
+  markets text[] default '{}'::text[],         -- ['palm-springs','san-miguel-de-allende']
+  notes text,
+  active boolean default true,
+  last_used_at timestamptz,
+  performance_score numeric,                   -- 0-100 — populated by analytics later
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists vendor_active_idx on public.maintenance_vendors(active);
+create index if not exists vendor_specialty_idx on public.maintenance_vendors using gin (specialties);
+
+alter table public.maintenance_vendors enable row level security;
+create policy "vendor_admin_all"
+  on public.maintenance_vendors for all
+  using (exists (select 1 from public.profiles p
+                 where p.id = auth.uid() and p.tier = 'admin'))
+  with check (exists (select 1 from public.profiles p
+                      where p.id = auth.uid() and p.tier = 'admin'));
+
+-- =============================================================
+-- maintenance_requests — additional columns for the triage pipeline
+-- =============================================================
+alter table public.maintenance_requests
+  add column if not exists severity int check (severity between 1 and 5),
+  add column if not exists vendor_id uuid references public.maintenance_vendors(id) on delete set null,
+  add column if not exists triage_meta jsonb,           -- full Claude triage output
+  add column if not exists photos text[] default '{}'::text[],
+  add column if not exists reported_by text default 'guest' check (
+    reported_by in ('guest','manager','owner','vendor')
+  ),
+  add column if not exists vendor_sms_sid text,
+  add column if not exists vendor_sms_sent_at timestamptz,
+  add column if not exists vendor_email_id text,
+  add column if not exists vendor_email_sent_at timestamptz;
+
+-- Allow the public intake route to insert (server uses service role; this is
+-- just a safety net so a properly-shaped client insert would also be blocked
+-- without the service role.)
+create policy if not exists "maint_public_insert_via_service_role"
+  on public.maintenance_requests for insert
+  with check (false);

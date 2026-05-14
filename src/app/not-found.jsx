@@ -18,7 +18,7 @@ export default function NotFound() {
             <Link href="/destinations" className="rounded-full bg-brand-ink px-6 py-3 text-sm text-brand-cloud">
               Destinations
             </Link>
-            <Link href="/events" className="rounded-full border border-brand-ink px-6 py-3 text-sm">
+            <Link href="/events" className="rounded-full border border-brand-ink px-6 py-3 text-sm text-brand-ink">
               Events
             </Link>
           </div>

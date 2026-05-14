@@ -31,6 +31,7 @@ export function Footer() {
           <ul>
             <li><a href={`mailto:${BRAND.bookingEmail}`}>{BRAND.bookingEmail}</a></li>
             <li><a href={`https://instagram.com/${BRAND.instagram}`}>@{BRAND.instagram}</a></li>
+            <li><Link href="/maintenance/report">Report a maintenance issue</Link></li>
           </ul>
         </div>
       </div>

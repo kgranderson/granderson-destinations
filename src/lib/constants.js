@@ -328,6 +328,14 @@ export const FEATURE_FLAGS = {
   googlePlacesLive: () => !!process.env.GOOGLE_PLACES_API_KEY,
   stripeLive: () => !!process.env.STRIPE_SECRET_KEY,
   anthropicLive: () => !!process.env.ANTHROPIC_API_KEY,
+  clickupLive: () => !!process.env.CLICKUP_API_TOKEN,
+  twilioLive: () => !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN),
+  gmailLive: () => !!(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD),
+  // When true, the maintenance pipeline relies on email for vendor dispatch
+  // (interim fix while Twilio A2P 10DLC registration is pending). Twilio SMS
+  // still attempts and the result is surfaced — but email is the primary
+  // notification channel. Flip to false once 10DLC is approved + assigned.
+  emailFallbackPrimary: () => process.env.EMAIL_FALLBACK_PRIMARY !== 'false',
 };
 
 // =============================================================
@@ -504,6 +512,90 @@ export const MARKETS = {
     googlePlaceId: 'ChIJZcCN2WLRKoQRk4S3sZ_FXLs',
   },
 };
+
+// =============================================================
+// Maintenance
+// =============================================================
+// Categories — matches `category` text field on maintenance_requests in
+// Supabase and the ClickUp custom field "Category".
+export const MAINTENANCE_CATEGORIES = [
+  'HVAC',
+  'Plumbing',
+  'Electrical',
+  'Appliance',
+  'Pool',
+  'Landscape',
+  'Cleaning',
+  'Security',
+  'Pest',
+  'Other',
+];
+
+// Severity → priority mapping (priority is the DB column; severity is on ClickUp)
+export const SEVERITY_LABELS = {
+  1: 'Emergency',
+  2: 'Urgent — same day',
+  3: 'Normal — within 48h',
+  4: 'Routine — within 7d',
+  5: 'Cosmetic — bundle next turn',
+};
+
+// Per-property ClickUp routing. Replace `listId` values once you create the
+// "Maintenance" list under each property folder in ClickUp. Until then, both
+// fall back to CLICKUP_DEFAULT_LIST_ID from env.
+export const CLICKUP_ROUTES = {
+  'palm-springs': {
+    listIdEnv: 'CLICKUP_LIST_PALM_SPRINGS',
+  },
+  'san-miguel-de-allende': {
+    listIdEnv: 'CLICKUP_LIST_SAN_MIGUEL',
+  },
+};
+
+// Resolves a property slug to its ClickUp list id at runtime so env-var-only
+// configuration works (no code change needed when you create the lists).
+export function clickupListIdForProperty(slug) {
+  const route = CLICKUP_ROUTES[slug];
+  if (route?.listIdEnv && process.env[route.listIdEnv]) return process.env[route.listIdEnv];
+  return process.env.CLICKUP_DEFAULT_LIST_ID || null;
+}
+
+// =============================================================
+// Maintenance vendor roster — fallback seed
+// =============================================================
+// Used by the intake route when Supabase is not yet configured OR returns
+// no rows from public.maintenance_vendors. Replace these with your real
+// vendor list as you build it out, or migrate to the DB-backed roster.
+//
+// Phone numbers must be E.164 format: +1XXXXXXXXXX (no spaces or dashes).
+// Specialties should match the MAINTENANCE_CATEGORIES set so triage match works.
+// Markets is the list of property slugs this vendor serves.
+export const MAINTENANCE_VENDORS_SEED = [
+  // Self-test entry — receives the SMS for any maintenance report in either
+  // market, every category. Replace / supplement with real vendors below.
+  {
+    id: 'kwame-self-test',
+    name: 'Kwame Granderson',
+    phone: '+13107294453',
+    // Resolves at module load to OWNER_NOTIFY_EMAIL (your actual inbox) first,
+    // so test dispatches reach you immediately. Falls back to the brand alias
+    // if the env var isn't set — useful in local dev and CI.
+    email: process.env.OWNER_NOTIFY_EMAIL || BRAND.contactEmail,
+    specialties: ['HVAC', 'Plumbing', 'Electrical', 'Appliance', 'Pool', 'Landscape', 'Cleaning', 'Security', 'Pest', 'Other'],
+    markets: ['palm-springs', 'san-miguel-de-allende'],
+    notes: 'Owner / self-test — receives all categories during pipeline validation.',
+  },
+  // Add real vendors below as you onboard them:
+  // {
+  //   id: 'carlos-m',
+  //   name: 'Carlos M.',
+  //   phone: '+17605552201',
+  //   email: 'carlos@example.com',
+  //   specialties: ['HVAC', 'Pool'],
+  //   markets: ['palm-springs'],
+  //   notes: 'Same-day, English+Spanish, after-hours OK',
+  // },
+];
 
 // =============================================================
 // Page metadata helpers
