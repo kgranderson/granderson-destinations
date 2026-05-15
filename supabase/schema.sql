@@ -28,10 +28,12 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+drop policy if exists "profiles_self_read" on public.profiles;
 create policy "profiles_self_read"
   on public.profiles for select
   using (auth.uid() = id);
 
+drop policy if exists "profiles_self_update" on public.profiles;
 create policy "profiles_self_update"
   on public.profiles for update
   using (auth.uid() = id);
@@ -137,6 +139,7 @@ create index if not exists properties_slug_idx on public.properties(slug);
 
 -- Public read of active properties.
 alter table public.properties enable row level security;
+drop policy if exists "properties_public_read" on public.properties;
 create policy "properties_public_read"
   on public.properties for select
   using (is_active = true);
@@ -167,12 +170,15 @@ create index if not exists bookings_property_idx on public.bookings(property_id)
 create index if not exists bookings_date_idx on public.bookings(start_date, end_date);
 
 alter table public.bookings enable row level security;
+drop policy if exists "bookings_self_read" on public.bookings;
 create policy "bookings_self_read"
   on public.bookings for select
   using (auth.uid() = user_id);
+drop policy if exists "bookings_self_insert" on public.bookings;
 create policy "bookings_self_insert"
   on public.bookings for insert
   with check (auth.uid() = user_id);
+drop policy if exists "bookings_self_update" on public.bookings;
 create policy "bookings_self_update"
   on public.bookings for update
   using (auth.uid() = user_id and status in ('pending'));
@@ -208,6 +214,7 @@ create table if not exists public.intel_items (
 create index if not exists intel_market_idx on public.intel_items(market);
 
 alter table public.intel_items enable row level security;
+drop policy if exists "intel_public_read" on public.intel_items;
 create policy "intel_public_read" on public.intel_items for select using (true);
 
 -- =============================================================
@@ -237,6 +244,7 @@ create table if not exists public.hotspots (
 create index if not exists hotspots_market_idx on public.hotspots(market);
 
 alter table public.hotspots enable row level security;
+drop policy if exists "hotspots_public_read" on public.hotspots;
 create policy "hotspots_public_read" on public.hotspots for select using (true);
 
 -- =============================================================
@@ -258,6 +266,7 @@ create table if not exists public.anchor_events (
 
 create index if not exists anchor_events_market_idx on public.anchor_events(market);
 alter table public.anchor_events enable row level security;
+drop policy if exists "events_public_read" on public.anchor_events;
 create policy "events_public_read" on public.anchor_events for select using (true);
 
 -- =============================================================
@@ -278,10 +287,12 @@ create index if not exists fin_property_month_idx
   on public.monthly_financials(property_id, month);
 
 alter table public.monthly_financials enable row level security;
+drop policy if exists "fin_admin_only_read" on public.monthly_financials;
 create policy "fin_admin_only_read"
   on public.monthly_financials for select
   using (exists (select 1 from public.profiles p
                  where p.id = auth.uid() and p.tier = 'admin'));
+drop policy if exists "fin_admin_only_write" on public.monthly_financials;
 create policy "fin_admin_only_write"
   on public.monthly_financials for all
   using (exists (select 1 from public.profiles p
@@ -310,6 +321,7 @@ create table if not exists public.ig_posts (
 create index if not exists ig_property_idx on public.ig_posts(property_id, scheduled_at);
 
 alter table public.ig_posts enable row level security;
+drop policy if exists "ig_admin_only" on public.ig_posts;
 create policy "ig_admin_only"
   on public.ig_posts for select
   using (exists (select 1 from public.profiles p
@@ -334,10 +346,12 @@ create unique index if not exists occupancy_property_month_idx
   on public.occupancy_records(property_id, month);
 
 alter table public.occupancy_records enable row level security;
+drop policy if exists "occupancy_admin_read" on public.occupancy_records;
 create policy "occupancy_admin_read"
   on public.occupancy_records for select
   using (exists (select 1 from public.profiles p
                  where p.id = auth.uid() and p.tier = 'admin'));
+drop policy if exists "occupancy_admin_write" on public.occupancy_records;
 create policy "occupancy_admin_write"
   on public.occupancy_records for all
   using (exists (select 1 from public.profiles p
@@ -385,10 +399,12 @@ create index if not exists maint_property_idx on public.maintenance_requests(pro
 create index if not exists maint_status_idx on public.maintenance_requests(status, priority);
 
 alter table public.maintenance_requests enable row level security;
+drop policy if exists "maint_admin_read" on public.maintenance_requests;
 create policy "maint_admin_read"
   on public.maintenance_requests for select
   using (exists (select 1 from public.profiles p
                  where p.id = auth.uid() and p.tier = 'admin'));
+drop policy if exists "maint_admin_write" on public.maintenance_requests;
 create policy "maint_admin_write"
   on public.maintenance_requests for all
   using (exists (select 1 from public.profiles p
@@ -440,6 +456,7 @@ create index if not exists vendor_active_idx on public.maintenance_vendors(activ
 create index if not exists vendor_specialty_idx on public.maintenance_vendors using gin (specialties);
 
 alter table public.maintenance_vendors enable row level security;
+drop policy if exists "vendor_admin_all" on public.maintenance_vendors;
 create policy "vendor_admin_all"
   on public.maintenance_vendors for all
   using (exists (select 1 from public.profiles p
@@ -479,6 +496,9 @@ create index if not exists idx_maintenance_requests_status_created
 -- Allow the public intake route to insert (server uses service role; this is
 -- just a safety net so a properly-shaped client insert would also be blocked
 -- without the service role.)
-create policy if not exists "maint_public_insert_via_service_role"
+-- NOTE: Postgres doesn't support `CREATE POLICY IF NOT EXISTS` — even in PG 15+
+-- policies aren't on the IF NOT EXISTS allow-list. Use drop-then-create instead.
+drop policy if exists "maint_public_insert_via_service_role" on public.maintenance_requests;
+create policy "maint_public_insert_via_service_role"
   on public.maintenance_requests for insert
   with check (false);
