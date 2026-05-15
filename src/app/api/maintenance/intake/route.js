@@ -109,6 +109,12 @@ export async function POST(request) {
   // We pre-generate a vendor_token so the dispatch email can include the
   // vendor portal URL on first send (no follow-up update round-trip).
   const vendorToken = generateVendorToken();
+  // `vendor_id` is a UUID column with FK to maintenance_vendors. Triage may
+  // return either a real DB UUID OR a seed string id like 'kwame-self-test'.
+  // Only persist when it's UUID-shaped — otherwise leave null (the vendor
+  // info still flows through triage_meta.matchedVendorId for reporting).
+  const UUID_RX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const dbVendorId = UUID_RX.test(triage.matchedVendorId || '') ? triage.matchedVendorId : null;
   // If triage already matched a vendor, we open + auto-advance to 'assigned'
   // in a single insert so the timeline reflects the dispatch without a
   // round-trip update.
@@ -129,7 +135,7 @@ export async function POST(request) {
       severity: triage.severity || null,
       category: triage.category || null,
       reporter_email: reporterEmail || null,
-      vendor_id: triage.matchedVendorId || null,
+      vendor_id: dbVendorId,
       reported_by: reportedBy,
       photos,
       triage_meta: triage,
@@ -138,7 +144,21 @@ export async function POST(request) {
     };
     const { data, error } = await supabase
       .from('maintenance_requests').insert(ins).select().single();
-    if (!error) ticket = data;
+    if (error) {
+      // Surface to Vercel function logs so the silent-fail-and-keep-going
+      // pattern below doesn't hide schema mismatches like the Phase 2 status
+      // CHECK constraint regression we just fixed. The route still returns
+      // 200 with ticket=null so the user sees a degraded-but-functional flow.
+      // eslint-disable-next-line no-console
+      console.error('[intake] maintenance_requests insert failed:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+    } else {
+      ticket = data;
+    }
   }
 
   // Create ClickUp task.

@@ -293,8 +293,16 @@ create table if not exists public.maintenance_requests (
   property_id uuid references public.properties(id) on delete cascade,
   title text not null,
   description text,
+  -- Phase 2 expanded the status state machine. Keep the legacy values
+  -- (scheduled / completed / cancelled) accepted for backwards compatibility,
+  -- and add the new ones the dispatch pipeline writes (assigned, awaiting_owner,
+  -- diagnosed, complete, closed). See src/lib/maintenance/status.js for the
+  -- canonical list and transitions.
   status text default 'open' check (
-    status in ('open', 'in_progress', 'scheduled', 'completed', 'cancelled')
+    status in (
+      'open','assigned','in_progress','scheduled','awaiting_owner',
+      'diagnosed','complete','completed','closed','cancelled'
+    )
   ),
   priority text default 'normal' check (
     priority in ('low', 'normal', 'high', 'urgent')
