@@ -3,7 +3,7 @@ import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { listAllTickets, summarizeTickets } from '@/lib/maintenance/queries';
-import { isOwner, setOwnerCookie } from '@/lib/maintenance/owner-auth';
+import { isOwner } from '@/lib/maintenance/owner-auth';
 import { AdminBoard } from './AdminBoard';
 
 export const metadata = {
@@ -15,19 +15,18 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminPage({ searchParams }) {
   const sp = searchParams instanceof Promise ? await searchParams : searchParams;
-  const providedKey = sp?.key;
-  const auth = await isOwner({ providedKey });
 
+  // If the owner arrived with ?key=..., forward them to the auth Route Handler
+  // which is allowed to mutate cookies (RSCs can't). The handler will set the
+  // httpOnly cookie and redirect back here without the secret in the URL.
+  if (sp?.key) {
+    redirect(`/api/maintenance/admin/auth?key=${encodeURIComponent(sp.key)}`);
+  }
+
+  const auth = await isOwner();
   if (!auth.authed) {
     // Hard fail to a 404 so the page doesn't reveal its existence.
     notFound();
-  }
-
-  // Persist the cookie if the owner just landed with ?key=..., then
-  // redirect to drop the secret out of the URL (referrer / history hygiene).
-  if (auth.freshKey) {
-    await setOwnerCookie(auth.freshKey);
-    redirect('/maintenance/admin');
   }
 
   const tickets = await listAllTickets({ limit: 500 });
