@@ -1,30 +1,34 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
-import { EventCard } from '@/components/events/EventCard';
 import { ANCHOR_EVENTS_SEED, MARKETS, PROPERTIES } from '@/lib/constants';
-import { EVENT_DETAILS } from '@/lib/events/data';
 
 export const revalidate = 3600;
 
 export const metadata = {
-  title: 'Events that move our markets',
+  title: 'Events',
   description:
-    'Coachella, Stagecoach, Indian Wells, Modernism Week, Festival Cervantino, Día de Muertos and more. Image-rich event guide with property-level revenue impact.',
+    'The events that set the rate ceiling at each Granderson Destinations home — Coachella, Modernism Week, Día de Muertos, Festival Cervantino, and more. Choose your property to see the windows we price around.',
 };
 
-export default function EventsPage() {
-  // Group future events by market
+/**
+ * Top-level /events index — property picker. Mirrors /experiences/page.jsx
+ * so each property tile branches to a per-market events list. Replaces the
+ * old "all events grouped by market" layout, which made it hard to see at a
+ * glance which home benefited from which window.
+ */
+export default function EventsIndexPage() {
   const todayIso = new Date().toISOString().slice(0, 10);
-  const upcoming = ANCHOR_EVENTS_SEED
-    .filter((e) => e.endDate >= todayIso)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
 
-  const byMarket = upcoming.reduce((acc, e) => {
-    (acc[e.market] = acc[e.market] || []).push(e);
-    return acc;
-  }, {});
+  const tiles = PROPERTIES.filter((p) => MARKETS[p.slug]).map((property) => {
+    const market = MARKETS[property.slug];
+    const upcoming = ANCHOR_EVENTS_SEED
+      .filter((e) => e.market === property.slug && e.endDate >= todayIso)
+      .sort((a, b) => a.startDate.localeCompare(b.startDate));
+    return { property, market, upcomingCount: upcoming.length, nextEvent: upcoming[0] || null };
+  });
 
   return (
     <>
@@ -33,60 +37,86 @@ export default function EventsPage() {
         {/* Hero */}
         <section className="bg-brand-ink py-32 text-brand-cloud">
           <Container>
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-cloud/70">Plan around the calendar</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-cloud/70">
+              Plan around the calendar
+            </p>
             <h1 className="display mt-3 max-w-4xl text-display-xl text-brand-cloud">
-              The events that set the rate ceiling.
+              Pick your home, see the events that set its rate ceiling.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-cloud/85 sm:text-lg">
-              Coachella, Stagecoach, BNP Paribas Open, Modernism Week, Festival Cervantino, Día de Muertos, San
-              Miguel Jazz Festival. Every property in our portfolio is priced and operated around these windows.
-              Click any event for the playbook + the revenue model.
+              Every Granderson Destinations home is priced and operated around the marquee events
+              in its market. Coachella, Stagecoach, BNP Paribas Open, Modernism Week, Festival
+              Cervantino, Día de Muertos, San Miguel Jazz Festival — each property has its own
+              calendar of windows worth booking around. Choose the home below to see what&rsquo;s
+              upcoming and the revenue model behind every window.
             </p>
           </Container>
         </section>
 
-        {/* Per-market sections — each headlines the property that benefits */}
-        {Object.entries(byMarket).map(([market, events]) => {
-          // Find the property whose slug matches this market. With the
-          // current 1:1 property-per-market mapping this is deterministic;
-          // when a market gets multiple homes we'll show them stacked.
-          const property = PROPERTIES.find((p) => p.slug === market);
-          return (
-            <section key={market} className="bg-brand-cloud py-16 sm:py-20">
-              <Container>
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
-                  {property ? `For guests of ${property.name}` : (MARKETS[market]?.label ?? market)}
-                </p>
-                <h2 className="display mt-3 text-display-lg text-brand-ink">
-                  Upcoming {property ? `at ${property.name}` : `in ${MARKETS[market]?.label ?? market}`}
-                </h2>
-                {property && (
-                  <p className="mt-3 max-w-2xl text-brand-slate">
-                    {MARKETS[market]?.label ?? market} · these are the windows we price{' '}
-                    <Link href={`/destinations/${property.slug}`} className="underline">
-                      {property.name}
-                    </Link>{' '}
-                    around. Click any event for the playbook + revenue model.
-                  </p>
-                )}
+        {/* Per-property tiles */}
+        <section className="bg-brand-cloud py-16 sm:py-20">
+          <Container>
+            <div className="grid gap-8 stagger-grid sm:grid-cols-2">
+              {tiles.map(({ property, market, upcomingCount, nextEvent }) => (
+                <Link
+                  key={property.slug}
+                  href={`/events/${property.slug}`}
+                  className="group relative block overflow-hidden rounded-2xl bg-brand-ink shadow-soft transition-shadow hover:shadow-lift"
+                >
+                  <div className="relative aspect-[4/5] w-full overflow-hidden">
+                    {property.coverImage ? (
+                      <Image
+                        src={property.coverImage}
+                        alt=""
+                        fill
+                        sizes="(min-width: 640px) 50vw, 100vw"
+                        className="object-cover opacity-90 transition-transform duration-[1200ms] ease-out-quint group-hover:scale-[1.06]"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-[radial-gradient(120%_80%_at_30%_30%,#3F4A56,#0E1116)]" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-brand-ink via-brand-ink/40 to-transparent" />
+                  </div>
 
-                <div className="mt-10 grid gap-6 stagger-grid sm:grid-cols-2 lg:grid-cols-3">
-                  {events.map((e) => (
-                    <EventCard key={e.slug} event={e} detail={EVENT_DETAILS[e.slug]} property={property} />
-                  ))}
-                </div>
-              </Container>
-            </section>
-          );
-        })}
+                  <div className="absolute inset-x-0 bottom-0 p-8 text-brand-cloud">
+                    <p className="text-[10px] uppercase tracking-[0.32em] text-brand-cloud/75">
+                      {property.name} · {market.label}
+                    </p>
+                    <h2 className="display mt-2 text-3xl text-brand-cloud sm:text-4xl">
+                      Events at {property.name}
+                    </h2>
+                    <p className="mt-3 max-w-md text-sm text-brand-cloud/85 sm:text-base">
+                      {market.label === 'Palm Springs'
+                        ? 'Coachella, Stagecoach, BNP Paribas Open, Modernism Week — the windows we price around to lift ADR by 25–65%.'
+                        : 'Festival Cervantino, Día de Muertos, San Miguel Jazz — high-demand windows with 20–50% ADR uplift and longer minimum stays.'}
+                    </p>
+                    <div className="mt-5 inline-flex items-center gap-3 rounded-full bg-brand-cloud/10 px-4 py-1.5 backdrop-blur-sm">
+                      <span className="text-[10px] uppercase tracking-widest text-brand-cloud/65">Upcoming</span>
+                      <span className="text-sm font-medium text-brand-cloud">
+                        {upcomingCount} {upcomingCount === 1 ? 'event' : 'events'}
+                      </span>
+                      {nextEvent && (
+                        <>
+                          <span className="text-brand-cloud/40">·</span>
+                          <span className="text-xs text-brand-cloud/75">next: {nextEvent.name.split('—')[0].trim()}</span>
+                        </>
+                      )}
+                    </div>
+                    <p className="mt-6 inline-flex items-center gap-1 text-sm text-brand-cloud/90 underline-offset-4 group-hover:underline">
+                      Open the {property.name} event calendar →
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-        {!upcoming.length && (
-          <section className="bg-brand-cloud py-20">
-            <Container size="md" className="text-center">
-              <p className="text-brand-slate">No upcoming events scheduled. Check back soon.</p>
-            </Container>
-          </section>
-        )}
+            <p className="mt-12 max-w-2xl text-sm text-brand-slate">
+              Every event detail page includes an interactive revenue model: ADR uplift, occupancy
+              lift, minimum stay, projected revenue vs. baseline. The same model drives our
+              dynamic-pricing layer at PriceLabs.
+            </p>
+          </Container>
+        </section>
       </main>
       <Footer />
     </>

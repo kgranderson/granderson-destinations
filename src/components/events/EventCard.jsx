@@ -22,7 +22,7 @@ export function EventCard({ event, detail, property }) {
 
   return (
     <Link
-      href={`/events/${event.slug}`}
+      href={`/events/${event.market}/${event.slug}`}
       className="group relative block overflow-hidden rounded-2xl bg-brand-ink shadow-soft transition-shadow hover:shadow-lift"
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden">

@@ -14,12 +14,13 @@ import { Clock, MapPin, Ticket, Users } from 'lucide-react';
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  return ANCHOR_EVENTS_SEED.map((e) => ({ slug: e.slug }));
+  return ANCHOR_EVENTS_SEED.map((e) => ({ market: e.market, slug: e.slug }));
 }
 
 export async function generateMetadata({ params }) {
-  const event = ANCHOR_EVENTS_SEED.find((e) => e.slug === params.slug);
-  const detail = EVENT_DETAILS[params.slug];
+  const p = params instanceof Promise ? await params : params;
+  const event = ANCHOR_EVENTS_SEED.find((e) => e.slug === p.slug && e.market === p.market);
+  const detail = EVENT_DETAILS[p.slug];
   if (!event) return {};
   return {
     title: event.name,
@@ -38,11 +39,20 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function EventDetailPage({ params }) {
-  const event = ANCHOR_EVENTS_SEED.find((e) => e.slug === params.slug);
-  if (!event) notFound();
-  const detail = EVENT_DETAILS[params.slug] || {};
-  const property = PROPERTIES.find((p) => p.slug === event.market);
+/**
+ * Event detail page — now nested under /events/[market] so the URL conveys
+ * which property's calendar the event belongs to (e.g.,
+ * /events/palm-springs/coachella-2026-w1). Mirrors the structure of
+ * /experiences/[city]. If the market in the URL doesn't match the event's
+ * own market, we 404 to defend against link rot or scraping.
+ */
+export default async function EventDetailPage({ params }) {
+  const p = params instanceof Promise ? await params : params;
+  const event = ANCHOR_EVENTS_SEED.find((e) => e.slug === p.slug);
+  if (!event || event.market !== p.market) notFound();
+
+  const detail = EVENT_DETAILS[p.slug] || {};
+  const property = PROPERTIES.find((x) => x.slug === event.market);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
   const ld = eventJsonLd({
     event,
@@ -80,7 +90,10 @@ export default function EventDetailPage({ params }) {
                 <Link href={`/destinations/${property.slug}`} className="underline underline-offset-4 hover:text-brand-cloud">
                   {property.name}
                 </Link>
-                {' '}for this window.
+                {' '}for this window. ·{' '}
+                <Link href={`/events/${event.market}`} className="underline underline-offset-4 hover:text-brand-cloud">
+                  See the full {property.name} calendar
+                </Link>
               </p>
             )}
             {detail.heroSummary && (
@@ -106,19 +119,19 @@ export default function EventDetailPage({ params }) {
               <article className="md:col-span-7">
                 <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">The window</p>
                 <h2 className="display mt-3 text-display-md text-brand-ink">Why this matters for revenue.</h2>
-                {(detail.body ?? []).map((p, i) => (
+                {(detail.body ?? []).map((paragraph, i) => (
                   <p key={i} className="mt-4 leading-relaxed text-brand-slate">
-                    {p}
+                    {paragraph}
                   </p>
                 ))}
                 {detail.operatingPlaybook?.length ? (
                   <>
                     <h3 className="display mt-10 text-2xl text-brand-ink">Operating playbook</h3>
                     <ul className="mt-3 space-y-2 text-sm text-brand-ink">
-                      {detail.operatingPlaybook.map((p) => (
-                        <li key={p} className="flex gap-3">
+                      {detail.operatingPlaybook.map((line) => (
+                        <li key={line} className="flex gap-3">
                           <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
-                          <span>{p}</span>
+                          <span>{line}</span>
                         </li>
                       ))}
                     </ul>

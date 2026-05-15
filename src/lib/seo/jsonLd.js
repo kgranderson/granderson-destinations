@@ -40,7 +40,7 @@ export function eventJsonLd({ event, baseUrl, venue, marketLabel }) {
         addressLocality: marketLabel || event.market.replace(/-/g, ' '),
       },
     },
-    url: `${baseUrl}/events/${event.slug}`,
+    url: `${baseUrl}/events/${event.market}/${event.slug}`,
     image: event.image ? `${baseUrl}${event.image}` : undefined,
   };
 }

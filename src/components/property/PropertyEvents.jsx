@@ -26,8 +26,8 @@ export function PropertyEvents({ property }) {
               Stay during the events that move this market.
             </h2>
           </Reveal>
-          <Link href="/events" className="hidden text-sm text-brand-cloud/80 underline-offset-4 hover:underline sm:block">
-            See all events →
+          <Link href={`/events/${property.slug}`} className="hidden text-sm text-brand-cloud/80 underline-offset-4 hover:underline sm:block">
+            See all events at {property.shortName} →
           </Link>
         </div>
 
