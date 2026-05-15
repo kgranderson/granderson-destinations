@@ -7,7 +7,8 @@ import { getBrowserClient } from '@/lib/supabase/client';
 
 const LINKS = [
   { href: '/destinations', label: 'Destinations' },
-  { href: '/experiences/palm-springs', label: 'Experiences' },
+  // /experiences is the property picker; clicking a tile lands on /experiences/<slug>.
+  { href: '/experiences', label: 'Experiences' },
   { href: '/events', label: 'Events' },
   { href: '/about', label: 'About' },
 ];

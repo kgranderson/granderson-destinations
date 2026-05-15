@@ -1,8 +1,9 @@
+import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { EventCard } from '@/components/events/EventCard';
-import { ANCHOR_EVENTS_SEED, MARKETS } from '@/lib/constants';
+import { ANCHOR_EVENTS_SEED, MARKETS, PROPERTIES } from '@/lib/constants';
 import { EVENT_DETAILS } from '@/lib/events/data';
 
 export const revalidate = 3600;
@@ -44,25 +45,40 @@ export default function EventsPage() {
           </Container>
         </section>
 
-        {/* Per-market sections */}
-        {Object.entries(byMarket).map(([market, events]) => (
-          <section key={market} className="bg-brand-cloud py-16 sm:py-20">
-            <Container>
-              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
-                {MARKETS[market]?.label ?? market}
-              </p>
-              <h2 className="display mt-3 text-display-lg text-brand-ink">
-                Upcoming in {MARKETS[market]?.label ?? market}
-              </h2>
+        {/* Per-market sections — each headlines the property that benefits */}
+        {Object.entries(byMarket).map(([market, events]) => {
+          // Find the property whose slug matches this market. With the
+          // current 1:1 property-per-market mapping this is deterministic;
+          // when a market gets multiple homes we'll show them stacked.
+          const property = PROPERTIES.find((p) => p.slug === market);
+          return (
+            <section key={market} className="bg-brand-cloud py-16 sm:py-20">
+              <Container>
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+                  {property ? `For guests of ${property.name}` : (MARKETS[market]?.label ?? market)}
+                </p>
+                <h2 className="display mt-3 text-display-lg text-brand-ink">
+                  Upcoming {property ? `at ${property.name}` : `in ${MARKETS[market]?.label ?? market}`}
+                </h2>
+                {property && (
+                  <p className="mt-3 max-w-2xl text-brand-slate">
+                    {MARKETS[market]?.label ?? market} · these are the windows we price{' '}
+                    <Link href={`/destinations/${property.slug}`} className="underline">
+                      {property.name}
+                    </Link>{' '}
+                    around. Click any event for the playbook + revenue model.
+                  </p>
+                )}
 
-              <div className="mt-10 grid gap-6 stagger-grid sm:grid-cols-2 lg:grid-cols-3">
-                {events.map((e) => (
-                  <EventCard key={e.slug} event={e} detail={EVENT_DETAILS[e.slug]} />
-                ))}
-              </div>
-            </Container>
-          </section>
-        ))}
+                <div className="mt-10 grid gap-6 stagger-grid sm:grid-cols-2 lg:grid-cols-3">
+                  {events.map((e) => (
+                    <EventCard key={e.slug} event={e} detail={EVENT_DETAILS[e.slug]} property={property} />
+                  ))}
+                </div>
+              </Container>
+            </section>
+          );
+        })}
 
         {!upcoming.length && (
           <section className="bg-brand-cloud py-20">

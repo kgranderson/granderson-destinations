@@ -21,7 +21,7 @@ export function Footer() {
         <div className="col">
           <h4>Discover</h4>
           <ul>
-            <li><Link href="/experiences/palm-springs">Local experiences</Link></li>
+            <li><Link href="/experiences">Local experiences</Link></li>
             <li><Link href="/events">Events calendar</Link></li>
             <li><Link href="/intel">Market intel</Link></li>
           </ul>

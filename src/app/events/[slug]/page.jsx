@@ -70,9 +70,19 @@ export default function EventDetailPage({ params }) {
           )}
           <Container className="relative flex min-h-[70vh] flex-col justify-end pb-16 pt-40">
             <p className="text-xs uppercase tracking-[0.32em] text-brand-cloud/80">
-              {event.market.replace(/-/g, ' ')} · {dateRange(event.startDate, event.endDate)}
+              {property ? `${property.name} · ${MARKETS[event.market]?.label ?? event.market}` : event.market.replace(/-/g, ' ')}
+              {' · '}{dateRange(event.startDate, event.endDate)}
             </p>
             <h1 className="display mt-3 max-w-4xl text-display-xl text-brand-cloud">{event.name}</h1>
+            {property && (
+              <p className="mt-3 text-sm text-brand-cloud/80">
+                Stay at{' '}
+                <Link href={`/destinations/${property.slug}`} className="underline underline-offset-4 hover:text-brand-cloud">
+                  {property.name}
+                </Link>
+                {' '}for this window.
+              </p>
+            )}
             {detail.heroSummary && (
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-cloud/85 sm:text-lg">
                 {detail.heroSummary}

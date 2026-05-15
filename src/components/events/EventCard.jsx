@@ -11,7 +11,12 @@ import { dateRange } from '@/lib/utils/format';
  * IDs in seed data may 404; future Google Place / Supabase URLs may
  * also fail).
  */
-export function EventCard({ event, detail }) {
+/**
+ * `property` — optional `{ name, slug }` shape. When passed, the eyebrow line
+ * shows the property name (e.g. "The Sunbath House") instead of just the
+ * market slug so guests immediately know which home benefits from the lift.
+ */
+export function EventCard({ event, detail, property }) {
   const [failed, setFailed] = useState(false);
   const showGradient = !detail?.image || failed;
 
@@ -38,7 +43,8 @@ export function EventCard({ event, detail }) {
 
       <div className="absolute inset-x-0 bottom-0 p-6 text-brand-cloud">
         <p className="text-[10px] uppercase tracking-[0.32em] text-brand-cloud/75">
-          {event.market.replace(/-/g, ' ')} · {dateRange(event.startDate, event.endDate)}
+          {property ? property.name : event.market.replace(/-/g, ' ')}
+          {' · '}{dateRange(event.startDate, event.endDate)}
         </p>
         <h3 className="display mt-2 text-2xl text-brand-cloud sm:text-3xl">{event.name}</h3>
 
