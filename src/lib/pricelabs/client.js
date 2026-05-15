@@ -14,6 +14,17 @@ import { FEATURE_FLAGS } from '@/lib/constants';
 
 const DEFAULT_BASE = process.env.PRICELABS_BASE_URL || 'https://api.pricelabs.co/v1';
 
+/**
+ * Three response shapes — callers must distinguish:
+ *   { stub: true }           → intentional stub mode (no API key configured)
+ *   { failed: true, error }  → live mode, real failure (network or non-2xx)
+ *   { ...realPayload }       → success
+ *
+ * Until 2026-05-15 this returned `{ stub: true, error }` for BOTH "no key"
+ * and "API failed", which meant /admin/marketing's pricing cockpit showed
+ * a success toast on a real PriceLabs rejection. Failures now surface
+ * as `failed: true` so the cockpit can render an actual error to the operator.
+ */
 async function plFetch(path, init = {}) {
   if (!FEATURE_FLAGS.pricelabsLive()) {
     return { stub: true };
@@ -29,25 +40,52 @@ async function plFetch(path, init = {}) {
       },
     });
   } catch (err) {
-    // Network failure — fall through to stub so the dashboard renders.
-    return { stub: true, error: String(err) };
+    return { failed: true, error: `PriceLabs ${path} network error: ${String(err)}` };
   }
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    return { stub: true, error: `PriceLabs ${path} → ${res.status}: ${text.slice(0, 200)}` };
+    return {
+      failed: true,
+      status: res.status,
+      error: `PriceLabs ${path} → ${res.status}: ${text.slice(0, 200)}`,
+    };
   }
   return res.json();
 }
 
+/**
+ * Returns `{ listings, source, failed?, error? }` so callers can
+ * distinguish three states:
+ *   source: 'stub'   — no API key, deterministic mock data returned
+ *   source: 'live'   — API succeeded
+ *   failed: true     — API live but rejected/timed out; listings is []
+ *
+ * Until 2026-05-15 this returned a bare array, which made an upstream
+ * outage indistinguishable from "PriceLabs has zero listings." The
+ * /api/pricing/push-overrides route's listingId cross-validation was
+ * silently 400-ing valid push attempts during PriceLabs outages.
+ */
 export async function listListings() {
   const live = await plFetch('/listings');
   if (live?.stub) {
-    return [
-      { listing_id: 'PL-PS-001', name: 'The Sunbath House — Palm Springs', currency: 'USD' },
-      { listing_id: 'PL-SMA-001', name: 'Casa Talavera — San Miguel', currency: 'USD' },
-    ];
+    return {
+      source: 'stub',
+      listings: [
+        { listing_id: 'PL-PS-001', name: 'The Sunbath House — Palm Springs', currency: 'USD' },
+        { listing_id: 'PL-SMA-001', name: 'Casa Talavera — San Miguel', currency: 'USD' },
+      ],
+    };
   }
-  return live?.listings ?? [];
+  if (live?.failed) {
+    return {
+      source: 'live',
+      failed: true,
+      error: live.error,
+      status: live.status,
+      listings: [],
+    };
+  }
+  return { source: 'live', listings: live?.listings ?? [] };
 }
 
 export async function getRecommendedPrices({ listingId, days = 365 }) {

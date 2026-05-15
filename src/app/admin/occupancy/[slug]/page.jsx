@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { AdminNav } from '@/components/shared/AdminNav';
-import { assertAdmin } from '@/components/shared/AdminGuard';
+import { isOwner } from '@/lib/admin/owner-auth';
 import { OccupancyKPIs } from '@/components/occupancy/OccupancyKPIs';
 import { OccupancyChart } from '@/components/occupancy/OccupancyChart';
 import { PropertyAdminTabs } from '@/components/shared/PropertyAdminTabs';
@@ -18,10 +18,12 @@ export async function generateStaticParams() {
 }
 
 export default async function OccupancyPropertyPage({ params }) {
-  const auth = await assertAdmin();
-  if (!auth.ok) return auth.render;
+  const auth = await isOwner();
+  const p = params instanceof Promise ? await params : params;
+  if (!auth.authed) redirect(`/admin/login?redirect=/admin/occupancy/${p.slug}`);
+  const profile = auth.profile || { full_name: 'Owner', email: null };
 
-  const property = PROPERTIES.find((p) => p.slug === params.slug);
+  const property = PROPERTIES.find((x) => x.slug === p.slug);
   if (!property) notFound();
 
   const { rows, stub } = await loadOccupancy(property.slug);
@@ -31,7 +33,7 @@ export default async function OccupancyPropertyPage({ params }) {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-24 lg:pt-28">
         <div className="mx-auto flex max-w-[88rem]">
-          <AdminNav profile={auth.profile} />
+          <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>

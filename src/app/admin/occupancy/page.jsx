@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { AdminNav } from '@/components/shared/AdminNav';
-import { assertAdmin } from '@/components/shared/AdminGuard';
+import { isOwner } from '@/lib/admin/owner-auth';
 import { PROPERTIES } from '@/lib/constants';
 import { loadOccupancy } from '@/lib/hospitable/loader';
 import { pct, usd } from '@/lib/utils/format';
@@ -12,8 +13,9 @@ export const metadata = { title: 'Admin · Occupancy', robots: { index: false, f
 export const revalidate = 600;
 
 export default async function OccupancyIndex() {
-  const auth = await assertAdmin();
-  if (!auth.ok) return auth.render;
+  const auth = await isOwner();
+  if (!auth.authed) redirect('/admin/login?redirect=/admin/occupancy');
+  const profile = auth.profile || { full_name: 'Owner', email: null };
 
   const blocks = await Promise.all(
     PROPERTIES.map(async (p) => {
@@ -40,7 +42,7 @@ export default async function OccupancyIndex() {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-24 lg:pt-28">
         <div className="mx-auto flex max-w-[88rem]">
-          <AdminNav profile={auth.profile} />
+          <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
             <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
               Admin · Occupancy

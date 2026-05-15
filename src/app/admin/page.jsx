@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { AdminNav } from '@/components/shared/AdminNav';
-import { assertAdmin } from '@/components/shared/AdminGuard';
+import { isOwner } from '@/lib/admin/owner-auth';
 import { PROPERTIES } from '@/lib/constants';
 import { loadMonthly } from '@/lib/economics/loader';
 import { loadOccupancy } from '@/lib/hospitable/loader';
@@ -27,8 +28,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function AdminHome() {
-  const auth = await assertAdmin();
-  if (!auth.ok) return auth.render;
+  const auth = await isOwner();
+  if (!auth.authed) redirect('/admin/login?redirect=/admin');
+  // Legacy-cookie path has no Supabase profile; synthesize a minimal one for the UI.
+  const profile = auth.profile || { full_name: 'Owner', email: null };
 
   // Roll up portfolio-level stats from existing loaders
   const finBlocks = await Promise.all(
@@ -85,7 +88,7 @@ export default async function AdminHome() {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-24 lg:pt-28">
         <div className="mx-auto flex max-w-[88rem]">
-          <AdminNav profile={auth.profile} />
+          <AdminNav profile={profile} />
 
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
             {/* Welcome */}
@@ -93,7 +96,7 @@ export default async function AdminHome() {
               Welcome back
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">
-              {auth.profile.full_name || 'Operator'}
+              {profile.full_name || 'Operator'}
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-brand-slate">
               Portfolio control center. Trailing-twelve performance, occupancy, and open ops items

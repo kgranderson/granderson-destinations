@@ -2,7 +2,7 @@
  * Visual status timeline. Used on:
  *   - /maintenance/status/[id]      (public guest view, read-only)
  *   - /maintenance/vendor/[token]   (vendor portal, read-only)
- *   - /maintenance/admin            (drill-in detail panel, read-only)
+ *   - /admin            (drill-in detail panel, read-only)
  *
  * The component is intentionally dumb — it just renders steps from a list.
  * Status transitions happen elsewhere (vendor portal or admin endpoints).

@@ -39,7 +39,7 @@ export const STATUS_PILL_CLASS = {
 };
 
 // What's allowed next given the current status. Owner can override anything
-// from /maintenance/admin (no transition guards on the admin endpoint).
+// from /admin (no transition guards on the admin endpoint).
 export const VENDOR_TRANSITIONS = {
   open: ['assigned', 'in_progress'],
   assigned: ['in_progress', 'awaiting_owner', 'diagnosed'],

@@ -32,6 +32,19 @@ const nextConfig = {
       },
     ];
   },
+  // Backward-compat 301s for the Phase 0 URL consolidation (2026-05-15).
+  // /maintenance/* admin URLs moved under /admin/*; /api/maintenance/* admin
+  // routes moved under /api/admin/*. Guest-facing /maintenance/{status,
+  // vendor,report,qr-card}/* stay where they are.
+  async redirects() {
+    return [
+      // Page redirects — exact root first, then nested
+      { source: '/maintenance/admin', destination: '/admin', permanent: true },
+      { source: '/maintenance/admin/:slug*', destination: '/admin/:slug*', permanent: true },
+      // API redirects (308 to preserve method + body on POST/PATCH/DELETE)
+      { source: '/api/maintenance/admin/:slug*', destination: '/api/admin/:slug*', permanent: true },
+    ];
+  },
 };
 
 module.exports = nextConfig;

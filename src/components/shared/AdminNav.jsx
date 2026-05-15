@@ -1,28 +1,55 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LineChart, Calendar, Wrench, Camera, Tags, Upload, LogOut } from 'lucide-react';
+import {
+  Home,
+  LineChart,
+  Calendar,
+  Wrench,
+  Megaphone,
+  Tags,
+  Upload,
+  Users,
+  Truck,
+  LogOut,
+} from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
-import { getBrowserClient } from '@/lib/supabase/client';
 
 const SECTIONS = [
   { href: '/admin', label: 'Dashboard', icon: Home, match: (p) => p === '/admin' },
   { href: '/economics', label: 'Financial', icon: LineChart, match: (p) => p.startsWith('/economics') },
   { href: '/admin/occupancy', label: 'Occupancy', icon: Calendar, match: (p) => p.startsWith('/admin/occupancy') },
   { href: '/admin/maintenance', label: 'Maintenance', icon: Wrench, match: (p) => p.startsWith('/admin/maintenance') },
-  { href: '/social', label: 'Social', icon: Camera, match: (p) => p.startsWith('/social') },
+  { href: '/admin/marketing', label: 'Marketing', icon: Megaphone, match: (p) => p.startsWith('/admin/marketing') },
   { href: '/pricing-engine', label: 'Pricing', icon: Tags, match: (p) => p.startsWith('/pricing-engine') },
+  { href: '/admin/vendors', label: 'Vendors', icon: Truck, match: (p) => p.startsWith('/admin/vendors') },
+  { href: '/admin/users', label: 'Admins', icon: Users, match: (p) => p.startsWith('/admin/users') },
   { href: '/admin/import', label: 'Import', icon: Upload, match: (p) => p.startsWith('/admin/import') },
 ];
 
+/**
+ * Sidebar shell for every page under /admin/*. Uses the same logout endpoint
+ * as the maintenance dashboard's SignOutButton so we clear BOTH the Supabase
+ * session cookies AND the legacy gd_owner cookie in one POST. The inline
+ * supabase.auth.signOut() shortcut that used to live here was missing the
+ * legacy-cookie clear, which let a stale gd_owner re-grant admin access on
+ * the next page load.
+ */
 export function AdminNav({ profile }) {
   const pathname = usePathname();
+  const [busy, setBusy] = useState(false);
 
   async function signOut() {
-    const supabase = getBrowserClient();
-    if (supabase) await supabase.auth.signOut();
-    window.location.href = '/';
+    setBusy(true);
+    try {
+      await fetch('/api/admin/auth/logout', { method: 'POST' });
+    } catch {
+      /* swallow — we redirect regardless */
+    } finally {
+      window.location.href = '/admin/login';
+    }
   }
 
   return (
@@ -59,9 +86,10 @@ export function AdminNav({ profile }) {
         <button
           type="button"
           onClick={signOut}
-          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-brand-slate hover:bg-brand-tan/40 hover:text-brand-ink"
+          disabled={busy}
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-brand-slate hover:bg-brand-tan/40 hover:text-brand-ink disabled:opacity-50"
         >
-          <LogOut size={14} /> Sign out
+          <LogOut size={14} /> {busy ? 'Signing out…' : 'Sign out'}
         </button>
       </div>
     </aside>

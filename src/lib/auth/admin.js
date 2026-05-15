@@ -1,37 +1,41 @@
 import 'server-only';
 import { NextResponse } from 'next/server';
-import { getServerClient } from '@/lib/supabase/server';
+import { isOwner } from '@/lib/admin/owner-auth';
 
 /**
- * Gate an API route handler so only an authenticated user whose
- * profile.tier === 'admin' can call it. Returns 401 in stub mode
- * (no Supabase) and 403 when a signed-in non-admin tries to call.
+ * Gate an API route handler so only an authenticated admin can call it.
+ *
+ * As of 2026-05-15 (Phase 0 URL consolidation) this delegates to
+ * `isOwner()`, which accepts BOTH paths:
+ *   - Supabase session whose profile.tier === 'admin' (the multi-user
+ *     email + password flow)
+ *   - Legacy gd_owner shared-secret cookie (kept for break-glass and
+ *     the bootstrap flow before the first email/password admin exists)
+ *
+ * Previously this used a Supabase-only check, which meant legacy-cookie
+ * admins got a 401 from money-burning routes (push-overrides, caption
+ * generation) even though they could see every UI page. That mismatch
+ * is now closed.
  *
  * Used by money-burning routes:
  *   /api/social/generate-caption  (Anthropic credits)
  *   /api/pricing/push-overrides   (PriceLabs writes)
+ *   /api/admin/marketing/*        (Phase A-D marketing manager)
  */
 export function withAdmin(handler) {
   return async (request, ctx) => {
-    const supabase = getServerClient();
-    if (!supabase) {
+    const auth = await isOwner();
+    if (!auth.authed) {
+      // 401 (Unauthorized) signals "you need to authenticate — show the
+      // login UI". 403 (Forbidden) would tell clients "your identity is
+      // known but you're not allowed", which is misleading when there's
+      // no session at all. The DOM/fetch caller can branch on 401 to
+      // open /admin/login.
       return NextResponse.json(
-        { error: 'auth not configured' },
+        { error: 'authentication required', loginUrl: '/admin/login' },
         { status: 401 },
       );
     }
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'not signed in' }, { status: 401 });
-    }
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('tier')
-      .eq('id', user.id)
-      .maybeSingle();
-    if (!profile || profile.tier !== 'admin') {
-      return NextResponse.json({ error: 'forbidden' }, { status: 403 });
-    }
-    return handler(request, ctx);
+    return handler(request, ctx, auth);
   };
 }
