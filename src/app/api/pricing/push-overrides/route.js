@@ -150,8 +150,19 @@ export const POST = withAdmin(async (request) => {
       });
     }
 
-    // Mode 1: event-driven sync (legacy callers)
-    const result = await syncEventOverrides({ property });
+    // Mode 1: event-driven sync (legacy callers + Phase B quarter view).
+    // Optional body.window = { startDate, endDate } narrows the sync
+    // to events whose start..end overlap that range — the quarter view
+    // uses this so "Push to PriceLabs" doesn't silently overwrite far-
+    // future overrides outside the quarter the operator is looking at.
+    const win = body?.window;
+    if (win && (typeof win.startDate !== 'string' || typeof win.endDate !== 'string')) {
+      return NextResponse.json(
+        { ok: false, error: 'window must be { startDate, endDate } ISO strings' },
+        { status: 400 },
+      );
+    }
+    const result = await syncEventOverrides({ property, window: win });
     return NextResponse.json({ ok: true, mode: 'event-sync', ...result });
   } catch (err) {
     return NextResponse.json(
