@@ -2,15 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LineChart, Calendar, Wrench } from 'lucide-react';
+import { LineChart, Calendar, Wrench, Megaphone } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 /**
- * Property-scoped admin tab strip. Renders on every per-property
- * admin page so the operator can hop between Financial, Occupancy,
- * and Maintenance without losing the property in focus.
+ * Property-scoped admin tab strip. Renders on every per-property admin
+ * page so the operator can hop between Financial, Occupancy, Maintenance,
+ * and Marketing without losing the property in focus.
  *
- * The active tab is derived from the current URL — no prop drilling.
+ * The Marketing tab routes to /admin/marketing/[slug]/pricing — the
+ * Phase A landing of the marketing module. From there the
+ * PropertyMarketingTabs nav inside that module takes over (Pricing /
+ * Quarter / Campaigns / Approve / Email / Ads / Settings).
+ *
+ * Active tab is derived from the current URL — no prop drilling.
  */
 const TABS = [
   {
@@ -33,6 +38,13 @@ const TABS = [
     icon: Wrench,
     href: (slug) => `/admin/maintenance?property=${slug}`,
     match: (pathname) => pathname.startsWith('/admin/maintenance'),
+  },
+  {
+    key: 'marketing',
+    label: 'Marketing',
+    icon: Megaphone,
+    href: (slug) => `/admin/marketing/${slug}/pricing`,
+    match: (pathname, slug) => pathname.startsWith(`/admin/marketing/${slug}`),
   },
 ];
 
