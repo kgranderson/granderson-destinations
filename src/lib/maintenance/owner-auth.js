@@ -1,25 +1,28 @@
 import 'server-only';
 import { cookies } from 'next/headers';
+import { getServerClient } from '@/lib/supabase/server';
+import { getAdminClient } from '@/lib/supabase/admin';
 
 /**
- * Lightweight owner-auth gate for /maintenance/admin.
+ * Admin-auth gate for /maintenance/admin and its sub-pages.
  *
- * Mechanism:
- *   1. Owner visits /maintenance/admin?key=<OWNER_ADMIN_TOKEN>
- *   2. We compare to the env var. If equal, set httpOnly cookie 'gd_owner'
- *      with a 30-day expiry containing the same secret.
- *   3. Subsequent visits without ?key= read the cookie and authenticate.
+ * Two recognized auth paths, in priority order:
  *
- * This is not a full identity system — it's a single shared secret. Adequate
- * for a sole-proprietor admin page. Upgrade path: swap for Supabase magic-link
- * auth once we wire it into the rest of the app.
+ *   1. Supabase Auth session — recommended. Visitor signs in via email +
+ *      password at /maintenance/admin/login. On success their `profiles.tier`
+ *      is checked; only tier='admin' gets through.
  *
- * Security notes:
- *   - The token lives in an env var (OWNER_ADMIN_TOKEN), never the bundle.
- *   - Cookie is httpOnly + secure + sameSite=strict — no XSS exfiltration.
- *   - Constant-time compare to thwart timing attacks (overkill but cheap).
- *   - On invalid token, we 404 rather than 401, so attackers can't probe for
- *     the existence of the admin page.
+ *   2. Legacy shared-secret cookie `gd_owner` — bootstrap path for the
+ *      original sole-proprietor flow. Owner visits
+ *      /api/maintenance/admin/auth?key=<OWNER_ADMIN_TOKEN> once, the cookie
+ *      is set for 30 days, and subsequent visits authenticate via cookie.
+ *
+ * The legacy path lets the founder bootstrap the multi-user system: visit
+ * the legacy URL once, use /maintenance/admin/users to create real email +
+ * password accounts (including one for yourself), then sign in with that.
+ *
+ * Failure mode: callers should `notFound()` (not 401) so attackers can't
+ * probe for the existence of admin endpoints.
  */
 
 const COOKIE = 'gd_owner';
@@ -32,24 +35,64 @@ function tsEq(a, b) {
   return mismatch === 0;
 }
 
-/** Server-side check. Returns true if the visitor is authenticated. */
+/**
+ * Server-side admin check. Returns:
+ *   { authed: true,  via: 'session', user, profile }
+ *   { authed: true,  via: 'legacy',  freshKey? }
+ *   { authed: false }
+ *
+ * Path 1 wins when both are present so the richer auth context is preferred.
+ *
+ * @param {object} [opts]
+ * @param {string} [opts.providedKey] — value from ?key= to allow first-time legacy bootstrap.
+ */
 export async function isOwner({ providedKey } = {}) {
-  const expected = process.env.OWNER_ADMIN_TOKEN;
-  if (!expected) return false; // unset env var = nobody is owner (fail closed)
+  // ----- Path 1: Supabase Auth session -----
+  // We read via a service-role client because anon-key reads against
+  // profiles are restricted by RLS to (auth.uid() = id). The service-role
+  // bypasses RLS, which is fine here since we already validated the user
+  // identity via getServerClient's session cookies.
+  try {
+    const supabaseSession = getServerClient();
+    if (supabaseSession) {
+      const { data: { user } } = await supabaseSession.auth.getUser();
+      if (user?.id) {
+        const adminClient = getAdminClient();
+        if (adminClient) {
+          const { data: profile } = await adminClient
+            .from('profiles')
+            .select('id,email,full_name,tier')
+            .eq('id', user.id)
+            .maybeSingle();
+          if (profile?.tier === 'admin') {
+            return { authed: true, via: 'session', user, profile };
+          }
+        }
+      }
+    }
+  } catch (err) {
+    // Don't fail the request if the session check itself errors — fall
+    // through to the legacy path. Logged so we notice if this gets noisy.
+    // eslint-disable-next-line no-console
+    console.warn('[owner-auth] session check failed:', err.message || err);
+  }
 
+  // ----- Path 2: legacy gd_owner cookie -----
+  const expected = process.env.OWNER_ADMIN_TOKEN;
+  if (!expected) return { authed: false };
   if (providedKey && tsEq(providedKey, expected)) {
-    return { authed: true, freshKey: providedKey };
+    return { authed: true, via: 'legacy', freshKey: providedKey };
   }
   const c = (await cookies()).get(COOKIE);
-  if (c && tsEq(c.value, expected)) return { authed: true };
+  if (c && tsEq(c.value, expected)) return { authed: true, via: 'legacy' };
+
   return { authed: false };
 }
 
-/** Server-action helper — call from a route handler or RSC after isOwner({freshKey}) succeeds. */
+/** Set the legacy gd_owner cookie. Called only from the bootstrap Route Handler. */
 export async function setOwnerCookie(value) {
   (await cookies()).set(COOKIE, value, {
     httpOnly: true,
-    // Only require HTTPS in production so localhost dev still authenticates.
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: MAX_AGE_S,

@@ -1,10 +1,12 @@
 import { notFound, redirect } from 'next/navigation';
+import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
 import { Container } from '@/components/shared/Container';
 import { listAllTickets, summarizeTickets } from '@/lib/maintenance/queries';
 import { isOwner } from '@/lib/maintenance/owner-auth';
 import { AdminBoard } from './AdminBoard';
+import { SignOutButton } from './SignOutButton';
 
 export const metadata = {
   title: 'Maintenance · Admin',
@@ -25,12 +27,22 @@ export default async function AdminPage({ searchParams }) {
 
   const auth = await isOwner();
   if (!auth.authed) {
-    // Hard fail to a 404 so the page doesn't reveal its existence.
-    notFound();
+    // Unauthed visitors get bounced to the sign-in page rather than a 404.
+    // The login page itself doesn't reveal whether the admin system has any
+    // accounts yet, so this doesn't materially help an attacker discover
+    // anything they couldn't already discover by hitting /maintenance/admin/login.
+    redirect('/maintenance/admin/login');
   }
 
   const tickets = await listAllTickets({ limit: 500 });
   const kpi = summarizeTickets(tickets);
+
+  // Who's signed in? Use the profile name if available, otherwise the email,
+  // otherwise nothing (legacy-cookie path has no user identity).
+  const signedInAs =
+    auth.profile?.full_name ||
+    auth.profile?.email ||
+    (auth.via === 'legacy' ? 'Owner (legacy token)' : null);
 
   return (
     <>
@@ -47,8 +59,24 @@ export default async function AdminPage({ searchParams }) {
                 {tickets.length} ticket{tickets.length === 1 ? '' : 's'} across the portfolio.
               </p>
             </div>
-            <div className="text-xs text-brand-slate">
-              <span className="inline-flex items-center gap-1.5">
+            <div className="flex items-end flex-col gap-2 sm:items-center sm:flex-row sm:gap-3">
+              <Link
+                href="/maintenance/admin/vendors"
+                className="rounded-full border border-brand-ink/30 px-4 py-1.5 text-xs text-brand-ink hover:bg-brand-cloud">
+                Manage vendors →
+              </Link>
+              <Link
+                href="/maintenance/admin/users"
+                className="rounded-full border border-brand-ink/30 px-4 py-1.5 text-xs text-brand-ink hover:bg-brand-cloud">
+                Manage admins →
+              </Link>
+              {signedInAs && (
+                <span className="text-xs text-brand-slate">
+                  Signed in as <span className="font-medium text-brand-ink">{signedInAs}</span>
+                </span>
+              )}
+              <SignOutButton />
+              <span className="inline-flex items-center gap-1.5 text-xs text-brand-slate">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-jade" />
                 Email live · SMS pending TCR
               </span>

@@ -36,6 +36,66 @@ create policy "profiles_self_update"
   on public.profiles for update
   using (auth.uid() = id);
 
+-- Admin-gate helper. SECURITY DEFINER + a stable scan against profiles lets
+-- us write RLS policies that check "is the caller an admin?" WITHOUT causing
+-- the policy on profiles to recurse into itself. A policy on `profiles` that
+-- did `exists (select 1 from profiles ...)` would trigger Postgres' infamous
+-- "infinite recursion detected in policy for relation profiles" error the
+-- moment a real signed-in admin loaded the page — service-role queries from
+-- the server bypass RLS, so this would only show up in client reads.
+--
+-- The function must be owned by a role that has BYPASSRLS for this to work.
+-- In Supabase, SQL run via the SQL editor or migrations runs as `postgres`,
+-- which has BYPASSRLS by default, so the SECURITY DEFINER context inside
+-- this function skips the policy on profiles when we query it below. If you
+-- ever re-run this DDL as a different role, ensure ownership is preserved.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+stable
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and tier = 'admin'
+  );
+$$;
+
+alter function public.is_admin() owner to postgres;
+revoke all on function public.is_admin() from public;
+grant execute on function public.is_admin() to anon, authenticated;
+
+-- Post-migration assertion: if the function isn't owned by `postgres` (or another
+-- role with BYPASSRLS), the SECURITY DEFINER context above will still hit the
+-- recursive RLS policy on profiles and we'll be right back at B2. Fail fast
+-- here rather than silently regressing in production. This block raises if a
+-- future migration is ever applied by a role that doesn't have the rights to
+-- chown the function back to postgres.
+do $$
+declare
+  fn_owner text;
+begin
+  select pg_get_userbyid(proowner) into fn_owner
+  from pg_proc
+  where proname = 'is_admin' and pronamespace = 'public'::regnamespace
+  limit 1;
+  if fn_owner is null then
+    raise exception 'is_admin() function missing after migration';
+  end if;
+  if fn_owner <> 'postgres' then
+    raise exception 'is_admin() owned by % (expected postgres). Re-run as a role that can chown the function — otherwise RLS on profiles will recurse.', fn_owner;
+  end if;
+end $$;
+
+-- Admin users can read all profiles (needed for /maintenance/admin/users page
+-- to list teammates). Only matters for client-side reads — server reads via
+-- the service-role admin client bypass RLS entirely.
+drop policy if exists "profiles_admin_read_all" on public.profiles;
+create policy "profiles_admin_read_all"
+  on public.profiles for select
+  using ( public.is_admin() );
+
 -- =============================================================
 -- properties
 -- =============================================================
