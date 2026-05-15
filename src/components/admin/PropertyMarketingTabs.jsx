@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Tags, Calendar, Megaphone, Mail, BarChart3, Settings } from 'lucide-react';
+import { Tags, Calendar, Megaphone, CheckSquare, Mail, BarChart3, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 /**
@@ -17,12 +17,13 @@ import { cn } from '@/lib/utils/cn';
  * with a "Coming in Phase X" placeholder so nothing 404s.
  */
 const TABS = [
-  { slug: 'pricing',   label: 'Pricing',     icon: Tags,      phase: 'A' },
-  { slug: 'quarter',   label: 'Quarter plan', icon: Calendar,  phase: 'B' },
-  { slug: 'campaigns', label: 'Campaigns',   icon: Megaphone, phase: 'C' },
-  { slug: 'email',     label: 'Email',       icon: Mail,      phase: 'D' },
-  { slug: 'ads',       label: 'Ads',         icon: BarChart3, phase: 'D' },
-  { slug: 'settings',  label: 'Settings',    icon: Settings,  phase: 'C' },
+  { slug: 'pricing',   label: 'Pricing',     icon: Tags,        phase: 'A' },
+  { slug: 'quarter',   label: 'Quarter plan', icon: Calendar,    phase: 'B' },
+  { slug: 'campaigns', label: 'Campaigns',   icon: Megaphone,   phase: 'C' },
+  { slug: 'approve',   label: 'Approve',     icon: CheckSquare, phase: 'C' },
+  { slug: 'email',     label: 'Email',       icon: Mail,        phase: 'D' },
+  { slug: 'ads',       label: 'Ads',         icon: BarChart3,   phase: 'D' },
+  { slug: 'settings',  label: 'Settings',    icon: Settings,    phase: 'C' },
 ];
 
 export function PropertyMarketingTabs({ propertySlug }) {
