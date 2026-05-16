@@ -330,7 +330,7 @@ function InlineEditor({ post, onSave, onCancel }) {
           rows={4}
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
-          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 text-sm"
+          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 text-sm text-brand-ink placeholder:text-brand-slate/55"
         />
       </label>
       <label className="block">
@@ -339,7 +339,7 @@ function InlineEditor({ post, onSave, onCancel }) {
           type="text"
           value={hashtagsStr}
           onChange={(e) => setHashtagsStr(e.target.value)}
-          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 font-mono text-xs"
+          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 font-mono text-xs text-brand-ink placeholder:text-brand-slate/55"
         />
       </label>
       <label className="block">
@@ -348,7 +348,7 @@ function InlineEditor({ post, onSave, onCancel }) {
           type="url"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 font-mono text-xs"
+          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 font-mono text-xs text-brand-ink placeholder:text-brand-slate/55"
         />
       </label>
       <label className="block">
@@ -357,7 +357,7 @@ function InlineEditor({ post, onSave, onCancel }) {
           type="datetime-local"
           value={scheduledAt}
           onChange={(e) => setScheduledAt(e.target.value)}
-          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 text-sm"
+          className="mt-0.5 w-full rounded-md border border-brand-slate/20 bg-white px-2 py-1.5 text-sm text-brand-ink placeholder:text-brand-slate/55"
         />
       </label>
       <div className="flex items-center gap-2 pt-1">

@@ -140,7 +140,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
                       placeholder="New password (min 8 chars)"
                       value={resetPwd}
                       onChange={(e) => setResetPwd(e.target.value)}
-                      className="flex-1 min-w-[200px] rounded-md border border-brand-slate/20 bg-white px-3 py-1.5 text-sm" />
+                      className="flex-1 min-w-[200px] rounded-md border border-brand-slate/20 bg-white px-3 py-1.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
                     <button
                       onClick={() => resetPassword(u)}
                       className="rounded-full bg-brand-ink px-4 py-1.5 text-xs text-brand-cloud">
@@ -182,7 +182,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
               value={form.fullName}
               onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
               placeholder="Maria Rodriguez"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
 
           <label className="block">
@@ -194,7 +194,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               placeholder="maria@granderson.com"
               autoComplete="off"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-brand-ink/70 font-medium">Starter password *</span>
@@ -206,7 +206,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
               onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
               placeholder="At least 8 characters"
               autoComplete="off"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
             <span className="text-[11px] text-brand-slate">
               Shown in plain text so you can copy it before sharing.
             </span>

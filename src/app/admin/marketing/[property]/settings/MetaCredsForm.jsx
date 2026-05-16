@@ -129,7 +129,7 @@ export function MetaCredsForm({ propertySlug, initialCreds }) {
               placeholder={tokenPreview ? 'Paste a new token to replace the saved one' : 'EAAGmZACFI…'}
               autoComplete="off"
               spellCheck={false}
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm font-mono"
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm font-mono text-brand-ink placeholder:text-brand-slate/55"
             />
           </label>
           <p className="mt-1 text-[11px] text-brand-slate/70">
@@ -183,7 +183,7 @@ function Field({ label, icon: Icon, value, onChange, placeholder, help, type = '
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         autoComplete="off"
-        className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+        className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
       />
       {help && <p className="mt-1 text-[11px] text-brand-slate/70">{help}</p>}
     </label>

@@ -114,7 +114,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             <select
               value={form.anchorEventSlug}
               onChange={(e) => applyEventPreset(e.target.value)}
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
             >
               <option value="">— None (free-form campaign) —</option>
               {anchorEvents.map((e) => (
@@ -143,7 +143,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             placeholder="Coachella 2027 launch"
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
         </label>
       </div>
@@ -158,7 +158,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             value={form.objective}
             onChange={(e) => setForm((f) => ({ ...f, objective: e.target.value }))}
             placeholder="Drive 4-night bookings for Coachella W1"
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
         </label>
       </div>
@@ -174,7 +174,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             required
             value={form.startDate}
             onChange={(e) => setForm((f) => ({ ...f, startDate: e.target.value }))}
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
         </label>
         <label className="block">
@@ -187,7 +187,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             required
             value={form.endDate}
             onChange={(e) => setForm((f) => ({ ...f, endDate: e.target.value }))}
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
         </label>
       </div>
@@ -200,7 +200,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
           <select
             value={form.theme}
             onChange={(e) => setForm((f) => ({ ...f, theme: e.target.value }))}
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           >
             {THEMES.map((t) => (
               <option key={t} value={t}>
@@ -220,7 +220,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             max={50}
             value={form.targetPostCount}
             onChange={(e) => setForm((f) => ({ ...f, targetPostCount: e.target.value }))}
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
           <p className="mt-1 text-[11px] text-brand-slate/70">
             Posts are spaced Tue/Thu/Sat at 6pm. Cap is 50.
@@ -239,7 +239,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             value={form.goalBookings}
             onChange={(e) => setForm((f) => ({ ...f, goalBookings: e.target.value }))}
             placeholder="6"
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
         </label>
         <div />
@@ -254,7 +254,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
           value={form.notes}
           onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
           placeholder="Voice notes, brand reminders, refs to look at later…"
-          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
         />
       </label>
 

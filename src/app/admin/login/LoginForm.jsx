@@ -45,7 +45,7 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@granderson.com"
-          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
       </label>
       <label className="block">
         <span className="text-xs uppercase tracking-widest text-brand-ink/80 font-medium">Password</span>
@@ -56,7 +56,7 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="At least 8 characters"
-          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
       </label>
 
       {error && <div className="rounded-md bg-rose-50 px-4 py-3 text-sm text-rose-800">{error}</div>}

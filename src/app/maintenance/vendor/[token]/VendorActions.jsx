@@ -87,7 +87,7 @@ export function VendorActions({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="What you found, what you did, what you need from the owner."
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm leading-relaxed" />
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm leading-relaxed text-brand-ink placeholder:text-brand-slate/55" />
         </label>
 
         <div className="grid gap-4 sm:grid-cols-3">
@@ -100,7 +100,7 @@ export function VendorActions({
               value={estimate}
               onChange={(e) => setEstimate(e.target.value)}
               placeholder="0.00"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-brand-ink/70 font-medium">Final cost ($)</span>
@@ -111,7 +111,7 @@ export function VendorActions({
               value={finalCost}
               onChange={(e) => setFinalCost(e.target.value)}
               placeholder="0.00"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-widest text-brand-ink/70 font-medium">ETA</span>
@@ -119,7 +119,7 @@ export function VendorActions({
               type="datetime-local"
               value={eta}
               onChange={(e) => setEta(e.target.value)}
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
         </div>
 

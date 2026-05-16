@@ -173,7 +173,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 placeholder="Search by name, email, phone, specialty, or property"
-                className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+                className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
             </label>
           </div>
           <label className="flex items-center gap-2 pb-2 text-sm text-brand-slate">
@@ -267,7 +267,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               placeholder="Bill's HVAC"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
 
           <label className="block">
@@ -276,7 +276,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               value={form.phone}
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
               placeholder="+17605551234"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
             <span className="text-[11px] text-brand-slate">{PHONE_HINT}</span>
           </label>
           <label className="block">
@@ -286,7 +286,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               placeholder="bill@billshvac.com"
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
 
           <fieldset className="sm:col-span-2">
@@ -329,7 +329,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               value={form.notes}
               onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
               placeholder="Same-day for emergencies; closed Sunday; cell preferred over office."
-              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+              className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
           </label>
 
           <div className="sm:col-span-2 flex items-center gap-3">

@@ -135,7 +135,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
         <select
           value={propertySlug}
           onChange={(e) => setPropertySlug(e.target.value)}
-          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm">
+          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55">
           {PROPERTIES.map((p) => (
             <option key={p.slug} value={p.slug}>{p.name} — {p.city}</option>
           ))}
@@ -151,7 +151,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="e.g., The upstairs AC isn't cooling — air coming from the vents is room-temperature. Started this afternoon."
-          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm leading-relaxed" />
+          className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm leading-relaxed text-brand-ink placeholder:text-brand-slate/55" />
         <span className="mt-1 block text-xs text-brand-slate">
           Plain English is fine. Include when it started and which room.
         </span>
@@ -164,7 +164,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
             value={reporterName}
             onChange={(e) => setReporterName(e.target.value)}
             placeholder="Optional"
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
         </label>
         <label className="block">
           <span className="text-xs uppercase tracking-widest text-brand-ink/80 font-medium">Email for updates</span>
@@ -173,7 +173,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
             value={reporterEmail}
             onChange={(e) => setReporterEmail(e.target.value)}
             placeholder="Optional"
-            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm" />
+            className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2.5 text-sm text-brand-ink placeholder:text-brand-slate/55" />
         </label>
       </div>
 

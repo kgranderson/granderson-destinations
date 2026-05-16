@@ -281,7 +281,7 @@ function OwnerNoteField({ ticketId, initial, onSave, saving, flash }) {
         value={val}
         onChange={(e) => setVal(e.target.value)}
         placeholder="Private notes only you see. Decisions, vendor preferences, approval ceilings."
-        className="w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm" />
+        className="w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55" />
       <div className="mt-2 flex items-center gap-3">
         <button
           onClick={() => onSave(val)}
