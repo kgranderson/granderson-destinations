@@ -821,7 +821,7 @@ body {
   animation-play-state: paused;
 }
 
-/* Scroll-triggered reveal. Default state is invisible + lifted 8px.
+/* Scroll-triggered reveal. Content remains visible before hydration or without JS.
    The IntersectionObserver in <Reveal> toggles .in-view to fade up.
    Two patterns work:
      1) .reveal directly on the observed element (it becomes .in-view).
@@ -829,12 +829,15 @@ body {
         becomes .in-view and the cascade unhides any .reveal inside.
 */
 .reveal {
-  opacity: 0;
-  transform: translateY(8px);
+  opacity: 1;
+  transform: none;
   transition:
     opacity var(--duration-reveal) var(--ease-out-expo),
     transform var(--duration-reveal) var(--ease-out-expo);
-  will-change: opacity, transform;
+}
+.reveal.reveal-pending {
+  opacity: 0;
+  transform: translateY(8px);
 }
 .reveal.in-view,
 .in-view .reveal {
@@ -863,7 +866,7 @@ body {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
-  .reveal {
+  .reveal, .reveal.reveal-pending {
     opacity: 1;
     transform: none;
   }
@@ -874,3 +877,4 @@ body {
     animation: none;
   }
 }
+

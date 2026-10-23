@@ -9,7 +9,15 @@ try{
  let ready=false;for(let i=0;i<60;i++){try{const r=await fetch(`${base}/api/health`);if(r.ok){ready=true;break;}}catch{}await delay(500);}
  assert.ok(ready,'production server starts');
  for(const path of ['/admin/keys','/admin/analytics','/admin/optimize','/economics','/pricing-engine','/social']){
-  const r=await fetch(base+path,{redirect:'manual'});assert.ok([303,307,308].includes(r.status),`signed-out ${path} redirects`);assert.ok(r.headers.get('location')?.startsWith('/admin/login'));
+  const r=await fetch(base+path,{redirect:'manual'});
+  if([303,307,308].includes(r.status))assert.ok(r.headers.get('location')?.startsWith('/admin/login'));
+  else {
+    const html=await r.text();
+    // Next may flush the shell before an async auth redirect; then it sends a meta redirect.
+    assert.equal(r.status,200,`signed-out ${path}: ${r.status}`);
+    assert.match(html,/<meta[^>]+http-equiv="refresh"[^>]+content="[^"]*url=\/admin\/login/);
+    assert.ok(!html.includes('Know what is connected.')&&!html.includes('Performance, in context.')&&!html.includes('Operator’s assessment'),'no private page content before redirect');
+  }
  }
  for(const path of ['/api/admin/keys/run','/api/admin/analytics']){
   const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});assert.equal(r.status,401,`${path} reauthenticates`);
