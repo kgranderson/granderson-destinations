@@ -53,7 +53,7 @@ export default async function EventDetailPage({ params }) {
 
   const detail = EVENT_DETAILS[p.slug] || {};
   const property = PROPERTIES.find((x) => x.slug === event.market);
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://grandersondestinations.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com';
   const ld = eventJsonLd({
     event,
     baseUrl,

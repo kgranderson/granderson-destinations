@@ -57,7 +57,7 @@ export async function runKeyCheck(auth) {
   const monday = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'America/Los_Angeles' }).format(started) === 'Mon';
   if (state && (state.fingerprint !== fingerprint || (!run.healthy && state.notified_day !== day) || (monday && state.notified_day !== day))) {
     const id = `${day}-${fingerprint.slice(0, 16)}`;
-    const payload = { subject: `Granderson Destinations key check: ${run.healthy ? 'healthy' : 'attention needed'}`, text: `${run.started_at}\n${run.results.map(r => `${r.label}: ${r.outcome} (${r.detail})`).join('\n')}\nReview: https://grandersondestinations.com/admin/keys\nNo key values are included in this message.` };
+    const payload = { subject: `Granderson Destinations key check: ${run.healthy ? 'healthy' : 'attention needed'}`, text: `${run.started_at}\n${run.results.map(r => `${r.label}: ${r.outcome} (${r.detail})`).join('\n')}\nReview: https://www.grandersondestinations.com/admin/keys\nNo key values are included in this message.` };
     const { error: queued } = await db.from('key_check_notices').upsert({ id, payload }, { onConflict: 'id', ignoreDuplicates: true });
     if (!queued) await db.from('key_check_state').update({ fingerprint, notified_day: day }).eq('id',1);
   }

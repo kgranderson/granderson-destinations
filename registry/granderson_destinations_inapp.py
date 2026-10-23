@@ -14,7 +14,7 @@ import urllib.request
 
 APP = "granderson_destinations"
 SCHEMA = 1
-LATEST_URL = "https://grandersondestinations.com/api/reliability/key-check/latest"
+LATEST_URL = "https://www.grandersondestinations.com/api/reliability/key-check/latest"
 TOKEN_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                           ".keyregistry", "granderson_destinations_read_token")
 RUN_MAX_AGE_S = 36 * 3600

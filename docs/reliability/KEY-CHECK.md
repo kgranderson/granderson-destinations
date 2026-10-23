@@ -68,7 +68,7 @@ Production review found zero occupancy and monthly-financial rows; import real r
 3. Direct-booking funnel analytics (search, availability, inquiry, checkout, confirmed stay), consent-aware attribution and conversion experiments.
 4. Verified guest-review themes and maintenance recurrence linked to each property, with a measurable resolution queue.
 5. Complete the existing Stripe webhook/booking flow with signed events, idempotency and reconciliation before accepting direct payments.
-6. Automated backups with restore drills, uptime monitoring and measured Core Web Vitals. Verify the custom-domain/DNS assignment: the reviewed Vercel project listed only Vercel aliases.
+6. Automated backups with restore drills, uptime monitoring and measured Core Web Vitals. Both custom domains are verified on the reviewed Vercel project; the apex redirects to www. Canonical URLs and the registry reader use www to avoid a credential-bearing redirect.
 
 ## Validation
 

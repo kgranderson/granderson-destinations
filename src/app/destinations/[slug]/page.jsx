@@ -29,7 +29,7 @@ export async function generateMetadata({ params: paramsPromise }) {
   const params = await paramsPromise;
   const p = PROPERTIES.find((x) => x.slug === params.slug);
   if (!p) return {};
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://grandersondestinations.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com';
   return {
     title: `${p.name} · ${p.city}`,
     description: p.tagline,
@@ -56,7 +56,7 @@ export default async function PropertyPage({ params: paramsPromise }) {
   const property = PROPERTIES.find((x) => x.slug === params.slug);
   if (!property) notFound();
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://grandersondestinations.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com';
   const ld = vacationRentalJsonLd({ property, baseUrl });
 
   return (
