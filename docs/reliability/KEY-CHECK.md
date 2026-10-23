@@ -14,7 +14,7 @@ The live review found authenticated users had table-wide UPDATE on profiles, inc
 
 `20261023032000_reliability_property_intelligence.sql` narrows profile update grants to safe personal fields, copies provider credentials into `property_integrations`, clears the public token field and prevents it being repopulated. The private table and all new operational tables have RLS and service-role-only grants. Apply the migration and application update in the same maintenance window: the old social deployment cannot use the relocated token. Never roll back by copying tokens into public rows.
 
-The new framework/runtime dependencies are pinned in `package-lock.json`. Next 16 uses async request APIs; affected callers have been migrated. Public routes no longer refresh Supabase sessions on every request; protected pages authenticate server-side. Provider clients have bounded request times and public health checks no longer make paid calls. Production dashboards stop replacing missing operating data with synthetic figures; explicit demo mode remains available.
+The new framework/runtime dependencies are pinned in `package-lock.json`. Next 16 uses async request APIs; affected callers have been migrated. Signed photo proxy URLs prevent arbitrary resource requests, validate image hosts, and keep Google credentials out of redirect requests. Public routes no longer refresh Supabase sessions on every request; protected pages authenticate server-side. Provider clients have bounded request times and public health checks no longer make paid calls. Production dashboards stop replacing missing operating data with synthetic figures; explicit demo mode remains available.
 
 ## Key-check behavior
 

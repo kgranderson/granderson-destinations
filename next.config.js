@@ -4,6 +4,7 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
+    localPatterns: [{ pathname: '/api/places/photo' }, { pathname: '/**', search: '' }],
     remotePatterns: [
       { protocol: 'https', hostname: 'destinationgh.com' },
       { protocol: 'https', hostname: 'www.destinationgh.com' },
@@ -48,3 +49,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+

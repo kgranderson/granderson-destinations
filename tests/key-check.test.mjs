@@ -9,3 +9,10 @@ test('public Supabase secret is refused before transmission',async()=>{let calls
 test('Supabase public key uses apikey only and provider errors never leak',async()=>{const req=[];const r=await checkKeys({NEXT_PUBLIC_SUPABASE_URL:'https://yyhfdqunyufjoyztvcti.supabase.co',NEXT_PUBLIC_SUPABASE_ANON_KEY:'sb_publishable_TEST',ANTHROPIC_API_KEY:'DO_NOT_DISCLOSE'},{fetcher:async(url,opts)=>{req.push([url,opts]);if(url.includes('anthropic'))throw Error('DO_NOT_DISCLOSE');return new Response('{}',{status:200});}});assert.equal(req[0][1].headers.Authorization,undefined);assert.equal(req[0][1].redirect,'error');assert.ok(req[0][1].signal);assert.equal(JSON.stringify(r).includes('DO_NOT_DISCLOSE'),false);});
 test('restricted Resend sending key is not a false invalid-auth alarm',async()=>{const r=await checkKeys({RESEND_API_KEY:'test'},{fetcher:async()=>new Response(JSON.stringify({name:'restricted_api_key',message:'never echo'}),{status:401})});assert.equal(r.results.find(x=>x.id==='resend').detail,'restricted_key');});
 test('ClickUp resource access is checked and failure retained',async()=>{const calls=[];const r=await checkKeys({CLICKUP_API_TOKEN:'test',CLICKUP_LIST_PALM_SPRINGS:'123'},{fetcher:async url=>{calls.push(url);return new Response('{}',{status:url.endsWith('/user')?200:401});}});assert.equal(calls.length,2);assert.equal(r.results.find(x=>x.id==='clickup').outcome,'invalid_auth');});
+
+test('Claude check verifies the configured model without inference or model-name injection',async()=>{
+ let url;const r=await checkKeys({ANTHROPIC_API_KEY:'fixture',ANTHROPIC_MODEL:'claude-sonnet-4-5'},{fetcher:async(u)=>{url=u;return Response.json({id:'claude-sonnet-4-5-20250929'});}});
+ assert.equal(url,'https://api.anthropic.com/v1/models/claude-sonnet-4-5');assert.equal(r.results.find(r=>r.id==='anthropic_key').outcome,'pass');
+ const rejected=await checkKeys({ANTHROPIC_API_KEY:'fixture',ANTHROPIC_MODEL:'../messages'},{fetcher:()=>{throw new Error('must not call');}});
+ assert.equal(rejected.results.find(r=>r.id==='anthropic_key').detail,'model_invalid');
+});

@@ -1,39 +1,21 @@
 import { NextResponse } from 'next/server';
 import { FEATURE_FLAGS } from '@/lib/constants';
+import { boundedFetch,boundedJson } from '@/lib/http.mjs';
+import { verifyPhoto } from '@/lib/google/photo-signature.mjs';
 
-/**
- * Proxies a Google Place Photo request (NEW Places API) so we don't
- * expose the API key in <img src>. Caches at the CDN edge for 7 days.
- *
- * The "photo name" is the full resource path returned by Place
- * Details, e.g. "places/{place_id}/photos/{photo_id}".
- */
+// Only app-signed photo names can spend the server's Places allowance.
 export async function GET(request) {
-  const url = new URL(request.url);
-  const name = url.searchParams.get('name');
-  const maxWidth = url.searchParams.get('w') || '1200';
-
-  if (!FEATURE_FLAGS.googlePlacesLive() || !name) {
-    return new NextResponse(null, { status: 404 });
-  }
-
-  // Places API (New): GET https://places.googleapis.com/v1/{name}/media?maxWidthPx=N
-  // Auth via X-Goog-Api-Key header. Returns a binary image stream.
-  const upstream = `https://places.googleapis.com/v1/${encodeURI(name)}/media?maxWidthPx=${maxWidth}`;
-
-  let res;
+  const url=new URL(request.url),name=url.searchParams.get('name'),width=Number(url.searchParams.get('w')||1200);
+  if(!FEATURE_FLAGS.googlePlacesLive())return new NextResponse(null,{status:404});
+  if(!verifyPhoto(name,width,url.searchParams.get('sig'),process.env.GOOGLE_PLACES_API_KEY))return new NextResponse(null,{status:400});
   try {
-    res = await fetch(upstream, {
-      headers: { 'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY },
-      redirect: 'follow',
-    });
-  } catch {
-    return new NextResponse(null, { status: 502 });
-  }
-  if (!res.ok) return new NextResponse(null, { status: res.status });
-
-  const headers = new Headers();
-  headers.set('Content-Type', res.headers.get('Content-Type') || 'image/jpeg');
-  headers.set('Cache-Control', 'public, max-age=604800, s-maxage=2592000, immutable');
-  return new NextResponse(res.body, { status: 200, headers });
+    const metadata=await boundedFetch(`https://places.googleapis.com/v1/${name}/media?maxWidthPx=${width}&skipHttpRedirect=true`,{headers:{'X-Goog-Api-Key':process.env.GOOGLE_PLACES_API_KEY}});
+    if(!metadata.ok)return new NextResponse(null,{status:502});
+    const {photoUri}=await boundedJson(metadata,20000);const photo=new URL(photoUri);
+    if(photo.protocol!=='https:'||!/^lh\d+\.googleusercontent\.com$/.test(photo.hostname)||photo.port||photo.username||photo.password)return new NextResponse(null,{status:502});
+    // Never forward the API key to the image host, even on a redirect.
+    const response=await boundedFetch(photo,{redirect:'error'});
+    if(!response.ok||!/^image\/(jpeg|png|webp|gif|avif)(;|$)/i.test(response.headers.get('content-type')||''))return new NextResponse(null,{status:502});
+    return new NextResponse(response.body,{headers:{'Content-Type':response.headers.get('content-type'),'Cache-Control':'public, max-age=3600, s-maxage=86400','X-Content-Type-Options':'nosniff'}});
+  } catch {return new NextResponse(null,{status:502});}
 }

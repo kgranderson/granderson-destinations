@@ -1,5 +1,6 @@
 import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
+import { signPhoto } from './photo-signature.mjs';
 import { unstable_cache } from 'next/cache';
 import { FEATURE_FLAGS } from '@/lib/constants';
 
@@ -132,8 +133,9 @@ export async function getFirstPhotoRef(args) {
  * /api/places/photo so the API key never reaches the client.
  */
 export function buildPhotoProxyUrl(photoName, { maxWidth = 1200 } = {}) {
-  if (!photoName) return null;
-  return `/api/places/photo?name=${encodeURIComponent(photoName)}&w=${maxWidth}`;
+  const sig = signPhoto(photoName,maxWidth,process.env.GOOGLE_PLACES_API_KEY);
+  if (!sig) return null;
+  return `/api/places/photo?name=${encodeURIComponent(photoName)}&w=${maxWidth}&sig=${sig}`;
 }
 
 /**
