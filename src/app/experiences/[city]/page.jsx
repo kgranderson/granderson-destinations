@@ -14,7 +14,8 @@ export async function generateStaticParams() {
   return Object.keys(MARKETS).map((city) => ({ city }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const m = MARKETS[params.city];
   if (!m) return {};
   return {
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ExperiencesPage({ params }) {
+export default async function ExperiencesPage({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const m = MARKETS[params.city];
   if (!m) notFound();
 
@@ -98,3 +100,4 @@ export default async function ExperiencesPage({ params }) {
     </>
   );
 }
+

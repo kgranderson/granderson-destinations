@@ -1,3 +1,6 @@
+import { loadOccupancy } from '@/lib/hospitable/loader';
+import { actualPerformance } from '@/lib/analytics/model.mjs';
+import { requireOwner } from '@/lib/admin/require-owner';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
@@ -19,11 +22,10 @@ import { getMarketSummary, getCompSet } from '@/lib/airdna/client';
 
 export const revalidate = 600;
 
-export async function generateStaticParams() {
-  return PROPERTIES.map((p) => ({ slug: p.slug }));
-}
 
-export async function generateMetadata({ params }) {
+
+export async function generateMetadata({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const p = PROPERTIES.find((x) => x.slug === params.slug);
   if (!p) return {};
   return {
@@ -33,7 +35,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function EconomicsPage({ params }) {
+export default async function EconomicsPage({ params: paramsPromise }) {
+  await requireOwner('/economics');
+  const params = await paramsPromise;
   const property = PROPERTIES.find((x) => x.slug === params.slug);
   if (!property) notFound();
 
@@ -43,7 +47,7 @@ export default async function EconomicsPage({ params }) {
   // Build the rollup + derived series
   const rolled = withDerived(rollupMonthly(rows));
   const baselines =
-    rawBaselines || categoryBaselines(generateFinancialsSeed(), property.slug);
+    rawBaselines || {};
 
   // KPIs (trailing 12 vs prior 12)
   const ttm = rolled.slice(-12);
@@ -71,7 +75,7 @@ export default async function EconomicsPage({ params }) {
     expYoy: priorExpense > 0 ? (ttmExpense - priorExpense) / priorExpense : 0,
     noiYoy: priorNoi > 0 ? (ttmNoi - priorNoi) / priorNoi : 0,
     marginYoy:
-      priorRevenue > 0 ? ttmNoi / ttmRevenue - priorNoi / priorRevenue : 0,
+      priorRevenue > 0 && ttmRevenue > 0 ? ttmNoi / ttmRevenue - priorNoi / priorRevenue : 0,
     revPar30,
     revPar30Yoy: revPar30LY > 0 ? (revPar30 - revPar30LY) / revPar30LY : 0,
     lastMonthRevenue: lastMonth.revenue,
@@ -92,33 +96,14 @@ export default async function EconomicsPage({ params }) {
   ]);
 
   // Property-level ADR + RevPAR derived from last 30d
-  const propertyAdr = property.baseAdrUsd || 600;
-  const propertyOcc = 0.66; // TODO(M5): derive from PriceLabs trailing-30d realized
-  const propertyRevPar = +(propertyAdr * propertyOcc).toFixed(2);
+  const occupancyData = await loadOccupancy(property.slug);
+  const performance = occupancyData.stub ? null : actualPerformance(occupancyData.rows);
+  const propertyAdr = performance?.adr ?? null;
+  const propertyOcc = performance?.occupancy ?? null;
+  const propertyRevPar = performance?.revpar ?? null;
   const rank = compRank({ propertyAdr, propertyRevPar, compSet });
 
-  // Build per-category comp medians from market ADR + industry expense ratios.
-  // Approximation: avg-month gross = marketADR × marketOcc × 30; multiply by category
-  // expense ratio to get a typical-month category spend across the comp set.
-  const marketGrossMonthly =
-    (marketSummary?.adr || propertyAdr) * (marketSummary?.occupancy || 0.6) * 30;
-  const COMP_RATIOS = {
-    Cleaning: 0.115,
-    'Property management': 0.08,
-    Utilities: 0.05,
-    'Pool & landscaping': 0.045,
-    'Gardener & courtyard': 0.03,
-    Maintenance: 0.04,
-    Insurance: 0.025,
-    'Property tax': 0.05,
-    'Lodging tax remitted': 0.1,
-    'Marketing & OTA fees': 0.085,
-    'Supplies & restock': 0.025,
-    Concierge: 0.02,
-  };
-  const compMedians = Object.fromEntries(
-    Object.entries(COMP_RATIOS).map(([cat, r]) => [cat, marketGrossMonthly * r]),
-  );
+  const compMedians = {}; // No verified comparable expense dataset is available.
 
   // Flag expense outliers (both σ-based and baseline-based now active)
   const flagged = flagExpenses({ monthly: rolled, compMedians, baselines });
@@ -190,11 +175,11 @@ export default async function EconomicsPage({ params }) {
 
           {/* What-if */}
           <div className="mt-8">
-            <WhatIfPanel
+            {performance && <WhatIfPanel
               baseAdr={propertyAdr}
               baseOccupancy={propertyOcc}
               lastMonthRevenue={lastMonth.revenue}
-            />
+            />}
           </div>
         </Container>
       </main>
@@ -202,3 +187,4 @@ export default async function EconomicsPage({ params }) {
     </>
   );
 }
+

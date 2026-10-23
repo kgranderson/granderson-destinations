@@ -53,7 +53,7 @@ export async function isOwner({ providedKey } = {}) {
   // bypasses RLS, which is fine here since we already validated the user
   // identity via getServerClient's session cookies.
   try {
-    const supabaseSession = getServerClient();
+    const supabaseSession = await getServerClient();
     if (supabaseSession) {
       const { data: { user } } = await supabaseSession.auth.getUser();
       if (user?.id) {
@@ -74,7 +74,7 @@ export async function isOwner({ providedKey } = {}) {
     // Don't fail the request if the session check itself errors — fall
     // through to the legacy path. Logged so we notice if this gets noisy.
     // eslint-disable-next-line no-console
-    console.warn('[owner-auth] session check failed:', err.message || err);
+    console.warn('owner_auth_session_failed');
   }
 
   // ----- Path 2: legacy gd_owner cookie -----
@@ -99,3 +99,4 @@ export async function setOwnerCookie(value) {
     path: '/',
   });
 }
+

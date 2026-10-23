@@ -1,3 +1,4 @@
+import { secretEqual } from '@/lib/reliability/core.mjs';
 import 'server-only';
 import { NextResponse } from 'next/server';
 
@@ -11,9 +12,10 @@ export function withCronAuth(handler) {
     const auth = request.headers.get('authorization') || '';
     const provided = auth.replace(/^Bearer\s+/i, '').trim();
     const expected = process.env.CRON_SECRET;
-    if (!expected || provided !== expected) {
+    if (!secretEqual(provided, expected)) {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
     }
     return handler(request, ctx);
   };
 }
+

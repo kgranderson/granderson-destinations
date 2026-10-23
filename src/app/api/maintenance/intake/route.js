@@ -187,7 +187,7 @@ export async function POST(request) {
   // A2P 10DLC registration is pending. Owner is BCC'd for visibility.
   let email = { stub: true, skipped: true, note: 'No vendor matched / no email on file.' };
   if (matched?.email) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://grandersondestinations.com';
     const { subject, text, html } = buildVendorDispatchEmail({
       property,
       triage,
@@ -268,3 +268,4 @@ export async function POST(request) {
     reporterName: reporterName || null,
   });
 }
+

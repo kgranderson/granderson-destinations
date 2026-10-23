@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
 /**
  * Hospitable Public API client. Stub-first — when HOSPITABLE_API_KEY
@@ -19,7 +20,7 @@ async function hFetch(path, init = {}) {
   if (!isLive()) return { stub: true };
   let res;
   try {
-    res = await fetch(`${BASE}${path}`, {
+    res = await boundedFetch(`${BASE}${path}`, {
       ...init,
       headers: {
         Authorization: `Bearer ${process.env.HOSPITABLE_API_KEY}`,
@@ -28,11 +29,11 @@ async function hFetch(path, init = {}) {
       },
     });
   } catch (err) {
-    return { stub: true, error: String(err) };
+    return { stub: true, error: 'provider_unavailable' };
   }
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    return { stub: true, error: `Hospitable ${path} → ${res.status}: ${text.slice(0, 200)}` };
+
+    return { stub: true, error: `Hospitable ${path} → ${res.status}: request_failed` };
   }
   return res.json();
 }
@@ -75,3 +76,4 @@ export const listReservations = unstable_cache(_listReservations, ['hospitable-r
   revalidate: 600,
   tags: ['hospitable'],
 });
+

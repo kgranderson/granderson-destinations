@@ -9,7 +9,7 @@ import { getServerClient } from '@/lib/supabase/server';
  * in again to access the admin pages.
  */
 export async function POST() {
-  const supabase = getServerClient();
+  const supabase = await getServerClient();
   if (supabase) {
     await supabase.auth.signOut();
   }
@@ -25,3 +25,4 @@ export async function POST() {
   });
   return response;
 }
+

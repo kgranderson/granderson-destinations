@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
@@ -8,6 +9,7 @@ export async function updateSession(request) {
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
+      global: { fetch: boundedFetch },
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -29,3 +31,4 @@ export async function updateSession(request) {
 
   return { response, session: user };
 }
+

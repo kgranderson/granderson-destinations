@@ -1,0 +1,17 @@
+{
+  "name": "Granderson Destinations web app",
+  "app_id": "a_granderson_destinations",
+  "entity": "Granderson Holdings Inc.",
+  "criticality": "high",
+  "hosting": {
+    "vercel_project": "granderson-destinations",
+    "github_repo": "kgranderson/granderson-destinations",
+    "supabase_ref": "yyhfdqunyufjoyztvcti",
+    "domains": [
+      "grandersondestinations.com"
+    ]
+  },
+  "notes": "Daily key checks at 14:50 UTC after activation. Credentials stay on the production server. Registry uses the token-protected outcome endpoint. Confirm custom domain reaches this project before placing a read token.",
+  "created_at": "2026-10-23T03:41:16Z",
+  "updated_at": "2026-10-23T03:41:16Z"
+}

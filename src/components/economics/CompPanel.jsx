@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Trophy, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { usd, pct } from '@/lib/utils/format';
 
@@ -7,6 +8,7 @@ import { usd, pct } from '@/lib/utils/format';
  * "to-top-quartile" gap.
  */
 export function CompPanel({ marketSummary, compRank, propertyAdr, propertyRevPar, isStub }) {
+  if (!compRank?.medianAdr || propertyAdr == null || propertyRevPar == null) return <div className="rounded-2xl border border-brand-tan p-6"><h3 className="display text-xl">Comparable performance</h3><p className="mt-3 text-sm text-brand-slate">Import actual results and a matched comparable set to measure your position.</p><Link className="mt-4 inline-block text-sm text-brand-terracotta underline" href="/admin/analytics">Open property analytics →</Link></div>;
   const adrToTQ = compRank.topQuartileAdr ? propertyAdr - compRank.topQuartileAdr : null;
   const revParToTQ = compRank.topQuartileRevPar ? propertyRevPar - compRank.topQuartileRevPar : null;
 
@@ -21,7 +23,7 @@ export function CompPanel({ marketSummary, compRank, propertyAdr, propertyRevPar
         )}
       </div>
       <p className="mt-1 text-xs text-brand-slate">
-        Your trailing-30 ADR + RevPAR vs. the {marketSummary?.activeListings?.toLocaleString() ?? '—'} active comparable listings in the market.
+        Your actual ADR + RevPAR vs. the {marketSummary?.activeListings?.toLocaleString() ?? '—'} active comparable listings in the market.
       </p>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -98,3 +100,4 @@ function Block({ title, you, median, tq, percentile, gap }) {
     </div>
   );
 }
+

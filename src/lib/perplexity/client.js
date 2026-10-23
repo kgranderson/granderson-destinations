@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
 /**
  * Perplexity Sonar client. Used for:
@@ -29,7 +30,7 @@ export async function perplexityChat({
 
   let res;
   try {
-    res = await fetch(`${BASE}/chat/completions`, {
+    res = await boundedFetch(`${BASE}/chat/completions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
@@ -48,16 +49,16 @@ export async function perplexityChat({
     });
   } catch (err) {
     // Network failure — fall through to stub so the page renders.
-    return { stub: true, content: '', citations: [], error: String(err) };
+    return { stub: true, content: '', citations: [], error: 'provider_unavailable' };
   }
 
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
+
     return {
       stub: true,
       content: '',
       citations: [],
-      error: `Perplexity ${res.status}: ${text.slice(0, 200)}`,
+      error: `Perplexity ${res.status}: request_failed`,
     };
   }
 
@@ -69,3 +70,4 @@ export async function perplexityChat({
     raw: data,
   };
 }
+

@@ -1,19 +1,5 @@
 import 'server-only';
-/**
- * Per-property Meta (Instagram Graph) credentials.
- *
- * The legacy social engine read a single global META_LONG_LIVED_TOKEN
- * + META_INSTAGRAM_BUSINESS_ID from env. Phase C moves to per-property
- * creds stored on public.properties so each property posts as its own
- * IG Business account.
- *
- * Tokens are stored in plaintext in the database — the service-role
- * key is the only credential that can read them, and Supabase RLS
- * is enabled on the table. A follow-up will wrap them with pgsodium
- * for at-rest encryption, but the priority for v1 is the operator
- * workflow (create + view + push). The settings UI masks tokens to
- * last 4 chars after the first save.
- */
+/** Provider tokens live in a private service-role-only table, never public property rows. */
 import { getAdminClient } from '@/lib/supabase/admin';
 
 /**
@@ -24,16 +10,12 @@ export async function loadMetaCreds(propertySlug) {
   const supabase = getAdminClient();
   if (!supabase) return null;
 
-  const { data, error } = await supabase
-    .from('properties')
-    .select(
-      'id, slug, ig_business_id, ig_access_token, ig_token_expires_at, fb_page_id, meta_ad_account_id',
-    )
-    .eq('slug', propertySlug)
-    .maybeSingle();
+  const { data: prop } = await supabase.from('properties').select('id,slug').eq('slug',propertySlug).maybeSingle();
+  if (!prop) return null;
+  const { data, error } = await supabase.from('property_integrations').select('ig_business_id,ig_access_token,ig_token_expires_at,fb_page_id,meta_ad_account_id').eq('property_id',prop.id).maybeSingle();
 
   if (error || !data) return null;
-  return data;
+  return { ...data, id: prop.id, slug: prop.slug };
 }
 
 /**
@@ -101,16 +83,11 @@ export async function saveMetaCreds(propertySlug, partial) {
     return maskMetaCreds(await loadMetaCreds(propertySlug));
   }
 
-  const { data, error } = await supabase
-    .from('properties')
-    .update(update)
-    .eq('slug', propertySlug)
-    .select(
-      'id, slug, ig_business_id, ig_access_token, ig_token_expires_at, fb_page_id, meta_ad_account_id',
-    )
-    .single();
+  const { data: prop } = await supabase.from('properties').select('id,slug').eq('slug',propertySlug).maybeSingle();
+  if (!prop) throw new Error('property_missing');
+  const { data, error } = await supabase.from('property_integrations').upsert({property_id:prop.id,...update},{onConflict:'property_id'}).select('ig_business_id,ig_access_token,ig_token_expires_at,fb_page_id,meta_ad_account_id').single();
 
-  if (error) throw new Error(error.message || 'failed to save credentials');
+  if (error) throw new Error('failed to save credentials');
   return maskMetaCreds(data);
 }
 
@@ -122,3 +99,4 @@ export async function saveMetaCreds(propertySlug, partial) {
 export function hasPropertyCreds(creds) {
   return !!(creds?.ig_business_id && creds?.ig_access_token);
 }
+

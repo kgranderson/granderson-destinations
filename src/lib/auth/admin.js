@@ -24,6 +24,10 @@ import { isOwner } from '@/lib/admin/owner-auth';
  */
 export function withAdmin(handler) {
   return async (request, ctx) => {
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+      const origin = request.headers.get('origin');
+      if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: 'origin_rejected' }, { status: 403 });
+    }
     const auth = await isOwner();
     if (!auth.authed) {
       // 401 (Unauthorized) signals "you need to authenticate — show the
@@ -39,3 +43,4 @@ export function withAdmin(handler) {
     return handler(request, ctx, auth);
   };
 }
+

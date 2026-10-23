@@ -26,7 +26,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
   }
 
-  const supabase = getServerClient();
+  const supabase = await getServerClient();
   if (!supabase) return NextResponse.json({ error: 'auth not configured' }, { status: 503 });
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -58,3 +58,4 @@ export async function POST(request) {
 
   return NextResponse.json({ ok: true, user: { id: data.user.id, email: data.user.email } });
 }
+

@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
 import { createClient } from '@supabase/supabase-js';
 
@@ -28,5 +29,7 @@ export function getAdminClient() {
   }
   return createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
+    global: { fetch: boundedFetch },
   });
 }
+
