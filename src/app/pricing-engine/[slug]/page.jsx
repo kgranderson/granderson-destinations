@@ -1,3 +1,4 @@
+import { requireOwner } from '@/lib/admin/require-owner';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
@@ -12,11 +13,10 @@ import { buildEventOverrides } from '@/lib/pricelabs/sync';
 
 export const revalidate = 600;
 
-export async function generateStaticParams() {
-  return PROPERTIES.map((p) => ({ slug: p.slug }));
-}
 
-export async function generateMetadata({ params }) {
+
+export async function generateMetadata({ params: paramsPromise }) {
+  const params = await paramsPromise;
   const p = PROPERTIES.find((x) => x.slug === params.slug);
   if (!p) return {};
   return {
@@ -26,7 +26,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function PricingPropertyPage({ params }) {
+export default async function PricingPropertyPage({ params: paramsPromise }) {
+  await requireOwner('/pricing-engine');
+  const params = await paramsPromise;
   const property = PROPERTIES.find((p) => p.slug === params.slug);
   if (!property) notFound();
 
@@ -99,3 +101,4 @@ export default async function PricingPropertyPage({ params }) {
     </>
   );
 }
+

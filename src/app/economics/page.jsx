@@ -1,3 +1,4 @@
+import { requireOwner } from '@/lib/admin/require-owner';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
@@ -17,6 +18,7 @@ export const metadata = {
 };
 
 export default async function EconomicsIndex() {
+  await requireOwner('/economics');
   const blocks = await Promise.all(
     PROPERTIES.map(async (p) => {
       const { rows } = await loadMonthly(p.slug);
@@ -125,3 +127,4 @@ function Mini({ label, value, delta }) {
     </div>
   );
 }
+

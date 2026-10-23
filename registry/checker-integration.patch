@@ -1,0 +1,45 @@
+--- a/checker/adapters/__init__.py
++++ b/checker/adapters/__init__.py
+@@ -13,9 +13,10 @@
+ """
+ import re
+ 
+-from . import contributionarc_inapp, essayarc_inapp, flipperbee_inapp, granted_inapp, rdap_domain, tls_cert
++from . import granderson_destinations_inapp, contributionarc_inapp, essayarc_inapp, flipperbee_inapp, granted_inapp, rdap_domain, tls_cert
+ 
+ ADAPTERS = {
++    "granderson_destinations_inapp": granderson_destinations_inapp.check,
+     "tls_cert": tls_cert.check,
+     "rdap_domain": rdap_domain.check,
+     "granted_inapp": granted_inapp.check,
+@@ -25,7 +26,7 @@
+ }
+ 
+ # Where a provider-sourced expiry date came from, recorded in expiry.source.
+-EXPIRY_SOURCE = {"tls_cert": "tls", "rdap_domain": "rdap", "granted_inapp": "provider_api", "essayarc_inapp": "provider_api", "flipperbee_inapp": "provider_api", "contributionarc_inapp": "provider_api"}
++EXPIRY_SOURCE = {"granderson_destinations_inapp": "provider_api", "tls_cert": "tls", "rdap_domain": "rdap", "granted_inapp": "provider_api", "essayarc_inapp": "provider_api", "flipperbee_inapp": "provider_api", "contributionarc_inapp": "provider_api"}
+ 
+ # The only result codes that exist (PLAN.md 6.2, credential level).
+ CODES = frozenset({
+--- a/checker/run_checks.py
++++ b/checker/run_checks.py
+@@ -40,16 +40,16 @@
+ import expiry  # noqa: E402
+ import sanitize  # noqa: E402
+ from adapters import ADAPTERS, CODES, EXPIRY_SOURCE, result  # noqa: E402
+-from adapters import contributionarc_inapp, essayarc_inapp, flipperbee_inapp, granted_inapp  # noqa: E402
++from adapters import granderson_destinations_inapp, contributionarc_inapp, essayarc_inapp, flipperbee_inapp, granted_inapp  # noqa: E402
+ import hub  # noqa: E402
+ 
+ # In-app adapters → (app name, meta/checker field). meta/checker is deep-merged on write, so each app keeps
+ # its own flat field (PLAN 17.1 E2): Granted stays at "inapp" exactly as before; EssayArc is "inapp_essayarc"; FlipperBee is
+ # "inapp_flipperbee"; ContributionArc is "inapp_contributionarc".
+-INAPP_SUMMARY = {"granted_inapp": ("granted", "inapp"), "essayarc_inapp": ("essayarc", "inapp_essayarc"), "flipperbee_inapp": ("flipperbee", "inapp_flipperbee"),
++INAPP_SUMMARY = {"granderson_destinations_inapp": ("granderson_destinations", "inapp_granderson_destinations"), "granted_inapp": ("granted", "inapp"), "essayarc_inapp": ("essayarc", "inapp_essayarc"), "flipperbee_inapp": ("flipperbee", "inapp_flipperbee"),
+                  "contributionarc_inapp": ("contributionarc", "inapp_contributionarc")}
+ # Every detail an in-app adapter attaches when the app itself could not be read (token file, auth, transport, payload).
+-LOAD_ERROR_DETAILS = (granted_inapp.LOAD_ERROR_DETAILS | essayarc_inapp.LOAD_ERROR_DETAILS | flipperbee_inapp.LOAD_ERROR_DETAILS
++LOAD_ERROR_DETAILS = (granderson_destinations_inapp.LOAD_ERROR_DETAILS | granted_inapp.LOAD_ERROR_DETAILS | essayarc_inapp.LOAD_ERROR_DETAILS | flipperbee_inapp.LOAD_ERROR_DETAILS
+                       | contributionarc_inapp.LOAD_ERROR_DETAILS)
+ 
+ RECENT_MAX = 60

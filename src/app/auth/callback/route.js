@@ -12,16 +12,18 @@ export async function GET(request) {
   const code = url.searchParams.get('code');
   // /dashboard isn't built yet; admins generally want /economics.
   // The login page passes ?redirect= when it wants somewhere specific.
-  const next = url.searchParams.get('redirect') || '/economics';
+  const requested = url.searchParams.get('redirect') || '/admin';
+  const next = requested.startsWith('/') && !requested.startsWith('//') && !requested.includes('\\') ? requested : '/admin';
 
-  const supabase = getServerClient();
+  const supabase = await getServerClient();
   if (!supabase || !code) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
-    return NextResponse.redirect(new URL(`/auth/login?error=${encodeURIComponent(error.message)}`, request.url));
+    return NextResponse.redirect(new URL(`/auth/login?error=${'sign_in_failed'}`, request.url));
   }
   return NextResponse.redirect(new URL(next, request.url));
 }
+

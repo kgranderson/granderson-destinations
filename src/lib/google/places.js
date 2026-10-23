@@ -1,4 +1,6 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
+import { signPhoto } from './photo-signature.mjs';
 import { unstable_cache } from 'next/cache';
 import { FEATURE_FLAGS } from '@/lib/constants';
 
@@ -23,7 +25,7 @@ async function _findPlace({ query }) {
   if (!FEATURE_FLAGS.googlePlacesLive()) return { stub: true, placeId: null };
   let res;
   try {
-    res = await fetch(TEXTSEARCH, {
+    res = await boundedFetch(TEXTSEARCH, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,11 +35,11 @@ async function _findPlace({ query }) {
       body: JSON.stringify({ textQuery: query, pageSize: 1 }),
     });
   } catch (err) {
-    return { stub: false, placeId: null, error: String(err) };
+    return { stub: false, placeId: null, error: 'provider_unavailable' };
   }
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    return { stub: false, placeId: null, error: `${res.status}: ${text.slice(0, 200)}` };
+
+    return { stub: false, placeId: null, error: `${res.status}: request_failed` };
   }
   const data = await res.json();
   const placeId = data.places?.[0]?.id ?? null;
@@ -50,18 +52,18 @@ async function _getFirstPhotoRef({ placeId }) {
   }
   let res;
   try {
-    res = await fetch(PLACE_DETAILS(placeId), {
+    res = await boundedFetch(PLACE_DETAILS(placeId), {
       headers: {
         'X-Goog-Api-Key': process.env.GOOGLE_PLACES_API_KEY,
         'X-Goog-FieldMask': 'displayName,formattedAddress,rating,userRatingCount,photos',
       },
     });
   } catch (err) {
-    return { stub: false, photoReference: null, error: String(err) };
+    return { stub: false, photoReference: null, error: 'provider_unavailable' };
   }
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    return { stub: false, photoReference: null, error: `${res.status}: ${text.slice(0, 200)}` };
+
+    return { stub: false, photoReference: null, error: `${res.status}: request_failed` };
   }
   const data = await res.json();
   // Place Photos API (New) returns photo references as
@@ -114,7 +116,7 @@ export async function findPlace(args) {
   try {
     return await _cachedFindPlace(args);
   } catch (err) {
-    return err.placesResponse || { stub: false, placeId: null, error: String(err) };
+    return err.placesResponse || { stub: false, placeId: null, error: 'provider_unavailable' };
   }
 }
 
@@ -122,7 +124,7 @@ export async function getFirstPhotoRef(args) {
   try {
     return await _cachedGetFirstPhotoRef(args);
   } catch (err) {
-    return err.placesResponse || { stub: false, photoReference: null, error: String(err) };
+    return err.placesResponse || { stub: false, photoReference: null, error: 'provider_unavailable' };
   }
 }
 
@@ -131,8 +133,9 @@ export async function getFirstPhotoRef(args) {
  * /api/places/photo so the API key never reaches the client.
  */
 export function buildPhotoProxyUrl(photoName, { maxWidth = 1200 } = {}) {
-  if (!photoName) return null;
-  return `/api/places/photo?name=${encodeURIComponent(photoName)}&w=${maxWidth}`;
+  const sig = signPhoto(photoName,maxWidth,process.env.GOOGLE_PLACES_API_KEY);
+  if (!sig) return null;
+  return `/api/places/photo?name=${encodeURIComponent(photoName)}&w=${maxWidth}&sig=${sig}`;
 }
 
 /**
@@ -144,3 +147,4 @@ export async function lookupPhotoUrl({ query, maxWidth }) {
   const { photoReference } = await getFirstPhotoRef({ placeId });
   return buildPhotoProxyUrl(photoReference, { maxWidth });
 }
+

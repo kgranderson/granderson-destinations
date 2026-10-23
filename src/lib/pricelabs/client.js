@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
 /**
  * PriceLabs client (Feature 5 — dynamic pricing backend).
@@ -31,7 +32,7 @@ async function plFetch(path, init = {}) {
   }
   let res;
   try {
-    res = await fetch(`${DEFAULT_BASE}${path}`, {
+    res = await boundedFetch(`${DEFAULT_BASE}${path}`, {
       ...init,
       headers: {
         'X-API-Key': process.env.PRICELABS_API_KEY,
@@ -43,11 +44,11 @@ async function plFetch(path, init = {}) {
     return { failed: true, error: `PriceLabs ${path} network error: ${String(err)}` };
   }
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
+
     return {
       failed: true,
       status: res.status,
-      error: `PriceLabs ${path} → ${res.status}: ${text.slice(0, 200)}`,
+      error: `PriceLabs ${path} → ${res.status}: request_failed`,
     };
   }
   return res.json();
@@ -118,3 +119,4 @@ export async function pushPriceOverrides({ listingId, overrides }) {
     body: JSON.stringify({ listing_id: listingId, overrides }),
   });
 }
+

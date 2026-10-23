@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Home,
+  ShieldCheck,
+  Brain,
+  BarChart3,
   LineChart,
   Calendar,
   Wrench,
@@ -18,6 +21,9 @@ import {
 import { cn } from '@/lib/utils/cn';
 
 const SECTIONS = [
+  { href: '/admin/keys', label: 'API health', icon: ShieldCheck, match: p => p.startsWith('/admin/keys') },
+  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3, match: p => p.startsWith('/admin/analytics') },
+  { href: '/admin/optimize', label: 'Property thinking', icon: Brain, match: p => p.startsWith('/admin/optimize') },
   { href: '/admin', label: 'Dashboard', icon: Home, match: (p) => p === '/admin' },
   { href: '/economics', label: 'Financial', icon: LineChart, match: (p) => p.startsWith('/economics') },
   { href: '/admin/occupancy', label: 'Occupancy', icon: Calendar, match: (p) => p.startsWith('/admin/occupancy') },
@@ -95,3 +101,4 @@ export function AdminNav({ profile }) {
     </aside>
   );
 }
+

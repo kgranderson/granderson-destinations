@@ -33,6 +33,7 @@ async function _loadOccupancy(propertySlug) {
       }
     }
   }
+  if (process.env.NEXT_PUBLIC_DEMO_MODE !== 'true') return { stub: false, missing: true, rows: [] };
   return { stub: true, rows: generateOccupancySeed(propertySlug) };
 }
 
@@ -43,3 +44,4 @@ export function loadOccupancy(propertySlug) {
     { revalidate: 600, tags: ['occupancy', `occupancy:${propertySlug}`] },
   )();
 }
+

@@ -1,3 +1,4 @@
+import { requireOwner } from '@/lib/admin/require-owner';
 import Link from 'next/link';
 import { NavBar } from '@/components/shared/NavBar';
 import { Footer } from '@/components/shared/Footer';
@@ -18,7 +19,8 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function SocialPage({ searchParams }) {
+export default async function SocialPage({ searchParams }) {
+  await requireOwner('/social');
   const slug = searchParams?.property || PROPERTIES[0].slug;
   const property = PROPERTIES.find((p) => p.slug === slug) || PROPERTIES[0];
   const photos = listPhotosForProperty(property.slug);
@@ -133,3 +135,4 @@ export default function SocialPage({ searchParams }) {
     </>
   );
 }
+

@@ -362,6 +362,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
           Need the template?{' '}
           <a
             href="/api/admin/vendors/template"
+            download
             className="text-brand-ink underline underline-offset-4 hover:no-underline">
             Download the CSV template ↓
           </a>{' '}
@@ -430,3 +431,4 @@ function Stat({ label, value }) {
     </div>
   );
 }
+

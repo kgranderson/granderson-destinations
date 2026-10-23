@@ -58,6 +58,7 @@ async function _loadMonthly(propertySlug) {
       }
     }
   }
+  if (process.env.NEXT_PUBLIC_DEMO_MODE !== 'true') return { stub: false, missing: true, rows: [], baselines: {} };
   // Fall back to seed
   const seed = generateFinancialsSeed();
   return {
@@ -78,3 +79,4 @@ export function loadMonthly(propertySlug) {
     { revalidate: 600, tags: ['economics', `economics:${propertySlug}`] },
   )();
 }
+

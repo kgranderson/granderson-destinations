@@ -1,7 +1,7 @@
 import { PROPERTIES, ANCHOR_EVENTS_SEED, MARKETS } from '@/lib/constants';
 
 export default function sitemap() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com';
   const now = new Date();
   // /auth/* excluded until the real sign-in flow ships in M7.
   const fixed = ['', '/destinations', '/experiences', '/events', '/intel', '/about', '/contact'];
@@ -36,3 +36,4 @@ export default function sitemap() {
     })),
   ];
 }
+

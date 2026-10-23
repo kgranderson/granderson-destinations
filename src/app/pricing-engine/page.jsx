@@ -1,3 +1,4 @@
+import { requireOwner } from '@/lib/admin/require-owner';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { NavBar } from '@/components/shared/NavBar';
@@ -15,7 +16,8 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function PricingIndex() {
+export default async function PricingIndex() {
+  await requireOwner('/pricing-engine');
   const blocks = PROPERTIES.map((p) => {
     const overrides = buildEventOverrides({ property: p });
     return {
@@ -80,3 +82,4 @@ function Mini({ label, value }) {
     </div>
   );
 }
+

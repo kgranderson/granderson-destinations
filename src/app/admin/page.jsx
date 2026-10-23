@@ -66,6 +66,7 @@ export default async function AdminHome() {
         occupancy: available > 0 ? booked / available : 0,
         nightsBooked: booked,
         stub,
+        nightsAvailable: available,
       };
     }),
   );
@@ -81,7 +82,7 @@ export default async function AdminHome() {
   const portfolioNoi = finBlocks.reduce((s, b) => s + b.noi, 0);
   const portfolioMargin = portfolioRev > 0 ? portfolioNoi / portfolioRev : 0;
   const portfolioOcc =
-    occBlocks.reduce((s, b) => s + b.occupancy, 0) / Math.max(1, occBlocks.length);
+    occBlocks.reduce((s, b) => s + b.nightsBooked, 0) / Math.max(1, occBlocks.reduce((s, b) => s + b.nightsAvailable, 0));
 
   return (
     <>
@@ -103,6 +104,8 @@ export default async function AdminHome() {
               across {PROPERTIES.length} {PROPERTIES.length === 1 ? 'property' : 'properties'}.
             </p>
 
+            <div className="mt-7 flex flex-wrap gap-3">{[['/admin/keys','API health'],['/admin/analytics','Property analytics'],['/admin/optimize','Property thinking']].map(([href,label])=><Link key={href} href={href} className="rounded-full border border-brand-tan bg-white px-5 py-3 text-sm">{label} →</Link>)}</div>
+            {finBlocks.every(b=>b.revenue===0)&&<p className="mt-5 rounded-xl bg-brand-sand p-4 text-sm">No financial results are available. Import your T12 and actual occupancy to establish the portfolio baseline.</p>}
             {/* Portfolio KPIs */}
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <KPI label="Portfolio TTM revenue" value={usd(portfolioRev, { fractionDigits: 0 })} />
@@ -270,3 +273,4 @@ function ToolCard({ href, icon: Icon, title, subtitle, stats, action, badge, urg
     </article>
   );
 }
+

@@ -2,7 +2,7 @@ import './globals.css';
 import { BRAND } from '@/lib/constants';
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com'),
   title: {
     default: `${BRAND.name} · Curated luxury stays`,
     template: `%s · ${BRAND.name}`,
@@ -62,3 +62,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

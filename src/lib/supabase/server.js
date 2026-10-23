@@ -1,3 +1,4 @@
+import { boundedFetch } from '@/lib/http.mjs';
 import 'server-only';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
@@ -26,16 +27,17 @@ function validSupabaseUrl(u) {
  * For public reads from cacheable pages, use getPublicReadClient().
  * Returns null in stub mode OR when SUPABASE_URL is malformed.
  */
-export function getServerClient() {
+export async function getServerClient() {
   const url = validSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
   if (!url || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return null;
   }
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   return createServerClient(
     url,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
+      global: { fetch: boundedFetch },
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -64,8 +66,10 @@ export function getPublicReadClient() {
   }
   return createClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
+    global: { fetch: boundedFetch },
   });
 }
 
 // Re-export from admin.js for backwards-compat. Prefer importing from '@/lib/supabase/admin' directly.
 export { getAdminClient } from './admin';
+

@@ -27,7 +27,7 @@ export default async function QrCardPage({ params, searchParams }) {
   // Build the URL the QR will resolve to.
   // Hard-code the production host so QR cards always point to the live site
   // even when generated from a localhost preview.
-  const host = process.env.NEXT_PUBLIC_SITE_URL || 'https://granderson-destinations.vercel.app';
+  const host = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grandersondestinations.com';
   const targetUrl = `${host}/maintenance/report?property=${property.slug}`;
 
   // qr-server.com is a free public QR API — encodes the URL into a PNG.
@@ -202,3 +202,4 @@ export default async function QrCardPage({ params, searchParams }) {
 export function generateStaticParams() {
   return PROPERTIES.map((p) => ({ property: p.slug }));
 }
+

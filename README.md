@@ -72,3 +72,8 @@ Vercel deploy: import the GitHub repo from the Vercel dashboard. Add envs from `
 ## Stub mode
 
 Every integration in `src/lib/<service>/` checks for its API key on first call. If absent, it returns realistic mock data and tags the response `{ stub: true }`. This lets the marketing site render and the dashboards populate while you provision real keys one-by-one. Adding a key (in Vercel envs) flips that integration to live with zero code change.
+
+
+## Reliability and owner intelligence
+
+See [the implementation and activation runbook](docs/reliability/KEY-CHECK.md) for the security migration, key health panel, comparable analytics, optimization workflow and recommended follow-up features.
