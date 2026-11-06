@@ -6,7 +6,7 @@ import { Footer } from '@/components/shared/Footer';
 import { AdminNav } from '@/components/shared/AdminNav';
 import { PropertyMarketingTabs } from '@/components/admin/PropertyMarketingTabs';
 import { isOwner } from '@/lib/admin/owner-auth';
-import { PROPERTIES, FEATURE_FLAGS } from '@/lib/constants';
+import { PROPERTIES, FEATURE_FLAGS, MARKETS } from '@/lib/constants';
 import { listListings, getRecommendedPrices } from '@/lib/pricelabs/client';
 import { buildEventOverrides } from '@/lib/pricelabs/sync';
 import { money } from '@/lib/utils/format';
@@ -58,9 +58,12 @@ export default async function PricingCockpitPage({ params }) {
     ? await getRecommendedPrices({
         listingId: matchedListing.id,
         pms: matchedListing.pms,
+        currency: matchedListing.currency,
+        timeZone: MARKETS[property.slug]?.timeZone,
         days: 90,
       })
     : [];
+  const pricesMissing = !!matchedListing && !pricelabsFailed && prices.length === 0;
   const currency = prices[0]?.currency || matchedListing?.currency || 'USD';
   const fmtMoney = (n) => money(n, currency);
 
@@ -77,7 +80,8 @@ export default async function PricingCockpitPage({ params }) {
     const d = new Date(row.date);
     return d.getDay() !== 5 && d.getDay() !== 6;
   });
-  const avg = (arr) => (arr.length ? Math.round(arr.reduce((s, r) => s + r.price, 0) / arr.length) : 0);
+  // null (rendered "—") when there is no data — never a misleading $0.
+  const avg = (arr) => (arr.length ? Math.round(arr.reduce((s, r) => s + r.price, 0) / arr.length) : null);
   const weekendAvg = avg(weekendDays);
   const weekdayAvg = avg(weekdayDays);
   const blendedAvg = avg(last90);
@@ -121,7 +125,7 @@ export default async function PricingCockpitPage({ params }) {
               <KPI
                 label="Event uplift windows"
                 value={eventOverrides.length}
-                sub={eventOverrides[0]?.label || 'none scheduled'}
+                sub={eventOverrides[0]?.eventName || 'none scheduled'}
               />
             </div>
 
@@ -167,6 +171,15 @@ export default async function PricingCockpitPage({ params }) {
                   </div>
                   <ModeBadge live={FEATURE_FLAGS.pricelabsLive()} />
                 </div>
+              </section>
+            )}
+
+            {pricesMissing && (
+              <section className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/70 p-5 text-sm text-amber-900">
+                <strong>PriceLabs returned no prices for this listing.</strong> Check that sync is
+                turned on for it in PriceLabs and that prices have been fetched (Save &amp; Refresh).
+                If you just reloaded several times, wait a minute — PriceLabs allows 10 requests
+                per minute.
               </section>
             )}
 

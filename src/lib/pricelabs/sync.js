@@ -7,7 +7,7 @@ import 'server-only';
  * the public-facing event premium pages. Returns the overrides
  * payload (or pushes it via the PriceLabs API in live mode).
  */
-import { ANCHOR_EVENTS_SEED } from '@/lib/constants';
+import { ANCHOR_EVENTS_SEED, FEATURE_FLAGS } from '@/lib/constants';
 import { calcEventPremium } from '@/lib/events/premium';
 import { pushPriceOverrides } from './client';
 
@@ -72,6 +72,9 @@ export async function syncEventOverrides({ property, window } = {}) {
     note: o.eventName,
   }));
   if (!property.pricelabsListingId) {
+    if (FEATURE_FLAGS.pricelabsLive()) {
+      return { pushed: 0, failed: true, error: 'No PriceLabs listing is linked to this property.', overrides };
+    }
     return { pushed: 0, stub: true, overrides, reason: 'no listing id' };
   }
   const res = await pushPriceOverrides({

@@ -30,7 +30,8 @@ export function PricingCockpit({ propertySlug, listingId, currency = 'USD', init
   const eventByDate = useMemo(() => {
     const map = new Map();
     for (const ev of eventOverrides) {
-      // ev shape: { label, startDate, endDate, recommendedAdr, adrUpliftPct }
+      // ev shape (lib/pricelabs/sync buildEventOverrides):
+      // { eventName, startDate, endDate, recommendedPrice (USD), adrUpliftPct }
       const start = new Date(ev.startDate);
       const end = new Date(ev.endDate);
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
@@ -63,7 +64,7 @@ export function PricingCockpit({ propertySlug, listingId, currency = 'USD', init
       const end = new Date(ev.endDate);
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const iso = d.toISOString().slice(0, 10);
-        next[iso] = Math.round(ev.recommendedAdr);
+        next[iso] = Math.round(ev.recommendedPrice);
       }
       return next;
     });
@@ -187,28 +188,34 @@ export function PricingCockpit({ propertySlug, listingId, currency = 'USD', init
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {eventOverrides.map((ev) => (
               <article
-                key={`${ev.label}-${ev.startDate}`}
+                key={`${ev.eventSlug || ev.eventName}-${ev.startDate}`}
                 className="flex flex-col rounded-xl border border-brand-tan/60 bg-brand-cloud p-4 shadow-soft"
               >
                 <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/70">
                   <Calendar size={12} />
                   {ev.startDate} → {ev.endDate}
                 </div>
-                <p className="mt-2 text-sm font-medium text-brand-ink">{ev.label}</p>
+                <p className="mt-2 text-sm font-medium text-brand-ink">{ev.eventName}</p>
                 <p className="mt-1 text-xs text-brand-slate">
                   Recommended ADR:{' '}
                   <span className="font-medium text-brand-ink tabular-nums">
-                    ${Math.round(ev.recommendedAdr).toLocaleString()}
+                    {money(ev.recommendedPrice, 'USD')}
                   </span>{' '}
                   ({ev.adrUpliftPct ? `+${Math.round((ev.adrUpliftPct - 1) * 100)}%` : '—'})
                 </p>
-                <button
-                  type="button"
-                  onClick={() => applyEventUplift(ev)}
-                  className="mt-3 self-start rounded-full border border-brand-ink/40 px-3 py-1 text-[11px] text-brand-ink hover:bg-brand-sand/50"
-                >
-                  Apply to {daysBetween(ev.startDate, ev.endDate)} days
-                </button>
+                {currency === 'USD' ? (
+                  <button
+                    type="button"
+                    onClick={() => applyEventUplift(ev)}
+                    className="mt-3 self-start rounded-full border border-brand-ink/40 px-3 py-1 text-[11px] text-brand-ink hover:bg-brand-sand/50"
+                  >
+                    Apply to {daysBetween(ev.startDate, ev.endDate)} days
+                  </button>
+                ) : (
+                  <p className="mt-3 text-[11px] text-brand-slate">
+                    Event prices are in USD; this listing is priced in {currency || 'another currency'}.
+                  </p>
+                )}
               </article>
             ))}
           </div>
@@ -272,7 +279,7 @@ export function PricingCockpit({ propertySlug, listingId, currency = 'USD', init
                     <td className="px-4 py-2 text-right text-xs">
                       {event ? (
                         <span className="rounded-full bg-brand-gold/30 px-2 py-0.5 text-[10px] uppercase tracking-widest text-brand-ink">
-                          {event.label}
+                          {event.eventName}
                         </span>
                       ) : (
                         <span className="text-brand-slate/40">—</span>

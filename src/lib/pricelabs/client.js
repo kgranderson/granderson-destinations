@@ -18,9 +18,27 @@ import 'server-only';
  * In stub mode (no PRICELABS_API_KEY) returns deterministic mock data so
  * the UI is fully usable while keys are provisioned.
  */
-import { FEATURE_FLAGS, PROPERTIES } from '@/lib/constants';
+import { FEATURE_FLAGS, PROPERTIES, MARKETS } from '@/lib/constants';
 
 const DEFAULT_BASE = process.env.PRICELABS_BASE_URL || 'https://api.pricelabs.co/v1';
+
+// Short per-instance cache for successful reads. PriceLabs allows 10
+// calls per account per minute and only refreshes prices daily, so
+// re-fetching on every page view buys nothing and risks 429s.
+const CACHE_TTL_MS = 60_000;
+const cache = new Map();
+function cacheGet(key) {
+  const hit = cache.get(key);
+  if (!hit) return undefined;
+  if (Date.now() - hit.at > CACHE_TTL_MS) {
+    cache.delete(key);
+    return undefined;
+  }
+  return hit.value;
+}
+function cacheSet(key, value) {
+  cache.set(key, { at: Date.now(), value });
+}
 
 /**
  * Three response shapes — callers must distinguish:
@@ -83,6 +101,8 @@ function normalizeListing(l) {
  *   failed: true     — API live but rejected/timed out; listings is []
  */
 export async function listListings() {
+  const cached = FEATURE_FLAGS.pricelabsLive() ? cacheGet('listings') : undefined;
+  if (cached) return cached;
   const live = await plFetch('/listings');
   if (live?.stub) {
     // Mirror the configured property → listing mapping so stub mode
@@ -104,7 +124,9 @@ export async function listListings() {
     };
   }
   const raw = Array.isArray(live?.listings) ? live.listings : [];
-  return { source: 'live', listings: raw.map(normalizeListing) };
+  const result = { source: 'live', listings: raw.map(normalizeListing) };
+  cacheSet('listings', result);
+  return result;
 }
 
 /** Find one listing by id. Returns { listing, failed?, error? }. */
@@ -119,14 +141,45 @@ function isoDay(d) {
   return d.toISOString().slice(0, 10);
 }
 
+/** Today's date (YYYY-MM-DD) in the given IANA time zone. */
+function localToday(timeZone) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date());
+  } catch {
+    return isoDay(new Date());
+  }
+}
+
+/** Add whole days to a YYYY-MM-DD string (calendar math in UTC). */
+function addDaysIso(dayIso, n) {
+  const d = new Date(`${dayIso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return isoDay(d);
+}
+
+/** Time zone of the property linked to a PriceLabs listing id. */
+function timeZoneForListing(listingId) {
+  const prop = PROPERTIES.find((p) => String(p.pricelabsListingId) === String(listingId));
+  return (prop && MARKETS[prop.slug]?.timeZone) || 'America/Los_Angeles';
+}
+
 /**
- * Recommended nightly prices for one listing, starting today.
+ * Recommended nightly prices for one listing, starting today in the
+ * property's own time zone.
  * Returns an array of { date, price, currency, minStay, source, ... }
  * ([] when PriceLabs has no data or the call fails — failures are logged).
+ * `currency` on each row is null if neither PriceLabs nor the caller's
+ * hint knows it — never silently assumed to be USD in live mode.
  *
- * Pass `pms` when the caller already has it (saves a /v1/listings call).
+ * Pass `pms` (and ideally `currency`) when the caller already has the
+ * listing from listListings() — saves a /v1/listings call.
  */
-export async function getRecommendedPrices({ listingId, pms, days = 365 }) {
+export async function getRecommendedPrices({ listingId, pms, currency: currencyHint, timeZone, days = 365 }) {
   if (!FEATURE_FLAGS.pricelabsLive()) {
     const today = new Date();
     const prop = PROPERTIES.find((p) => String(p.pricelabsListingId) === String(listingId));
@@ -152,6 +205,7 @@ export async function getRecommendedPrices({ listingId, pms, days = 365 }) {
   if (!id) return [];
 
   let resolvedPms = pms;
+  let listingCurrency = null;
   if (!resolvedPms) {
     const { listing, failed, error } = await findListing(id);
     if (failed || !listing) {
@@ -159,21 +213,25 @@ export async function getRecommendedPrices({ listingId, pms, days = 365 }) {
       return [];
     }
     resolvedPms = listing.pms;
+    listingCurrency = listing.currency;
   }
 
-  const start = new Date();
-  const end = new Date(start);
-  end.setDate(start.getDate() + Math.max(1, days) - 1);
+  const span = Math.max(1, days);
+  const dateFrom = localToday(timeZone || timeZoneForListing(id));
+  const dateTo = addDaysIso(dateFrom, span - 1);
 
-  const live = await plFetch('/listing_prices', {
-    method: 'POST',
-    body: JSON.stringify({
-      listings: [{ id, pms: resolvedPms, dateFrom: isoDay(start), dateTo: isoDay(end) }],
-    }),
-  });
-  if (live?.failed) {
-    console.warn('[pricelabs] listing_prices failed', { listingId: id, status: live.status });
-    return [];
+  const cacheKey = `prices:${id}:${resolvedPms}:${dateFrom}:${span}`;
+  let live = cacheGet(cacheKey);
+  if (!live) {
+    live = await plFetch('/listing_prices', {
+      method: 'POST',
+      body: JSON.stringify({ listings: [{ id, pms: resolvedPms, dateFrom, dateTo }] }),
+    });
+    if (live?.failed) {
+      console.warn('[pricelabs] listing_prices failed', { listingId: id, status: live.status });
+      return [];
+    }
+    if (Array.isArray(live)) cacheSet(cacheKey, live);
   }
 
   const items = Array.isArray(live) ? live : [];
@@ -186,9 +244,15 @@ export async function getRecommendedPrices({ listingId, pms, days = 365 }) {
     return [];
   }
 
-  const currency = item.currency || 'USD';
+  const currency = item.currency || currencyHint || listingCurrency || null;
   return (Array.isArray(item.data) ? item.data : [])
-    .filter((d) => typeof d?.date === 'string' && Number.isFinite(Number(d.price)) && Number(d.price) > 0)
+    .filter(
+      (d) =>
+        typeof d?.date === 'string' &&
+        d.date >= dateFrom &&
+        Number.isFinite(Number(d.price)) &&
+        Number(d.price) > 0,
+    )
     .map((d) => ({
       date: d.date,
       price: Number(d.price),
