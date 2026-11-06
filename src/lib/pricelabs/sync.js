@@ -78,6 +78,10 @@ export async function syncEventOverrides({ property, window } = {}) {
     listingId: property.pricelabsListingId,
     overrides: payload,
   });
+  if (res?.failed) {
+    // Never report a rejected/disabled push as pushed.
+    return { pushed: 0, failed: true, error: res.error, stub: false, overrides };
+  }
   return {
     pushed: payload.length,
     stub: !!res?.stub,

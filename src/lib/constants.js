@@ -74,7 +74,8 @@ export const PROPERTIES = [
     lat: 33.8303,
     lng: -116.5453,
     addressLine: 'North Palm Springs, CA',
-    pricelabsListingId: 'PL-PS-001',
+    // PriceLabs parent listing "Palm Springs Luxe Retreat 3 bedrooms + casita" (Airbnb; 2 child listings mapped under it)
+    pricelabsListingId: '22639935',
     airdnaMarketCode: 'palm-springs-ca',
     highlights: [
       {
@@ -220,7 +221,8 @@ export const PROPERTIES = [
     lat: 20.9143,
     lng: -100.7448,
     addressLine: 'Centro Histórico, San Miguel de Allende, Gto.',
-    pricelabsListingId: 'PL-SMA-001',
+    // PriceLabs listing "Home in San Miguel de Allende. Casita de La Aldea" (Hostaway)
+    pricelabsListingId: '269339',
     airdnaMarketCode: 'san-miguel-de-allende-gto',
     highlights: [
       {

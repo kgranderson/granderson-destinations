@@ -9,6 +9,7 @@ import { isOwner } from '@/lib/admin/owner-auth';
 import { PROPERTIES, FEATURE_FLAGS } from '@/lib/constants';
 import { listListings, getRecommendedPrices } from '@/lib/pricelabs/client';
 import { buildEventOverrides } from '@/lib/pricelabs/sync';
+import { money } from '@/lib/utils/format';
 import { PricingCockpit } from './PricingCockpit';
 
 export const metadata = {
@@ -36,25 +37,32 @@ export default async function PricingCockpitPage({ params }) {
   const property = PROPERTIES.find((x) => x.slug === p.property);
   if (!property) notFound();
 
-  // PriceLabs listing match — slug-based naming convention from the
-  // stub data ("PL-PS-001" for palm-springs). Future: persist the
-  // mapping as properties.pricelabs_listing_id and look it up here.
-  // listListings now returns { source, listings, failed?, error? } so
-  // we can distinguish "PriceLabs down" from "no matching listing".
+  // PriceLabs listing match — strictly by the configured listing id
+  // (PROPERTIES[].pricelabsListingId). No name guessing and no
+  // "first listing" fallback: a wrong match here would show — and,
+  // once pushes are enabled, change — another property's prices.
+  // listListings returns { source, listings, failed?, error? } so we
+  // can distinguish "PriceLabs down" from "no matching listing".
   const listingsResult = await listListings();
   const pricelabsFailed = !!listingsResult.failed;
-  const matchedListing =
-    listingsResult.listings.find((l) =>
-      l.name?.toLowerCase().includes((property.shortName || property.name).toLowerCase()),
-    ) || listingsResult.listings[0];
+  const configuredId = property.pricelabsListingId ? String(property.pricelabsListingId) : null;
+  const matchedListing = configuredId
+    ? listingsResult.listings.find((l) => l.id === configuredId) || null
+    : null;
 
   // 90-day forward recommended pricing (the granularity guests see at
   // checkout). We trim to 90 instead of the 365 the client offers so
   // the table stays readable; longer-horizon overrides come from the
   // event-override builder below.
   const prices = matchedListing
-    ? await getRecommendedPrices({ listingId: matchedListing.listing_id, days: 90 })
+    ? await getRecommendedPrices({
+        listingId: matchedListing.id,
+        pms: matchedListing.pms,
+        days: 90,
+      })
     : [];
+  const currency = prices[0]?.currency || matchedListing?.currency || 'USD';
+  const fmtMoney = (n) => money(n, currency);
 
   // Event-driven override windows for the next 365 days
   const eventOverrides = buildEventOverrides({ property, lookaheadDays: 365 });
@@ -107,9 +115,9 @@ export default async function PricingCockpitPage({ params }) {
 
             {/* KPI strip */}
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <KPI label="Blended ADR (90d)" value={fmtUsd(blendedAvg)} sub="weighted by day" />
-              <KPI label="Weekend ADR" value={fmtUsd(weekendAvg)} sub="Fri + Sat" />
-              <KPI label="Weekday ADR" value={fmtUsd(weekdayAvg)} sub="Sun–Thu" />
+              <KPI label="Blended ADR (90d)" value={fmtMoney(blendedAvg)} sub={`weighted by day · ${currency}`} />
+              <KPI label="Weekend ADR" value={fmtMoney(weekendAvg)} sub="Fri + Sat" />
+              <KPI label="Weekday ADR" value={fmtMoney(weekdayAvg)} sub="Sun–Thu" />
               <KPI
                 label="Event uplift windows"
                 value={eventOverrides.length}
@@ -128,10 +136,15 @@ export default async function PricingCockpitPage({ params }) {
               </section>
             ) : !matchedListing ? (
               <section className="mt-8 rounded-2xl border border-rose-200 bg-rose-50/60 p-5 text-sm text-rose-800">
-                No PriceLabs listing matched <strong>{property.name}</strong>. Either{' '}
-                <code className="rounded bg-rose-100 px-1">PRICELABS_API_KEY</code> isn&rsquo;t
-                set, or the listing name in PriceLabs doesn&rsquo;t include the property short
-                name. Add the listing in PriceLabs first, then refresh.
+                No PriceLabs listing matched <strong>{property.name}</strong>.{' '}
+                {configuredId ? (
+                  <>
+                    Listing <code className="rounded bg-rose-100 px-1">{configuredId}</code> wasn&rsquo;t
+                    found in the PriceLabs account.
+                  </>
+                ) : (
+                  <>No PriceLabs listing id is configured for this property.</>
+                )}
               </section>
             ) : (
               <section className="mt-8 rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5">
@@ -147,7 +160,7 @@ export default async function PricingCockpitPage({ params }) {
                       <p className="text-sm font-medium text-brand-ink">
                         {matchedListing.name}{' '}
                         <span className="ml-1 font-mono text-xs text-brand-slate/70">
-                          ({matchedListing.listing_id})
+                          ({matchedListing.pms ? `${matchedListing.pms} · ` : ''}{matchedListing.id} · {currency})
                         </span>
                       </p>
                     </div>
@@ -162,7 +175,8 @@ export default async function PricingCockpitPage({ params }) {
               <div className="mt-8">
                 <PricingCockpit
                   propertySlug={property.slug}
-                  listingId={matchedListing.listing_id}
+                  listingId={matchedListing.id}
+                  currency={currency}
                   initialPrices={prices}
                   eventOverrides={eventOverrides}
                 />
@@ -174,11 +188,6 @@ export default async function PricingCockpitPage({ params }) {
       <Footer />
     </>
   );
-}
-
-function fmtUsd(n) {
-  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
-  return `$${n.toLocaleString()}`;
 }
 
 function KPI({ label, value, sub }) {

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Calendar, Upload, RotateCcw, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { money } from '@/lib/utils/format';
 
 /**
  * Interactive PriceLabs cockpit.
@@ -19,7 +20,7 @@ import { Calendar, Upload, RotateCcw, AlertTriangle, CheckCircle2 } from 'lucide
  * means an operator can experiment without risk — nothing reaches
  * PriceLabs until they commit.
  */
-export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOverrides }) {
+export function PricingCockpit({ propertySlug, listingId, currency = 'USD', initialPrices, eventOverrides }) {
   // Per-day operator overrides: { [yyyy-mm-dd]: number }
   const [overrides, setOverrides] = useState({});
   const [pushing, setPushing] = useState(false);
@@ -250,7 +251,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
                     <td className="px-4 py-2 font-mono text-xs text-brand-ink">{row.date}</td>
                     <td className="px-4 py-2 text-xs text-brand-slate">{dayLabel}</td>
                     <td className="px-4 py-2 text-right tabular-nums text-brand-ink">
-                      ${row.price.toLocaleString()}
+                      {money(row.price, row.currency || currency)}
                     </td>
                     <td className="px-4 py-2 text-right text-xs text-brand-slate tabular-nums">
                       {row.minStay || 1}
