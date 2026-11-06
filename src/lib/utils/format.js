@@ -3,12 +3,23 @@
  */
 
 export function usd(n, opts = {}) {
+  return money(n, 'USD', opts);
+}
+
+/** Format an amount in any ISO currency, e.g. money(4500, 'MXN') → "MX$4,500". */
+export function money(n, currency = 'USD', opts = {}) {
   if (n == null || Number.isNaN(n)) return '—';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: opts.fractionDigits ?? 0,
-  }).format(n);
+  const code = String(currency || 'USD').toUpperCase();
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: code,
+      maximumFractionDigits: opts.fractionDigits ?? 0,
+    }).format(n);
+  } catch {
+    // Unknown currency code — show the number with the raw code.
+    return `${Math.round(n).toLocaleString('en-US')} ${code}`;
+  }
 }
 
 export function pct(n, opts = {}) {

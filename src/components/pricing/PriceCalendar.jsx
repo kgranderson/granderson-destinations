@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { format, parseISO, addDays, startOfMonth, endOfMonth, getDay } from 'date-fns';
-import { usd } from '@/lib/utils/format';
+import { usd, money } from '@/lib/utils/format';
 
 /**
  * 60-day forward price calendar. Heat-mapped by price tier with
@@ -40,6 +40,9 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
     );
   }
 
+  // PriceLabs prices are in the listing's own currency (e.g. MXN for San Miguel)
+  const currency = prices[0]?.currency || 'USD';
+
   // Compute price tier thresholds
   const sorted = prices.map((p) => p.price).sort((a, b) => a - b);
   const q33 = sorted[Math.floor(sorted.length * 0.33)];
@@ -74,8 +77,8 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
         <div>
           <h3 className="display text-xl text-brand-ink">Forward pricing · 60 days</h3>
           <p className="mt-1 text-xs text-brand-slate">
-            Base ADR {usd(baseAdr || 0)} · low/mid/high tiers split at $
-            {Math.round(q33)} / ${Math.round(q66)}
+            Base ADR {usd(baseAdr || 0)} · low/mid/high tiers split at{' '}
+            {money(q33, currency)} / {money(q66, currency)}
           </p>
         </div>
         <Legend />
@@ -84,6 +87,7 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
       <div className="mt-5 space-y-6">
         {months.map((m) => (
           <MonthGrid
+            currency={currency}
             key={m.toISOString()}
             month={m}
             byDate={byDate}
@@ -98,7 +102,7 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
       {hover && (
         <div className="mt-4 rounded-xl border border-brand-tan/60 bg-brand-sand/40 p-3 text-sm">
           <span className="font-medium text-brand-ink">{hover.date}</span> ·{' '}
-          {hover.price ? <span>{usd(hover.price)} / night</span> : <span>no rate</span>}
+          {hover.price ? <span>{money(hover.price, currency)} / night</span> : <span>no rate</span>}
           {hover.event && <span className="ml-2 text-brand-gold">· {hover.event.eventName}</span>}
           {hover.minStay > 1 && <span className="ml-2 text-brand-slate">· {hover.minStay}-night min</span>}
         </div>
@@ -107,7 +111,7 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
   );
 }
 
-function MonthGrid({ month, byDate, eventsByDate, tier, tierBg, onHover }) {
+function MonthGrid({ month, byDate, eventsByDate, tier, tierBg, onHover, currency = 'USD' }) {
   const monthStart = startOfMonth(month);
   const monthEnd = endOfMonth(month);
   const monthLabel = format(month, 'MMMM yyyy');
@@ -134,6 +138,7 @@ function MonthGrid({ month, byDate, eventsByDate, tier, tierBg, onHover }) {
             <span key={c.key} />
           ) : (
             <DayCell
+              currency={currency}
               key={c.key}
               date={c.date}
               data={byDate.get(c.date)}
@@ -149,7 +154,7 @@ function MonthGrid({ month, byDate, eventsByDate, tier, tierBg, onHover }) {
   );
 }
 
-function DayCell({ date, data, event, tier, tierBg, onHover }) {
+function DayCell({ date, data, event, tier, tierBg, onHover, currency = 'USD' }) {
   const t = tier(data?.price);
   return (
     <button
@@ -164,7 +169,10 @@ function DayCell({ date, data, event, tier, tierBg, onHover }) {
     >
       <span className="block text-[10px] text-brand-slate">{Number(date.slice(-2))}</span>
       {data?.price && (
-        <span className="block text-[10px] font-medium text-brand-ink">${Math.round(data.price)}</span>
+        <span className="block text-[10px] font-medium text-brand-ink">
+          {currency === 'USD' ? '$' : ''}
+          {Math.round(data.price)}
+        </span>
       )}
       {event && (
         <span aria-hidden className="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full bg-brand-terracotta" />

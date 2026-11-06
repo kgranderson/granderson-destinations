@@ -163,6 +163,12 @@ export const POST = withAdmin(async (request) => {
       );
     }
     const result = await syncEventOverrides({ property, window: win });
+    if (result?.failed) {
+      return NextResponse.json(
+        { ok: false, mode: 'event-sync', error: result.error || 'PriceLabs rejected the push' },
+        { status: 502 },
+      );
+    }
     return NextResponse.json({ ok: true, mode: 'event-sync', ...result });
   } catch (err) {
     return NextResponse.json(
