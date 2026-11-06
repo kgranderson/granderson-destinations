@@ -65,7 +65,7 @@ export default function LoginPage() {
                   autoFocus
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-2 w-full rounded-md border border-brand-tan/60 bg-brand-cloud p-3 text-base outline-none focus:border-brand-ink"
+                  className="mt-2 w-full rounded-md border border-brand-tan/60 bg-brand-cloud p-3 text-base text-brand-ink caret-brand-ink placeholder:text-brand-slate/55 outline-none focus:border-brand-ink"
                   placeholder="you@example.com"
                 />
               </label>
