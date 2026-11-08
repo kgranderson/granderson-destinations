@@ -34,6 +34,7 @@
   --c-champagne-400: #D6B97E;  /* Champagne soft, hover state */
   --c-champagne-600: #B89859;  /* Champagne deep, active state */
   --c-champagne-700: #9D7E45;  /* Champagne shadow */
+  --c-champagne-800: #765B2B;  /* Champagne text-on-bone (AA on bone-100/200) */
 
   --c-terracotta-500: #B86F4A; /* San Miguel accent */
   --c-sage-500:       #7A8B7F; /* Palm Springs cactus accent */
@@ -52,7 +53,7 @@
   /* Text */
   --color-text:              var(--c-bone-100);  /* Primary copy */
   --color-text-muted:        rgba(242, 234, 216, 0.72);
-  --color-text-quiet:        rgba(242, 234, 216, 0.48);
+  --color-text-quiet:        rgba(242, 234, 216, 0.56);  /* ≥5:1 on ink (was 0.48 → 4.4:1) */
   --color-text-disabled:     rgba(242, 234, 216, 0.28);
   --color-text-inverse:      var(--c-ink-1000);  /* Text on bone */
   --color-text-inverse-muted: rgba(14, 17, 22, 0.62);

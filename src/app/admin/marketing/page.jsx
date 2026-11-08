@@ -49,7 +49,7 @@ export default async function MarketingHome() {
           <AdminNav profile={profile} />
 
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Admin · Marketing
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">Marketing manager</h1>
@@ -87,12 +87,12 @@ export default async function MarketingHome() {
 
             {/* Roadmap legend */}
             <section className="mt-12 rounded-2xl border border-brand-tan/60 bg-brand-sand/30 p-6">
-              <p className="text-xs uppercase tracking-widest text-brand-slate/70">
+              <p className="text-xs uppercase tracking-widest text-brand-slate/85">
                 Build sequence
               </p>
               <ul className="mt-3 space-y-2 text-sm text-brand-slate">
                 <li>
-                  <span className="inline-block w-6 font-mono text-brand-jade">A</span>{' '}
+                  <span className="inline-block w-6 font-mono text-brand-jade-ink">A</span>{' '}
                   <strong className="text-brand-ink">Pricing cockpit</strong> — live now
                 </li>
                 <li>
@@ -128,7 +128,7 @@ function StatusPill({ label, live, liveLabel, offlineLabel }) {
       {live
         ? liveLabel
           ? <span className="text-brand-slate">· {liveLabel}</span>
-          : <span className="text-brand-jade">live</span>
+          : <span className="text-brand-jade-ink">live</span>
         : <span className="text-brand-slate">· {offlineLabel}</span>}
     </span>
   );
@@ -140,7 +140,7 @@ function PropertyCard({ property, eventOverrideCount, nextEvent }) {
     <article className="group flex flex-col rounded-2xl border border-brand-tan/60 bg-brand-cloud p-6 shadow-soft transition-shadow hover:shadow-lift">
       <div className="flex items-start justify-between">
         <div className="min-w-0">
-          <p className="truncate text-xs uppercase tracking-widest text-brand-slate/70">
+          <p className="truncate text-xs uppercase tracking-widest text-brand-slate/85">
             {property.shortName || property.city}
           </p>
           <h2 className="display mt-1 truncate text-xl text-brand-ink">{property.name}</h2>
@@ -195,7 +195,7 @@ function SignalRow({ icon: Icon, label, value, sub }) {
       <span className="text-right">
         <span className="font-medium text-brand-ink tabular-nums">{value}</span>
         {sub && (
-          <span className="ml-2 text-xs text-brand-slate/70 tabular-nums">{sub}</span>
+          <span className="ml-2 text-xs text-brand-slate/85 tabular-nums">{sub}</span>
         )}
       </span>
     </li>

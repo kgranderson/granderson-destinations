@@ -68,8 +68,8 @@ export function EventOverridesPanel({ overrides = [], propertySlug }) {
             </div>
             <div className="text-right">
               <p className="text-xs text-brand-slate">Base {usd(o.basePrice)}</p>
-              <p className="display text-lg text-brand-gold">{usd(o.recommendedPrice)}</p>
-              <ArrowUpRight size={14} className="ml-auto text-brand-gold" />
+              <p className="display text-lg text-brand-gold-ink">{usd(o.recommendedPrice)}</p>
+              <ArrowUpRight size={14} className="ml-auto text-brand-gold-ink" />
             </div>
           </li>
         ))}
@@ -79,8 +79,8 @@ export function EventOverridesPanel({ overrides = [], propertySlug }) {
         <div
           className={`mt-5 flex items-start gap-2 rounded-xl border p-3 text-sm ${
             result.ok === false
-              ? 'border-brand-terracotta/40 bg-brand-terracotta/10 text-brand-terracotta'
-              : 'border-brand-jade/40 bg-brand-jade/10 text-brand-jade'
+              ? 'border-brand-terracotta/40 bg-brand-terracotta/10 text-brand-terracotta-ink'
+              : 'border-brand-jade/40 bg-brand-jade/10 text-brand-jade-ink'
           }`}
         >
           {result.ok === false ? <AlertCircle size={16} /> : <CheckCircle2 size={16} />}

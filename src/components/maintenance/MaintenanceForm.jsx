@@ -193,12 +193,12 @@ export function MaintenanceForm({ initialPropertySlug }) {
         </button>
 
         {status.kind === 'success' && (
-          <span className="inline-flex items-center gap-1 text-sm text-brand-jade">
+          <span className="inline-flex items-center gap-1 text-sm text-brand-jade-ink">
             <CheckCircle2 size={14} /> Created.
           </span>
         )}
         {status.kind === 'error' && (
-          <span className="inline-flex items-center gap-1 text-sm text-brand-terracotta">
+          <span className="inline-flex items-center gap-1 text-sm text-brand-terracotta-ink">
             <AlertCircle size={14} /> {status.message}
           </span>
         )}
@@ -210,7 +210,7 @@ export function MaintenanceForm({ initialPropertySlug }) {
 function Field({ label, children, className = '' }) {
   return (
     <label className={`block rounded-xl border border-brand-tan/60 bg-brand-sand/30 px-3 py-2 ${className}`}>
-      <span className="block text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</span>
+      <span className="block text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</span>
       <span className="mt-1 block">{children}</span>
     </label>
   );

@@ -32,7 +32,7 @@ export default async function VendorPortalPage({ params }) {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-32">
         <Container size="md" className="pb-24">
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-jade font-medium">
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-jade-ink font-medium">
             Vendor portal · {ticket.vendor?.name || 'You'}
           </p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">{ticket.title}</h1>

@@ -66,12 +66,12 @@ function Card({ label, value, delta, icon: Icon }) {
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/70">{label}</p>
+        <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/85">{label}</p>
         <Icon size={14} className="text-brand-slate" />
       </div>
       <p className="display mt-2 text-3xl text-brand-ink">{value}</p>
       {Number.isFinite(delta) && Math.abs(delta) > 0.001 && (
-        <p className={`mt-1 text-xs font-medium ${positive ? 'text-brand-jade' : 'text-brand-terracotta'}`}>
+        <p className={`mt-1 text-xs font-medium ${positive ? 'text-brand-jade-ink' : 'text-brand-terracotta-ink'}`}>
           {positive ? '+' : ''}
           {(delta * 100).toFixed(1)}% YoY
         </p>

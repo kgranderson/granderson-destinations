@@ -120,7 +120,7 @@ export function MetaCredsForm({ propertySlug, initialCreds }) {
           <label className="block">
             <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-brand-ink/70 font-medium">
               <Key size={12} />
-              Long-lived access token {tokenPreview && <span className="lowercase normal-case ml-2 text-brand-slate/60">currently: {tokenPreview}</span>}
+              Long-lived access token {tokenPreview && <span className="lowercase normal-case ml-2 text-brand-slate/85">currently: {tokenPreview}</span>}
             </span>
             <textarea
               rows={3}
@@ -132,7 +132,7 @@ export function MetaCredsForm({ propertySlug, initialCreds }) {
               className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm font-mono text-brand-ink placeholder:text-brand-slate/55"
             />
           </label>
-          <p className="mt-1 text-[11px] text-brand-slate/70">
+          <p className="mt-1 text-[11px] text-brand-slate/85">
             ~200 chars. Stored server-side only; never re-displayed in plaintext.
           </p>
         </div>
@@ -157,7 +157,7 @@ export function MetaCredsForm({ propertySlug, initialCreds }) {
           {result && (
             <span
               className={`inline-flex items-center gap-1.5 text-sm ${
-                result.ok ? 'text-brand-jade' : 'text-rose-700'
+                result.ok ? 'text-brand-jade-ink' : 'text-rose-700'
               }`}
             >
               {result.ok ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
@@ -185,7 +185,7 @@ function Field({ label, icon: Icon, value, onChange, placeholder, help, type = '
         autoComplete="off"
         className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
       />
-      {help && <p className="mt-1 text-[11px] text-brand-slate/70">{help}</p>}
+      {help && <p className="mt-1 text-[11px] text-brand-slate/85">{help}</p>}
     </label>
   );
 }

@@ -27,7 +27,7 @@ export function EventCalculator({ event, baseAdrUsd = 700 }) {
 
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-6 shadow-soft sm:p-8">
-      <p className="text-xs uppercase tracking-[0.24em] text-brand-slate/70">Premium calculator</p>
+      <p className="text-xs uppercase tracking-[0.24em] text-brand-slate/85">Premium calculator</p>
       <h3 className="display mt-2 text-2xl text-brand-ink">
         What this event is worth on your property.
       </h3>
@@ -97,7 +97,7 @@ function Slider({ label, value, min, max, step, onChange, format }) {
   return (
     <label className="block">
       <div className="flex items-baseline justify-between">
-        <span className="text-xs uppercase tracking-widest text-brand-slate/70">{label}</span>
+        <span className="text-xs uppercase tracking-widest text-brand-slate/85">{label}</span>
         <span className="display text-lg text-brand-ink">{format(value)}</span>
       </div>
       <input
@@ -120,8 +120,8 @@ function Stat({ label, value, sub, highlight = false }) {
         highlight ? 'border-brand-gold/40 bg-brand-gold/10' : 'border-brand-tan/60 bg-brand-sand/40'
       }`}
     >
-      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</p>
-      <p className={`display mt-1 text-2xl ${highlight ? 'text-brand-gold' : 'text-brand-ink'}`}>{value}</p>
+      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</p>
+      <p className={`display mt-1 text-2xl ${highlight ? 'text-brand-gold-ink' : 'text-brand-ink'}`}>{value}</p>
       <p className="text-xs text-brand-slate">{sub}</p>
     </div>
   );

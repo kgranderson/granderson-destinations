@@ -17,7 +17,7 @@ export default function DestinationsIndex() {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-32">
         <Container className="pb-20">
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Destinations</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Destinations</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">The portfolio</h1>
           <p className="mt-4 max-w-2xl text-brand-slate">
             Each home is owned, operated, and held to a single standard: top-quartile performance in its

@@ -26,7 +26,7 @@ export default async function ImportPage({ searchParams }) {
         <div className="mx-auto flex max-w-[88rem]">
           <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10 max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Admin · Import</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Admin · Import</p>
             <h1 className="display mt-3 text-display-lg text-brand-ink">Import T12 financials</h1>
             <p className="mt-4 max-w-2xl text-brand-slate">
               Upload a P&L export from Rent Manager (Excel or CSV). We&rsquo;ll auto-detect long vs

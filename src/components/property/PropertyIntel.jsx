@@ -20,7 +20,7 @@ export async function PropertyIntel({ property }) {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Market intel · {property.shortName}
             </p>
             <h2 className="display mt-3 max-w-3xl text-display-lg text-brand-ink">

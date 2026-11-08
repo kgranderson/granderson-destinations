@@ -44,7 +44,7 @@ export default async function OccupancyIndex() {
         <div className="mx-auto flex max-w-[88rem]">
           <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Admin · Occupancy
             </p>
             <h1 className="display mt-3 text-display-lg text-brand-ink">Occupancy analysis</h1>
@@ -63,7 +63,7 @@ export default async function OccupancyIndex() {
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">
+                      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">
                         {b.property.city} · {b.property.country}
                       </p>
                       <h2 className="display mt-1 text-2xl text-brand-ink">{b.property.name}</h2>
@@ -73,7 +73,7 @@ export default async function OccupancyIndex() {
                         </span>
                       )}
                     </div>
-                    <ArrowUpRight className="text-brand-gold transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    <ArrowUpRight className="text-brand-gold-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </div>
 
                   <dl className="mt-5 grid grid-cols-3 gap-3">
@@ -98,7 +98,7 @@ export default async function OccupancyIndex() {
 function Mini({ label, value }) {
   return (
     <div className="rounded-xl bg-brand-sand/40 px-3 py-2">
-      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</p>
+      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</p>
       <p className="display mt-0.5 text-base text-brand-ink">{value}</p>
     </div>
   );

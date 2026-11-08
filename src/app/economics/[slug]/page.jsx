@@ -116,7 +116,7 @@ export default async function EconomicsPage({ params: paramsPromise }) {
           {/* Header */}
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
                 Economics · {property.shortName}
               </p>
               <h1 className="display mt-3 text-display-lg text-brand-ink">{property.name}</h1>

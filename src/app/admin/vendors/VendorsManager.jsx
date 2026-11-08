@@ -217,7 +217,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               <div className="text-xs text-brand-ink truncate" title={v.email}>{v.email || '—'}</div>
               <div className="flex flex-wrap gap-1">
                 {(v.specialties || []).map((s) => (
-                  <span key={s} className="inline-block rounded-full bg-brand-jade/15 text-brand-jade text-[10px] px-2 py-0.5">
+                  <span key={s} className="inline-block rounded-full bg-brand-jade/15 text-brand-jade-ink text-[10px] px-2 py-0.5">
                     {s}
                   </span>
                 ))}
@@ -345,7 +345,7 @@ export function VendorsManager({ initialVendors, categories, properties }) {
               className="rounded-full border border-brand-ink/30 px-5 py-2.5 text-sm text-brand-ink">
               Clear
             </button>
-            {flash && <span className="text-sm text-brand-jade">{flash}</span>}
+            {flash && <span className="text-sm text-brand-jade-ink">{flash}</span>}
             {error && <span className="text-sm text-rose-700">{error}</span>}
           </div>
         </form>

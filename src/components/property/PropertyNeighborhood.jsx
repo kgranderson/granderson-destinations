@@ -27,7 +27,7 @@ export function PropertyNeighborhood({ property }) {
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <Reveal>
-              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Neighborhood</p>
+              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Neighborhood</p>
               <h2 className="display mt-3 text-display-lg text-brand-ink">
                 Where you actually are.
               </h2>
@@ -40,7 +40,7 @@ export function PropertyNeighborhood({ property }) {
                   const Icon = KIND_ICON[n.kind] || MapPin;
                   return (
                     <li key={n.label} className="flex items-start gap-3">
-                      <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-sand/60 text-brand-gold">
+                      <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-sand/60 text-brand-gold-ink">
                         <Icon size={16} />
                       </span>
                       <div className="flex-1">
@@ -62,10 +62,10 @@ export function PropertyNeighborhood({ property }) {
                   <img src={mapUrl} alt={`Map — ${property.city}`} className="h-full w-full object-cover" />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center bg-[radial-gradient(120%_80%_at_30%_30%,#E8DCC6,#F5EFE6)] p-10 text-center">
-                    <MapPin className="text-brand-gold" size={28} />
+                    <MapPin className="text-brand-gold-ink" size={28} />
                     <p className="display mt-3 text-2xl text-brand-ink">{property.city}</p>
                     <p className="mt-1 text-sm text-brand-slate">{property.addressLine}</p>
-                    <p className="mt-4 text-xs uppercase tracking-widest text-brand-slate/70">
+                    <p className="mt-4 text-xs uppercase tracking-widest text-brand-slate/85">
                       Live map renders when GOOGLE_MAPS_API_KEY is set
                     </p>
                   </div>

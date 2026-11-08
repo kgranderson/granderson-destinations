@@ -97,7 +97,7 @@ export default function EventsIndexPage() {
                       </span>
                       {nextEvent && (
                         <>
-                          <span className="text-brand-cloud/40">·</span>
+                          <span className="text-brand-cloud/60">·</span>
                           <span className="text-xs text-brand-cloud/75">next: {nextEvent.name.split('—')[0].trim()}</span>
                         </>
                       )}

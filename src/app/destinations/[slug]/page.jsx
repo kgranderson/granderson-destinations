@@ -75,7 +75,7 @@ export default async function PropertyPage({ params: paramsPromise }) {
           <Container>
             <div className="grid gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-16">
               <div className="lg:col-span-7">
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">The home</p>
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">The home</p>
                 <h2 className="display mt-3 text-display-lg text-brand-ink">
                   Designed for slow mornings and longer evenings.
                 </h2>

@@ -74,7 +74,7 @@ export default async function EventDetailPage({ params }) {
         <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
           {detail.image && (
             <div aria-hidden className="absolute inset-0 -z-10">
-              <Image src={detail.image} alt="" fill priority sizes="100vw" className="object-cover opacity-65" />
+              <Image src={detail.image} alt="" fill priority sizes="100vw" className="object-cover" />
               <div className="hero-overlay absolute inset-0" />
             </div>
           )}
@@ -117,7 +117,7 @@ export default async function EventDetailPage({ params }) {
           <Container>
             <div className="grid gap-12 md:grid-cols-12">
               <article className="md:col-span-7">
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">The window</p>
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">The window</p>
                 <h2 className="display mt-3 text-display-md text-brand-ink">Why this matters for revenue.</h2>
                 {(detail.body ?? []).map((paragraph, i) => (
                   <p key={i} className="mt-4 leading-relaxed text-brand-slate">

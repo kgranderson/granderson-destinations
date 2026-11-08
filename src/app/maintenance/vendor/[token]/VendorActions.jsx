@@ -130,7 +130,7 @@ export function VendorActions({
             className="rounded-full border border-brand-ink/40 px-5 py-2.5 text-sm text-brand-ink disabled:opacity-50">
             {busy ? 'Saving…' : 'Save notes & costs'}
           </button>
-          {flash && <span className="text-xs text-brand-jade">{flash}</span>}
+          {flash && <span className="text-xs text-brand-jade-ink">{flash}</span>}
           {error && <span className="text-xs text-rose-700">{error}</span>}
         </div>
       </form>

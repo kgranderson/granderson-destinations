@@ -49,7 +49,7 @@ export function HotspotCard({ hotspot, featured = false }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.22em] text-brand-slate/70">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-brand-slate/85">
               {h.category.replace('-', ' ')} · {h.neighborhood}
             </p>
             <h3 className={`mt-1 font-medium text-brand-ink ${featured ? 'text-2xl display' : 'text-lg'}`}>

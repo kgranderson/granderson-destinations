@@ -47,12 +47,12 @@ export function BookingWidget({ property }) {
 
   return (
     <aside className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-6 shadow-lift">
-      <p className="text-xs uppercase tracking-[0.24em] text-brand-slate/70">From</p>
+      <p className="text-xs uppercase tracking-[0.24em] text-brand-slate/85">From</p>
       <div className="mt-1 flex items-baseline gap-2">
         <span className="display text-3xl text-brand-ink">{usd(adr)}</span>
         <span className="text-sm text-brand-slate">/ night</span>
         {eventOverlap && (
-          <span className="ml-auto rounded-full bg-brand-gold/15 px-2 py-0.5 text-[10px] uppercase tracking-widest text-brand-gold">
+          <span className="ml-auto rounded-full bg-brand-gold/15 px-2 py-0.5 text-[10px] uppercase tracking-widest text-brand-gold-ink">
             {eventOverlap.name.split(' — ')[0]}
           </span>
         )}
@@ -102,7 +102,7 @@ export function BookingWidget({ property }) {
       </dl>
 
       {!meetsMinStay && (
-        <p className="mt-4 rounded-md bg-brand-terracotta/10 px-3 py-2 text-xs text-brand-terracotta">
+        <p className="mt-4 rounded-md bg-brand-terracotta/10 px-3 py-2 text-xs text-brand-terracotta-ink">
           {eventOverlap
             ? `${eventOverlap.name.split(' — ')[0]} requires a ${minNightsRequired}-night minimum.`
             : `Minimum stay is ${minNightsRequired} nights.`}
@@ -122,7 +122,7 @@ export function BookingWidget({ property }) {
         {meetsMinStay ? 'Request reservation' : `Adjust dates to ${minNightsRequired}+ nights`}
       </a>
 
-      <p className="mt-3 text-center text-[11px] text-brand-slate/70">
+      <p className="mt-3 text-center text-[11px] text-brand-slate/85">
         No charge yet · concierge replies within an hour during business hours.
       </p>
     </aside>
@@ -132,7 +132,7 @@ export function BookingWidget({ property }) {
 function Field({ label, children, className = '' }) {
   return (
     <label className={`block rounded-xl border border-brand-tan/60 bg-brand-sand/30 px-3 py-2 ${className}`}>
-      <span className="block text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</span>
+      <span className="block text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</span>
       <span className="mt-0.5 block">{children}</span>
     </label>
   );
@@ -140,7 +140,7 @@ function Field({ label, children, className = '' }) {
 
 function Line({ k, v, highlight = false }) {
   return (
-    <div className={`flex items-center justify-between ${highlight ? 'text-brand-gold' : 'text-brand-slate'}`}>
+    <div className={`flex items-center justify-between ${highlight ? 'text-brand-gold-ink' : 'text-brand-slate'}`}>
       <dt>{k}</dt>
       <dd>{v}</dd>
     </div>

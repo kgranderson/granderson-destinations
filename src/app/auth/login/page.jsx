@@ -40,7 +40,7 @@ export default function LoginPage() {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-32">
         <Container size="sm" className="pb-20">
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Sign in</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Sign in</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">Owner & member access</h1>
           <p className="mt-3 max-w-md text-brand-slate">
             Enter your email — we&rsquo;ll send you a one-time sign-in link. No password required.
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
           {status.kind === 'sent' ? (
             <div className="mt-8 rounded-2xl border border-brand-jade/40 bg-brand-jade/10 p-6 text-brand-ink">
-              <CheckCircle2 className="text-brand-jade" size={22} />
+              <CheckCircle2 className="text-brand-jade-ink" size={22} />
               <p className="mt-3 font-medium">Check your inbox.</p>
               <p className="mt-1 text-sm text-brand-slate">
                 We sent a sign-in link to <strong>{email}</strong>. Click it within 60 minutes to sign in.
@@ -58,7 +58,7 @@ export default function LoginPage() {
           ) : (
             <form onSubmit={onSubmit} className="mt-8 max-w-md">
               <label className="block">
-                <span className="text-xs uppercase tracking-widest text-brand-slate/70">Email</span>
+                <span className="text-xs uppercase tracking-widest text-brand-slate/85">Email</span>
                 <input
                   type="email"
                   required
@@ -79,7 +79,7 @@ export default function LoginPage() {
               </button>
 
               {status.kind === 'error' && (
-                <div className="mt-4 flex items-start gap-2 rounded-md border border-brand-terracotta/40 bg-brand-terracotta/10 p-3 text-sm text-brand-terracotta">
+                <div className="mt-4 flex items-start gap-2 rounded-md border border-brand-terracotta/40 bg-brand-terracotta/10 p-3 text-sm text-brand-terracotta-ink">
                   <AlertCircle size={16} className="mt-0.5 shrink-0" />
                   <span>{status.message}</span>
                 </div>
@@ -87,7 +87,7 @@ export default function LoginPage() {
             </form>
           )}
 
-          <p className="mt-10 text-xs text-brand-slate/80">
+          <p className="mt-10 text-xs text-brand-slate/85">
             Don&rsquo;t have an account?{' '}
             <Link href="/contact" className="underline">
               Reach out to concierge

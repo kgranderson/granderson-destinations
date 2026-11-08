@@ -27,11 +27,11 @@ function Cell({ label, value, accent }) {
   const colors = {
     ink: 'text-brand-ink bg-brand-sand/40',
     slate: 'text-brand-slate bg-brand-sand/40',
-    gold: 'text-brand-gold bg-brand-gold/10',
+    gold: 'text-brand-gold-ink bg-brand-gold/10',
   };
   return (
     <div className={`rounded-xl p-4 ${colors[accent] || colors.ink}`}>
-      <dt className="text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</dt>
+      <dt className="text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</dt>
       <dd className="display mt-1 text-2xl">{value}</dd>
     </div>
   );

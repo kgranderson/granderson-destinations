@@ -112,7 +112,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
                 <div className="grid grid-cols-[1.4fr_1.6fr_1fr_180px] gap-3 px-4 py-3 text-sm items-center">
                   <div>
                     <div className="text-brand-ink font-medium">{u.full_name || '—'}</div>
-                    {isSelf && <div className="text-[10px] uppercase tracking-widest text-brand-jade">You</div>}
+                    {isSelf && <div className="text-[10px] uppercase tracking-widest text-brand-jade-ink">You</div>}
                   </div>
                   <div className="text-xs text-brand-ink truncate" title={u.email}>{u.email}</div>
                   <div className="text-xs text-brand-slate">
@@ -225,7 +225,7 @@ export function UsersManager({ initialUsers, currentUserId }) {
               className="rounded-full border border-brand-ink/30 px-5 py-2.5 text-sm text-brand-ink">
               Clear
             </button>
-            {flash && <span className="text-sm text-brand-jade">{flash}</span>}
+            {flash && <span className="text-sm text-brand-jade-ink">{flash}</span>}
             {error && <span className="text-sm text-rose-700">{error}</span>}
           </div>
         </form>

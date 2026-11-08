@@ -30,7 +30,7 @@ export const STATUS_LABELS = {
 // page and admin dashboard so a "complete" ticket reads identically in both.
 export const STATUS_PILL_CLASS = {
   open: 'bg-brand-slate/10 text-brand-slate',
-  assigned: 'bg-brand-jade/10 text-brand-jade',
+  assigned: 'bg-brand-jade/10 text-brand-jade-ink',
   in_progress: 'bg-blue-50 text-blue-800',
   awaiting_owner: 'bg-amber-50 text-amber-800',
   diagnosed: 'bg-purple-50 text-purple-800',

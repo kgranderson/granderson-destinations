@@ -56,7 +56,7 @@ export default async function MarketEventsPage({ params }) {
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover opacity-50"
+                className="object-cover"
               />
               <div className="hero-overlay absolute inset-0" />
             </div>
@@ -90,7 +90,7 @@ export default async function MarketEventsPage({ params }) {
           <Container>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
                   {upcoming.length} upcoming {upcoming.length === 1 ? 'event' : 'events'}
                 </p>
                 <h2 className="display mt-2 text-display-md text-brand-ink">

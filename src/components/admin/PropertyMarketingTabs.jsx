@@ -50,7 +50,7 @@ export function PropertyMarketingTabs({ propertySlug }) {
             <Icon size={14} />
             {label}
             {phase !== 'A' && (
-              <span className="ml-1 hidden rounded-full bg-brand-sand/60 px-1.5 py-px text-[9px] uppercase tracking-widest text-brand-slate/70 sm:inline">
+              <span className="ml-1 hidden rounded-full bg-brand-sand/60 px-1.5 py-px text-[9px] uppercase tracking-widest text-brand-slate/85 sm:inline">
                 Phase {phase}
               </span>
             )}

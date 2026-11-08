@@ -84,7 +84,7 @@ export default async function PricingCockpitPage({ params }) {
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
             <div className="flex flex-wrap items-baseline justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
                   Marketing · {property.shortName}
                 </p>
                 <h1 className="display mt-2 text-display-lg text-brand-ink">{property.name}</h1>
@@ -141,12 +141,12 @@ export default async function PricingCockpitPage({ params }) {
                       <Tags size={14} />
                     </span>
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-brand-slate/70">
+                      <p className="text-xs uppercase tracking-widest text-brand-slate/85">
                         PriceLabs listing
                       </p>
                       <p className="text-sm font-medium text-brand-ink">
                         {matchedListing.name}{' '}
-                        <span className="ml-1 font-mono text-xs text-brand-slate/70">
+                        <span className="ml-1 font-mono text-xs text-brand-slate/85">
                           ({matchedListing.listing_id})
                         </span>
                       </p>
@@ -184,9 +184,9 @@ function fmtUsd(n) {
 function KPI({ label, value, sub }) {
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
-      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/70">{label}</p>
+      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/85">{label}</p>
       <p className="display mt-2 text-3xl text-brand-ink tabular-nums">{value}</p>
-      {sub && <p className="mt-1 text-xs text-brand-slate/70">{sub}</p>}
+      {sub && <p className="mt-1 text-xs text-brand-slate/85">{sub}</p>}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { usd, pct } from '@/lib/utils/format';
  * "to-top-quartile" gap.
  */
 export function CompPanel({ marketSummary, compRank, propertyAdr, propertyRevPar, isStub }) {
-  if (!compRank?.medianAdr || propertyAdr == null || propertyRevPar == null) return <div className="rounded-2xl border border-brand-tan p-6"><h3 className="display text-xl">Comparable performance</h3><p className="mt-3 text-sm text-brand-slate">Import actual results and a matched comparable set to measure your position.</p><Link className="mt-4 inline-block text-sm text-brand-terracotta underline" href="/admin/analytics">Open property analytics →</Link></div>;
+  if (!compRank?.medianAdr || propertyAdr == null || propertyRevPar == null) return <div className="rounded-2xl border border-brand-tan p-6"><h3 className="display text-xl">Comparable performance</h3><p className="mt-3 text-sm text-brand-slate">Import actual results and a matched comparable set to measure your position.</p><Link className="mt-4 inline-block text-sm text-brand-terracotta-ink underline" href="/admin/analytics">Open property analytics →</Link></div>;
   const adrToTQ = compRank.topQuartileAdr ? propertyAdr - compRank.topQuartileAdr : null;
   const revParToTQ = compRank.topQuartileRevPar ? propertyRevPar - compRank.topQuartileRevPar : null;
 
@@ -55,7 +55,7 @@ export function CompPanel({ marketSummary, compRank, propertyAdr, propertyRevPar
       >
         <Trophy
           size={18}
-          className={(compRank.adrPct ?? 0) >= 0.75 ? 'text-brand-jade' : 'text-brand-gold'}
+          className={(compRank.adrPct ?? 0) >= 0.75 ? 'text-brand-jade-ink' : 'text-brand-gold-ink'}
         />
         <div className="text-sm">
           <p className="font-medium text-brand-ink">
@@ -77,7 +77,7 @@ export function CompPanel({ marketSummary, compRank, propertyAdr, propertyRevPar
 function Block({ title, you, median, tq, percentile, gap }) {
   return (
     <div className="rounded-xl bg-brand-sand/40 p-4">
-      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{title}</p>
+      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{title}</p>
       <p className="display mt-1 text-2xl text-brand-ink">{usd(you, { fractionDigits: 0 })}</p>
       <p className="mt-1 text-xs text-brand-slate">
         Median {usd(median, { fractionDigits: 0 })} · Top-Q {usd(tq, { fractionDigits: 0 })}
@@ -89,7 +89,7 @@ function Block({ title, you, median, tq, percentile, gap }) {
         {gap != null && (
           <span
             className={`inline-flex items-center gap-1 ${
-              gap >= 0 ? 'text-brand-jade' : 'text-brand-terracotta'
+              gap >= 0 ? 'text-brand-jade-ink' : 'text-brand-terracotta-ink'
             }`}
           >
             {gap >= 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}

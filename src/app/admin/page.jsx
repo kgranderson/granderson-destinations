@@ -93,7 +93,7 @@ export default async function AdminHome() {
 
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
             {/* Welcome */}
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Welcome back
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">
@@ -172,7 +172,7 @@ export default async function AdminHome() {
                     <li key={m.id} className="flex items-start gap-3 p-4">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-sand/60">
                         {m.priority === 'urgent' ? (
-                          <AlertTriangle size={14} className="text-brand-terracotta" />
+                          <AlertTriangle size={14} className="text-brand-terracotta-ink" />
                         ) : (
                           <Wrench size={14} className="text-brand-slate" />
                         )}
@@ -200,7 +200,7 @@ export default async function AdminHome() {
 function KPI({ label, value }) {
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
-      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/70">{label}</p>
+      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/85">{label}</p>
       <p className="display mt-2 text-3xl text-brand-ink">{value}</p>
     </div>
   );
@@ -235,7 +235,7 @@ function ToolCard({ href, icon: Icon, title, subtitle, stats, action, badge, urg
       )}
 
       {urgentCount != null && urgentCount > 0 && (
-        <p className="mt-3 inline-flex items-center gap-1 self-start rounded-full bg-brand-terracotta/15 px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-brand-terracotta">
+        <p className="mt-3 inline-flex items-center gap-1 self-start rounded-full bg-brand-terracotta/15 px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-brand-terracotta-ink">
           <AlertTriangle size={10} /> {urgentCount} open
         </p>
       )}
@@ -247,7 +247,7 @@ function ToolCard({ href, icon: Icon, title, subtitle, stats, action, badge, urg
             <span className="text-right">
               <span className="font-medium text-brand-ink tabular-nums">{s.value}</span>
               {s.sub && (
-                <span className="ml-2 text-xs text-brand-slate/70 tabular-nums">{s.sub}</span>
+                <span className="ml-2 text-xs text-brand-slate/85 tabular-nums">{s.sub}</span>
               )}
             </span>
           </li>

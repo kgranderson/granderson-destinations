@@ -14,7 +14,7 @@ export function PropertyFAQ({ property }) {
     <section className="bg-brand-cloud py-20 sm:py-28">
       <Container size="md">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Frequently asked</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Frequently asked</p>
           <h2 className="display mt-3 text-display-lg text-brand-ink">
             What guests usually want to know.
           </h2>

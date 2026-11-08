@@ -8,7 +8,7 @@ export function PropertyHighlights({ property }) {
     <section className="bg-brand-sand/40 py-20 sm:py-28">
       <Container>
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">What sets it apart</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">What sets it apart</p>
           <h2 className="display mt-3 max-w-3xl text-display-lg text-brand-ink">
             Three reasons people stay longer than they planned.
           </h2>

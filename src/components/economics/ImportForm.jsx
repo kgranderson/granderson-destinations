@@ -56,7 +56,7 @@ export function ImportForm({ initialSlug }) {
     <form onSubmit={onSubmit} className="space-y-5">
       {/* Property picker */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs uppercase tracking-widest text-brand-slate/70">Property</span>
+        <span className="text-xs uppercase tracking-widest text-brand-slate/85">Property</span>
         <div className="flex flex-wrap gap-2">
           {PROPERTIES.map((p) => (
             <button
@@ -94,7 +94,7 @@ export function ImportForm({ initialSlug }) {
       >
         {file ? (
           <>
-            <FileSpreadsheet className="text-brand-jade" size={32} />
+            <FileSpreadsheet className="text-brand-jade-ink" size={32} />
             <p className="text-sm font-medium text-brand-ink">{file.name}</p>
             <p className="text-xs text-brand-slate">
               {(file.size / 1024).toFixed(1)} KB · click to replace
@@ -118,7 +118,7 @@ export function ImportForm({ initialSlug }) {
 
       {/* Mode */}
       <fieldset className="rounded-xl border border-brand-tan/60 bg-brand-cloud p-4">
-        <legend className="px-2 text-xs uppercase tracking-widest text-brand-slate/70">
+        <legend className="px-2 text-xs uppercase tracking-widest text-brand-slate/85">
           Conflict handling
         </legend>
         <label className="flex cursor-pointer items-start gap-3 py-2">
@@ -172,7 +172,7 @@ export function ImportForm({ initialSlug }) {
 
       {/* Status */}
       {status.kind === 'success' && (
-        <div className="flex items-start gap-2 rounded-md border border-brand-jade/40 bg-brand-jade/10 p-4 text-sm text-brand-jade">
+        <div className="flex items-start gap-2 rounded-md border border-brand-jade/40 bg-brand-jade/10 p-4 text-sm text-brand-jade-ink">
           <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
           <div>
             <p className="font-medium">
@@ -185,7 +185,7 @@ export function ImportForm({ initialSlug }) {
       )}
 
       {status.kind === 'error' && (
-        <div className="rounded-md border border-brand-terracotta/40 bg-brand-terracotta/10 p-4 text-sm text-brand-terracotta">
+        <div className="rounded-md border border-brand-terracotta/40 bg-brand-terracotta/10 p-4 text-sm text-brand-terracotta-ink">
           <div className="flex items-start gap-2">
             <AlertCircle size={18} className="mt-0.5 shrink-0" />
             <p className="font-medium">{status.message}</p>

@@ -99,7 +99,7 @@ export function PriceCalendar({ prices = [], eventWindows = [], baseAdr }) {
         <div className="mt-4 rounded-xl border border-brand-tan/60 bg-brand-sand/40 p-3 text-sm">
           <span className="font-medium text-brand-ink">{hover.date}</span> ·{' '}
           {hover.price ? <span>{usd(hover.price)} / night</span> : <span>no rate</span>}
-          {hover.event && <span className="ml-2 text-brand-gold">· {hover.event.eventName}</span>}
+          {hover.event && <span className="ml-2 text-brand-gold-ink">· {hover.event.eventName}</span>}
           {hover.minStay > 1 && <span className="ml-2 text-brand-slate">· {hover.minStay}-night min</span>}
         </div>
       )}
@@ -122,10 +122,10 @@ function MonthGrid({ month, byDate, eventsByDate, tier, tierBg, onHover }) {
 
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/70">{monthLabel}</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-brand-slate/85">{monthLabel}</p>
       <div className="mt-2 grid grid-cols-7 gap-1">
         {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
-          <span key={`h-${i}`} className="text-center text-[10px] uppercase tracking-widest text-brand-slate/60">
+          <span key={`h-${i}`} className="text-center text-[10px] uppercase tracking-widest text-brand-slate/85">
             {d}
           </span>
         ))}
@@ -175,7 +175,7 @@ function DayCell({ date, data, event, tier, tierBg, onHover }) {
 
 function Legend() {
   return (
-    <div className="flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-widest text-brand-slate/70">
+    <div className="flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-widest text-brand-slate/85">
       <Tier color="bg-brand-sand" label="Low" />
       <Tier color="bg-brand-tan" label="Mid" />
       <Tier color="bg-brand-gold" label="High" />

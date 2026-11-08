@@ -26,12 +26,12 @@ function Card({ label, value, delta, invertColor = false }) {
   const Icon = positive ? TrendingUp : TrendingDown;
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
-      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/70">{label}</p>
+      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/85">{label}</p>
       <p className="display mt-2 text-3xl text-brand-ink">{value}</p>
       {Number.isFinite(delta) && (
         <p
           className={`mt-2 inline-flex items-center gap-1 text-xs font-medium ${
-            goodColor ? 'text-brand-jade' : 'text-brand-terracotta'
+            goodColor ? 'text-brand-jade-ink' : 'text-brand-terracotta-ink'
           }`}
         >
           <Icon size={12} /> {(delta * 100).toFixed(1)}% YoY

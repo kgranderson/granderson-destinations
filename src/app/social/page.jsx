@@ -36,7 +36,7 @@ export default async function SocialPage({ searchParams }) {
           {/* Header */}
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Social engine</p>
+              <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Social engine</p>
               <h1 className="display mt-3 text-display-lg text-brand-ink">@{property.slug.replace(/-/g, '')}</h1>
               <p className="mt-2 max-w-2xl text-sm text-brand-slate">
                 Generate captions, schedule posts on the editorial cadence, and lock in event lead-ups.
@@ -114,7 +114,7 @@ export default async function SocialPage({ searchParams }) {
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {Object.entries(hashtags).map(([group, tags]) => (
                 <div key={group} className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5">
-                  <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{group}</p>
+                  <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{group}</p>
                   <ul className="mt-3 flex flex-wrap gap-1.5">
                     {tags.map((t) => (
                       <li
