@@ -173,7 +173,7 @@ function GradientPlaceholder({ name }) {
       className={`flex h-full w-full items-end justify-start bg-gradient-to-br p-6 ${accents[idx]}`}
       aria-hidden
     >
-      <p className="display max-w-[80%] text-2xl leading-tight text-brand-slate/85 sm:text-3xl">
+      <p className="display max-w-[80%] text-2xl leading-tight text-brand-slate/40 sm:text-3xl">
         {name}
       </p>
     </div>

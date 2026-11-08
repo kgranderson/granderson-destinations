@@ -56,7 +56,7 @@ export default async function MarketEventsPage({ params }) {
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover opacity-50"
+                className="object-cover"
               />
               <div className="hero-overlay absolute inset-0" />
             </div>

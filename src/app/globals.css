@@ -219,6 +219,10 @@ body {
    bone text on champagne was 1.6:1. Ink on champagne is 8.4:1. */
 .site-nav .links a.btn-primary,
 .site-nav .links a.btn-primary:hover { color: var(--color-surface); }
+/* On bone sections, keep the primary CTA identical to the nav's:
+   champagne with ink type (8.4:1), hovering to champagne-600 (6.9:1). */
+.surface-bone .btn-primary { background: var(--c-champagne-500); color: var(--c-ink-1000); }
+.surface-bone .btn-primary:hover { background: var(--c-champagne-600); }
 .site-nav .links .admin-pill {
   display: inline-flex;
   align-items: center;

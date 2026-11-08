@@ -74,7 +74,7 @@ export default async function EventDetailPage({ params }) {
         <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
           {detail.image && (
             <div aria-hidden className="absolute inset-0 -z-10">
-              <Image src={detail.image} alt="" fill priority sizes="100vw" className="object-cover opacity-65" />
+              <Image src={detail.image} alt="" fill priority sizes="100vw" className="object-cover" />
               <div className="hero-overlay absolute inset-0" />
             </div>
           )}

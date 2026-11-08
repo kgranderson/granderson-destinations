@@ -50,6 +50,7 @@ export function OccupancyChart({ rows }) {
               width={56}
             />
             <Tooltip
+              itemStyle={{ color: 'var(--c-ink-1000)' }}
               contentStyle={{
                 background: '#FAFAF7',
                 border: '1px solid #E8DCC6',
@@ -61,7 +62,7 @@ export function OccupancyChart({ rows }) {
             />
             <Legend
               wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
-              formatter={(value) => <span style={{ color: '#3A4049' }}>{value}</span>}
+              formatter={(value) => <span className="text-brand-slate">{value}</span>}
             />
             <Bar yAxisId="occ" dataKey="occupancy" name="Occupancy" fill="#5E7C6B" radius={[4, 4, 0, 0]} />
             <Line

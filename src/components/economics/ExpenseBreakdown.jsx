@@ -54,6 +54,7 @@ export function ExpenseBreakdown({ monthly }) {
                 ))}
               </Pie>
               <Tooltip
+                itemStyle={{ color: 'var(--c-ink-1000)' }}
                 contentStyle={{ background: '#FAFAF7', border: '1px solid #E8DCC6', borderRadius: 8 }}
                 formatter={(v) => usd(v)}
               />

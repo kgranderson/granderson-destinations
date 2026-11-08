@@ -222,7 +222,7 @@ function PostCard({
           </div>
         )}
         {approved && (
-          <span className="absolute right-2 top-2 rounded-full bg-brand-jade px-2 py-0.5 text-[10px] uppercase tracking-widest text-brand-cloud">
+          <span className="absolute right-2 top-2 rounded-full bg-brand-jade-ink px-2 py-0.5 text-[10px] uppercase tracking-widest text-brand-cloud">
             Approved
           </span>
         )}

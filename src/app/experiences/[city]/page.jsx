@@ -40,7 +40,7 @@ export default async function ExperiencesPage({ params: paramsPromise }) {
         <section className="relative isolate overflow-hidden bg-brand-ink text-brand-cloud">
           {property?.coverImage && (
             <div aria-hidden className="absolute inset-0 -z-10">
-              <Image src={property.coverImage} alt="" fill priority sizes="100vw" className="object-cover opacity-50" />
+              <Image src={property.coverImage} alt="" fill priority sizes="100vw" className="object-cover" />
               <div className="hero-overlay absolute inset-0" />
             </div>
           )}
