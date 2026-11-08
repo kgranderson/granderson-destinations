@@ -32,7 +32,7 @@ export default async function NewCampaignPage({ params }) {
         <div className="mx-auto flex max-w-[88rem]">
           <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Marketing · {property.shortName} · New campaign
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">{property.name}</h1>

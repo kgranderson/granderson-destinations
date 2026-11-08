@@ -116,7 +116,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
       <section className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-widest text-brand-slate/70">Overrides</p>
+            <p className="text-xs uppercase tracking-widest text-brand-slate/85">Overrides</p>
             <p className="mt-1 text-sm text-brand-ink">
               {dirtyCount === 0
                 ? 'No overrides queued. Edit any row below to start.'
@@ -146,7 +146,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
           <div
             className={`mt-3 flex items-start gap-2 rounded-md p-3 text-sm ${
               pushResult.ok
-                ? 'bg-brand-jade/10 text-brand-jade'
+                ? 'bg-brand-jade/10 text-brand-jade-ink'
                 : 'bg-rose-50 text-rose-800'
             }`}
           >
@@ -189,7 +189,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
                 key={`${ev.label}-${ev.startDate}`}
                 className="flex flex-col rounded-xl border border-brand-tan/60 bg-brand-cloud p-4 shadow-soft"
               >
-                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/70">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/85">
                   <Calendar size={12} />
                   {ev.startDate} → {ev.endDate}
                 </div>
@@ -222,7 +222,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
         </div>
         <div className="mt-4 overflow-hidden rounded-2xl border border-brand-tan/60 bg-brand-cloud">
           <table className="w-full text-sm">
-            <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/70">
+            <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/85">
               <tr>
                 <th className="px-4 py-2 text-left">Date</th>
                 <th className="px-4 py-2 text-left">Day</th>
@@ -264,7 +264,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
                         value={override ?? ''}
                         onChange={(e) => setOverride(row.date, e.target.value)}
                         className={`w-24 rounded-md border bg-white px-2 py-1 text-right text-xs tabular-nums focus:outline-none focus:ring-1 focus:ring-brand-ink ${
-                          override ? 'border-brand-jade font-medium text-brand-jade' : 'border-brand-slate/20 text-brand-ink'
+                          override ? 'border-brand-jade font-medium text-brand-jade-ink' : 'border-brand-slate/20 text-brand-ink'
                         }`}
                       />
                     </td>
@@ -274,7 +274,7 @@ export function PricingCockpit({ propertySlug, listingId, initialPrices, eventOv
                           {event.label}
                         </span>
                       ) : (
-                        <span className="text-brand-slate/40">—</span>
+                        <span className="text-brand-slate/85">—</span>
                       )}
                     </td>
                   </tr>

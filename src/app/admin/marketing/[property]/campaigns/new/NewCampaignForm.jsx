@@ -123,7 +123,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-[11px] text-brand-slate/70">
+            <p className="mt-1 text-[11px] text-brand-slate/85">
               Picking an event pre-fills the campaign window and forces lead-up posts at 21/14/7/1
               days before the event. You can still tweak any field below.
             </p>
@@ -222,7 +222,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
             onChange={(e) => setForm((f) => ({ ...f, targetPostCount: e.target.value }))}
             className="mt-1 w-full rounded-md border border-brand-slate/20 bg-white px-3 py-2 text-sm text-brand-ink placeholder:text-brand-slate/55"
           />
-          <p className="mt-1 text-[11px] text-brand-slate/70">
+          <p className="mt-1 text-[11px] text-brand-slate/85">
             Posts are spaced Tue/Thu/Sat at 6pm. Cap is 50.
           </p>
         </label>
@@ -273,7 +273,7 @@ export function NewCampaignForm({ propertySlug, anchorEvents }) {
           <CheckCircle2 size={14} />
           {busy ? 'Generating drafts…' : 'Create campaign + generate drafts'}
         </button>
-        <p className="text-xs text-brand-slate/70">
+        <p className="text-xs text-brand-slate/85">
           You&rsquo;ll land on the Approve queue with the new drafts ready to review.
         </p>
       </div>

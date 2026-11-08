@@ -189,7 +189,7 @@ export default async function QrCardPage({ params, searchParams }) {
           </footer>
         </article>
 
-        <div className="no-print mt-6 max-w-2xl text-center text-xs text-brand-slate/80">
+        <div className="no-print mt-6 max-w-2xl text-center text-xs text-brand-slate/85">
           <p>
             QR encodes <code>{targetUrl}</code>. Test by scanning with your phone before printing.
           </p>

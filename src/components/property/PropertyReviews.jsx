@@ -65,7 +65,7 @@ export function PropertyReviews({ property }) {
           <div className="flex items-center gap-3">
             <div className="flex">
               {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} size={18} className="text-brand-gold" fill="currentColor" />
+                <Star key={i} size={18} className="text-brand-gold-ink" fill="currentColor" />
               ))}
             </div>
             <p className="text-sm text-brand-slate">5.0 · 96% five-star reviews</p>
@@ -81,11 +81,11 @@ export function PropertyReviews({ property }) {
               <blockquote className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-6 shadow-soft">
                 <div className="flex">
                   {Array.from({ length: r.rating }).map((_, i) => (
-                    <Star key={i} size={14} className="text-brand-gold" fill="currentColor" />
+                    <Star key={i} size={14} className="text-brand-gold-ink" fill="currentColor" />
                   ))}
                 </div>
                 <p className="mt-4 text-base leading-relaxed text-brand-ink">{r.body}</p>
-                <footer className="mt-4 text-xs uppercase tracking-widest text-brand-slate/70">
+                <footer className="mt-4 text-xs uppercase tracking-widest text-brand-slate/85">
                   {r.author} · {r.stayMonth}
                 </footer>
               </blockquote>

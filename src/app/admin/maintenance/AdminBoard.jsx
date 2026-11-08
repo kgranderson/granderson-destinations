@@ -29,7 +29,7 @@ const SEV_COLORS = {
 
 const STATUS_COLORS = {
   open: 'bg-brand-slate/15 text-brand-slate',
-  assigned: 'bg-brand-jade/15 text-brand-jade',
+  assigned: 'bg-brand-jade/15 text-brand-jade-ink',
   in_progress: 'bg-blue-50 text-blue-800',
   awaiting_owner: 'bg-amber-50 text-amber-900',
   diagnosed: 'bg-purple-50 text-purple-800',
@@ -177,7 +177,7 @@ export function AdminBoard({ tickets, kpi }) {
                   {t.severity || '—'}
                 </span>
               </div>
-              <div className="text-xs text-brand-ink truncate">{t.vendor?.name || <span className="italic text-brand-slate/60">Pending</span>}</div>
+              <div className="text-xs text-brand-ink truncate">{t.vendor?.name || <span className="italic text-brand-slate/85">Pending</span>}</div>
               <div>
                 <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${status}`}>
                   {STATUS_LABELS[t.status] || t.status}
@@ -219,7 +219,7 @@ export function AdminBoard({ tickets, kpi }) {
             </div>
             {drillTicket.vendor_notes && (
               <div className="rounded-md border border-brand-jade/30 bg-brand-jade/5 px-4 py-3 sm:col-span-2">
-                <div className="text-xs uppercase tracking-widest text-brand-jade font-medium mb-1">Vendor notes</div>
+                <div className="text-xs uppercase tracking-widest text-brand-jade-ink font-medium mb-1">Vendor notes</div>
                 <div className="text-brand-ink/85 whitespace-pre-wrap">{drillTicket.vendor_notes}</div>
               </div>
             )}
@@ -267,7 +267,7 @@ function Kpi({ label, value, hint, highlight }) {
       <div className={['text-2xl font-semibold mt-1', highlight ? 'text-amber-900' : 'text-brand-ink'].join(' ')}>
         {value}
       </div>
-      {hint && <div className={['text-[11px] mt-1', highlight ? 'text-amber-800' : 'text-brand-slate/80'].join(' ')}>{hint}</div>}
+      {hint && <div className={['text-[11px] mt-1', highlight ? 'text-amber-800' : 'text-brand-slate/85'].join(' ')}>{hint}</div>}
     </div>
   );
 }
@@ -289,7 +289,7 @@ function OwnerNoteField({ ticketId, initial, onSave, saving, flash }) {
           className="rounded-full border border-brand-ink/40 px-4 py-1.5 text-xs text-brand-ink disabled:opacity-50">
           {saving ? 'Saving…' : 'Save note'}
         </button>
-        {flash && <span className="text-xs text-brand-jade">{flash}</span>}
+        {flash && <span className="text-xs text-brand-jade-ink">{flash}</span>}
       </div>
     </div>
   );

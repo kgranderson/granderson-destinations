@@ -61,7 +61,7 @@ export function AdminNav({ profile }) {
   return (
     <aside className="hidden h-full w-56 shrink-0 flex-col border-r border-brand-tan/60 bg-brand-sand/30 px-4 py-6 lg:flex">
       <div className="px-3 pb-6">
-        <p className="text-[10px] uppercase tracking-[0.28em] text-brand-slate/70">Admin</p>
+        <p className="text-[10px] uppercase tracking-[0.28em] text-brand-slate/85">Admin</p>
         <p className="mt-1 truncate text-sm font-medium text-brand-ink">
           {profile?.full_name || profile?.email || 'Operator'}
         </p>

@@ -9,8 +9,8 @@ import { CircleDashed } from 'lucide-react';
 export function PhaseStub({ phase, title, description, propertySlug }) {
   return (
     <section className="mt-8 rounded-2xl border border-dashed border-brand-tan bg-brand-sand/20 p-8 text-center">
-      <CircleDashed className="mx-auto text-brand-slate/60" size={28} />
-      <p className="mt-3 text-[10px] uppercase tracking-[0.32em] text-brand-slate/60">
+      <CircleDashed className="mx-auto text-brand-slate/85" size={28} />
+      <p className="mt-3 text-[10px] uppercase tracking-[0.32em] text-brand-slate/85">
         Phase {phase} · Coming soon
       </p>
       <h2 className="display mt-2 text-display-md text-brand-ink">{title}</h2>

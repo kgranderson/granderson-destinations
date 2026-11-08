@@ -157,7 +157,7 @@ export function ApprovalQueue({
       {flash && (
         <div
           className={`flex items-start gap-2 rounded-md p-3 text-sm ${
-            flash.ok ? 'bg-brand-jade/10 text-brand-jade' : 'bg-rose-50 text-rose-800'
+            flash.ok ? 'bg-brand-jade/10 text-brand-jade-ink' : 'bg-rose-50 text-rose-800'
           }`}
         >
           {flash.ok ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
@@ -217,7 +217,7 @@ function PostCard({
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-brand-slate/60">
+          <div className="flex h-full items-center justify-center text-brand-slate/85">
             <ImageIcon size={28} />
           </div>
         )}
@@ -252,10 +252,10 @@ function PostCard({
         ) : (
           <>
             <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-brand-ink">
-              {post.caption || <span className="text-brand-slate/50">(no caption)</span>}
+              {post.caption || <span className="text-brand-slate/85">(no caption)</span>}
             </p>
             {post.hashtags?.length > 0 && (
-              <p className="mt-2 text-xs text-brand-slate/70">
+              <p className="mt-2 text-xs text-brand-slate/85">
                 {post.hashtags.join(' ')}
               </p>
             )}
@@ -325,7 +325,7 @@ function InlineEditor({ post, onSave, onCancel }) {
   return (
     <div className="mt-3 space-y-2 text-sm">
       <label className="block">
-        <span className="text-[10px] uppercase tracking-widest text-brand-slate/70">Caption</span>
+        <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">Caption</span>
         <textarea
           rows={4}
           value={caption}
@@ -334,7 +334,7 @@ function InlineEditor({ post, onSave, onCancel }) {
         />
       </label>
       <label className="block">
-        <span className="text-[10px] uppercase tracking-widest text-brand-slate/70">Hashtags (space-separated)</span>
+        <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">Hashtags (space-separated)</span>
         <input
           type="text"
           value={hashtagsStr}
@@ -343,7 +343,7 @@ function InlineEditor({ post, onSave, onCancel }) {
         />
       </label>
       <label className="block">
-        <span className="text-[10px] uppercase tracking-widest text-brand-slate/70">Image URL</span>
+        <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">Image URL</span>
         <input
           type="url"
           value={imageUrl}
@@ -352,7 +352,7 @@ function InlineEditor({ post, onSave, onCancel }) {
         />
       </label>
       <label className="block">
-        <span className="text-[10px] uppercase tracking-widest text-brand-slate/70">Scheduled at</span>
+        <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">Scheduled at</span>
         <input
           type="datetime-local"
           value={scheduledAt}

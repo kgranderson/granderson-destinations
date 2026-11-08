@@ -28,7 +28,7 @@ export function RevenueChart({ monthly }) {
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
       <div className="flex items-baseline justify-between">
         <h3 className="display text-xl text-brand-ink">Revenue + NOI · last 24 months</h3>
-        <p className="text-[11px] uppercase tracking-widest text-brand-slate/60">
+        <p className="text-[11px] uppercase tracking-widest text-brand-slate/85">
           monthly · USD
         </p>
       </div>
@@ -52,7 +52,10 @@ export function RevenueChart({ monthly }) {
               }}
               formatter={(value) => usd(value)}
             />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+            <Legend
+              wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+              formatter={(value) => <span style={{ color: '#3A4049' }}>{value}</span>}
+            />
             <Bar dataKey="revenue" name="Revenue" fill="#C9A24E" radius={[4, 4, 0, 0]} />
             <Line
               type="monotone"

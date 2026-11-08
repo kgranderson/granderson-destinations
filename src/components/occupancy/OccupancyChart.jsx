@@ -25,7 +25,7 @@ export function OccupancyChart({ rows }) {
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
       <div className="flex items-baseline justify-between">
         <h3 className="display text-xl text-brand-ink">Occupancy + ADR · last 24 months</h3>
-        <p className="text-[11px] uppercase tracking-widest text-brand-slate/60">monthly</p>
+        <p className="text-[11px] uppercase tracking-widest text-brand-slate/85">monthly</p>
       </div>
 
       <div className="mt-5 h-[320px] w-full">
@@ -59,7 +59,10 @@ export function OccupancyChart({ rows }) {
                 name === 'Occupancy' ? `${value}%` : name === 'ADR' ? usd(value) : value
               }
             />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+            <Legend
+              wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+              formatter={(value) => <span style={{ color: '#3A4049' }}>{value}</span>}
+            />
             <Bar yAxisId="occ" dataKey="occupancy" name="Occupancy" fill="#5E7C6B" radius={[4, 4, 0, 0]} />
             <Line
               yAxisId="adr"

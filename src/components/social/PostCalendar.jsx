@@ -2,10 +2,11 @@ import Image from 'next/image';
 import { CalendarDays, Sparkles, AlarmClock } from 'lucide-react';
 
 const THEME_STYLE = {
-  'pool-or-courtyard': 'bg-brand-jade/15 text-brand-jade',
-  lifestyle: 'bg-brand-rose/15 text-brand-rose',
-  kitchen: 'bg-brand-gold/15 text-brand-gold',
-  'golden-hour': 'bg-brand-terracotta/15 text-brand-terracotta',
+  'pool-or-courtyard': 'bg-brand-jade/15 text-brand-jade-ink',
+  // brand-rose is a legacy alias for bone (#E8DFC8) — bone text on a bone tint was invisible.
+  lifestyle: 'bg-brand-sand text-brand-ink',
+  kitchen: 'bg-brand-gold/15 text-brand-gold-ink',
+  'golden-hour': 'bg-brand-terracotta/15 text-brand-terracotta-ink',
   neighborhood: 'bg-brand-slate/15 text-brand-slate',
   detail: 'bg-brand-tan/60 text-brand-slate',
   event: 'bg-brand-ink text-brand-cloud',
@@ -80,7 +81,7 @@ export function PostCalendar({ posts = [] }) {
                 </p>
               </div>
 
-              <span className="hidden text-[10px] uppercase tracking-widest text-brand-slate/60 sm:block">
+              <span className="hidden text-[10px] uppercase tracking-widest text-brand-slate/85 sm:block">
                 <Sparkles size={10} className="inline" /> {p.status === 'scheduled-stub' ? 'Queued' : p.status}
               </span>
             </li>

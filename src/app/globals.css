@@ -8,6 +8,27 @@
 
 @tailwind base;
 @tailwind components;
+
+/* -------------------------------------------------------------
+   Surface text defaults
+   The site's base text color is bone (for the ink theme). Any light
+   surface that doesn't set its own text color would inherit
+   bone-on-bone and become invisible — so light surfaces default to
+   ink text and dark surfaces back to bone. Placed BEFORE utilities so
+   an explicit text-* class on the same element always wins.
+   ------------------------------------------------------------- */
+[class~="bg-white"], [class~="bg-white/80"], [class~="bg-white/90"], [class~="bg-white/95"],
+[class~="bg-brand-cloud"], [class~="bg-brand-cloud/85"], [class~="bg-brand-cloud/90"], [class~="bg-brand-cloud/95"],
+[class~="bg-brand-sand"], [class~="bg-brand-tan"], [class~="bg-brand-gold"], [class~="bg-brand-gold-soft"],
+[class~="bg-amber-50"], [class~="bg-amber-100"], [class~="bg-rose-50"], [class~="bg-rose-100"], [class~="bg-emerald-50"] {
+  color: var(--c-ink-1000);
+}
+[class~="bg-brand-ink"], [class~="bg-brand-ink-900"], [class~="bg-brand-ink-800"],
+[class~="bg-brand-ink/80"], [class~="bg-brand-ink/85"], [class~="bg-brand-ink/90"], [class~="bg-brand-ink/95"],
+[class~="bg-brand-slate"], [class~="bg-black"] {
+  color: var(--c-bone-100);
+}
+
 @tailwind utilities;
 
 /* -------------------------------------------------------------
@@ -194,6 +215,10 @@ body {
   transition: color var(--duration-fast) var(--ease-out-expo);
 }
 .site-nav .links a:hover { color: var(--color-text); }
+/* The nav's muted link color must not override the primary CTA:
+   bone text on champagne was 1.6:1. Ink on champagne is 8.4:1. */
+.site-nav .links a.btn-primary,
+.site-nav .links a.btn-primary:hover { color: var(--color-surface); }
 .site-nav .links .admin-pill {
   display: inline-flex;
   align-items: center;
@@ -233,14 +258,31 @@ body {
   inset: 0;
 }
 .hero .hero-image { z-index: 0; object-fit: cover; }
-.hero .hero-overlay {
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(14, 17, 22, 0.35) 0%,
-    rgba(14, 17, 22, 0.55) 55%,
-    rgba(14, 17, 22, 0.88) 100%
-  );
+/* Scrim over hero photography. Unscoped on purpose: property, event and
+   experience heroes use .hero-overlay outside a .hero wrapper, and the old
+   `.hero .hero-overlay` selector never matched them (photos had no scrim,
+   so bone type sat on bright skies). The left-weighted layer sits behind
+   the copy column; the vertical layer grounds the stats row. */
+.hero-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(14, 17, 22, 0.62) 0%,
+      rgba(14, 17, 22, 0.38) 45%,
+      rgba(14, 17, 22, 0) 80%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(14, 17, 22, 0.35) 0%,
+      rgba(14, 17, 22, 0.55) 55%,
+      rgba(14, 17, 22, 0.88) 100%
+    );
+}
+.hero .hero-overlay { z-index: 1; }
+/* Small caps over photography need a lift: lighter champagne + a soft shadow. */
+.hero .eyebrow {
+  color: var(--c-champagne-400);
+  text-shadow: 0 1px 2px rgba(14, 17, 22, 0.6);
 }
 .hero > div { position: relative; z-index: 2; max-width: var(--container-wide); margin: 0 auto; width: 100%; }
 .hero h1 {
@@ -372,6 +414,17 @@ body {
   text-transform: uppercase;
   color: var(--color-text);
 }
+/* Labels sit on photography: give them a frosted backing so they read
+   on any image (they were bare text over light skies and dark walls). */
+.property .image .badge,
+.property .image .corner {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  line-height: 1.4;
+}
 .property .image .corner {
   position: absolute;
   bottom: var(--space-4);
@@ -382,7 +435,7 @@ body {
   letter-spacing: var(--tracking-caps);
   text-indent: var(--tracking-caps);
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 .property .meta { padding: var(--space-6) 0 var(--space-2); }
 .property .meta .name {
@@ -633,7 +686,7 @@ body {
   color: var(--color-accent);
 }
 .editorial-caption .separator {
-  color: var(--color-rule-strong);
+  color: var(--color-text-quiet);
 }
 
 @media (max-width: 720px) {
@@ -736,7 +789,7 @@ body {
   text-indent: inherit;
   text-transform: inherit;
 }
-.footer .bottom .divider { color: var(--color-rule); }
+.footer .bottom .divider { color: var(--color-text-quiet); }
 
 /* -------------------------------------------------------------
    Surface scope: invert the semantic tokens on a wrapper element
@@ -753,7 +806,7 @@ body {
 
   --color-text:              var(--c-ink-1000);
   --color-text-muted:        rgba(14, 17, 22, 0.62);
-  --color-text-quiet:        rgba(14, 17, 22, 0.42);
+  --color-text-quiet:        rgba(14, 17, 22, 0.6);   /* ≥4.5:1 on bone (was 0.42 → 2.7:1) */
   --color-text-disabled:     rgba(14, 17, 22, 0.24);
 
   --color-rule:              rgba(14, 17, 22, 0.12);
@@ -761,10 +814,11 @@ body {
   --color-border:            rgba(14, 17, 22, 0.10);
   --color-border-strong:     rgba(14, 17, 22, 0.20);
 
-  /* Champagne deepens on bone so it holds AA contrast for eyebrow type */
-  --color-accent:            var(--c-champagne-600);
-  --color-accent-soft:       var(--c-champagne-500);
-  --color-accent-deep:       var(--c-champagne-700);
+  /* Champagne deepens on bone so it holds AA contrast for eyebrow type
+     (600 was only 2.3:1 on bone; 800 is 5.3:1) */
+  --color-accent:            var(--c-champagne-800);
+  --color-accent-soft:       var(--c-champagne-700);
+  --color-accent-deep:       var(--c-champagne-800);
 
   background: var(--color-surface);
   color: var(--color-text);
@@ -776,7 +830,7 @@ body {
   --color-surface-raised:    var(--c-ink-900);
   --color-text:              var(--c-bone-100);
   --color-text-muted:        rgba(242, 234, 216, 0.72);
-  --color-text-quiet:        rgba(242, 234, 216, 0.48);
+  --color-text-quiet:        rgba(242, 234, 216, 0.56);
   --color-rule:              rgba(201, 168, 106, 0.18);
   --color-rule-strong:       rgba(201, 168, 106, 0.35);
   --color-border:            rgba(242, 234, 216, 0.12);

@@ -117,7 +117,7 @@ export default async function EventDetailPage({ params }) {
           <Container>
             <div className="grid gap-12 md:grid-cols-12">
               <article className="md:col-span-7">
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">The window</p>
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">The window</p>
                 <h2 className="display mt-3 text-display-md text-brand-ink">Why this matters for revenue.</h2>
                 {(detail.body ?? []).map((paragraph, i) => (
                   <p key={i} className="mt-4 leading-relaxed text-brand-slate">

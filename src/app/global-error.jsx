@@ -15,7 +15,7 @@ export default function GlobalError({ error, reset }) {
       <body className="bg-brand-cloud text-brand-ink">
         <main className="min-h-[80vh] pt-40">
           <Container size="md" className="text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/85">
               Something didn’t go as planned
             </p>
             <h1 className="display mt-3 text-display-lg">

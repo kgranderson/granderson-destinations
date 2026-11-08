@@ -13,7 +13,7 @@ export async function PropertyHotspots({ property }) {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Right outside the door</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Right outside the door</p>
             <h2 className="display mt-3 text-display-lg text-brand-ink">
               The places we&rsquo;d send our own friends.
             </h2>

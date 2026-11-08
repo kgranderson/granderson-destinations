@@ -50,7 +50,7 @@ export default async function EconomicsIndex() {
       <NavBar />
       <main className="animate-page-in bg-brand-cloud pt-32">
         <Container className="pb-20">
-          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Portfolio economics</p>
+          <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Portfolio economics</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">Operating dashboard</h1>
           <p className="mt-2 max-w-2xl text-sm text-brand-slate">
             Trailing-twelve operating performance across the portfolio. Click any property for the full
@@ -77,12 +77,12 @@ export default async function EconomicsIndex() {
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">
+                    <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">
                       {b.property.city} · {b.property.country}
                     </p>
                     <h2 className="display mt-1 text-2xl text-brand-ink">{b.property.name}</h2>
                   </div>
-                  <ArrowUpRight className="text-brand-gold transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  <ArrowUpRight className="text-brand-gold-ink transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </div>
 
                 <dl className="mt-5 grid grid-cols-3 gap-3">
@@ -107,7 +107,7 @@ export default async function EconomicsIndex() {
 function Stat({ label, value }) {
   return (
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-sand/40 p-5">
-      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/70">{label}</p>
+      <p className="text-xs uppercase tracking-[0.22em] text-brand-slate/85">{label}</p>
       <p className="display mt-2 text-3xl text-brand-ink">{value}</p>
     </div>
   );
@@ -117,10 +117,10 @@ function Mini({ label, value, delta }) {
   const positive = (delta ?? 0) >= 0;
   return (
     <div className="rounded-xl bg-brand-sand/40 px-3 py-2">
-      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</p>
+      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</p>
       <p className="display mt-0.5 text-base text-brand-ink">{value}</p>
       {Number.isFinite(delta) && (
-        <p className={`text-[10px] ${positive ? 'text-brand-jade' : 'text-brand-terracotta'}`}>
+        <p className={`text-[10px] ${positive ? 'text-brand-jade-ink' : 'text-brand-terracotta-ink'}`}>
           {(delta * 100).toFixed(1)}% YoY
         </p>
       )}

@@ -11,8 +11,8 @@ import { usd } from '@/lib/utils/format';
 
 const SEVERITY_ICON = { high: AlertOctagon, med: AlertTriangle, low: AlertCircle };
 const SEVERITY_STYLE = {
-  high: 'border-brand-terracotta/40 bg-brand-terracotta/10 text-brand-terracotta',
-  med: 'border-brand-gold/40 bg-brand-gold/10 text-brand-gold',
+  high: 'border-brand-terracotta/40 bg-brand-terracotta/10 text-brand-terracotta-ink',
+  med: 'border-brand-gold/40 bg-brand-gold/10 text-brand-gold-ink',
   low: 'border-brand-tan bg-brand-sand/60 text-brand-slate',
 };
 const SEVERITY_DOT = {
@@ -59,7 +59,7 @@ export function ExpenseAnomalies({ flagged = [] }) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h3 className="display text-xl text-brand-ink">Expense flags · {flagged.length}</h3>
-          <p className="mt-1 text-[11px] uppercase tracking-widest text-brand-slate/60">
+          <p className="mt-1 text-[11px] uppercase tracking-widest text-brand-slate/85">
             {'>'}1.5σ vs comp · {'>'}20% over baseline
           </p>
         </div>

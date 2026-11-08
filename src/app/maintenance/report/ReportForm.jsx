@@ -37,7 +37,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
   if (result) {
     return (
       <div className="rounded-xl border border-brand-slate/15 bg-white p-8 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.32em] text-brand-jade">Triaged</p>
+        <p className="text-xs uppercase tracking-[0.32em] text-brand-jade-ink">Triaged</p>
         <h2 className="mt-2 text-2xl font-semibold text-brand-ink">
           {result.triage.title}
         </h2>
@@ -87,7 +87,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
           </div>
         )}
         {result.triage.reasoning && (
-          <p className="mt-4 text-sm italic text-brand-slate/80">{result.triage.reasoning}</p>
+          <p className="mt-4 text-sm italic text-brand-slate/85">{result.triage.reasoning}</p>
         )}
         <div className="mt-6 flex gap-3">
           {result.statusUrl && (
@@ -179,7 +179,7 @@ export function ReportForm({ defaultProperty, reportedBy }) {
 
       {error && <div className="rounded-md bg-rose-50 px-4 py-3 text-sm text-rose-800">{error}</div>}
 
-      <p className="text-xs text-brand-slate/80 leading-relaxed">
+      <p className="text-xs text-brand-slate/85 leading-relaxed">
         By submitting this report, you authorize Granderson Destinations to share the
         details with a matched maintenance vendor and to send you transactional email
         status updates about the repair. Vendors receive SMS dispatch under a separate

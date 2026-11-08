@@ -30,7 +30,7 @@ export default async function CampaignsPage({ params }) {
         <div className="mx-auto flex max-w-[88rem]">
           <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Marketing · {property.shortName}
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">{property.name}</h1>
@@ -78,7 +78,7 @@ export default async function CampaignsPage({ params }) {
             ) : (
               <div className="mt-6 overflow-hidden rounded-2xl border border-brand-tan/60 bg-brand-cloud">
                 <table className="w-full text-sm">
-                  <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/70">
+                  <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/85">
                     <tr>
                       <th className="px-4 py-2 text-left">Campaign</th>
                       <th className="px-4 py-2 text-left">Window</th>
@@ -94,7 +94,7 @@ export default async function CampaignsPage({ params }) {
                         <td className="px-4 py-3">
                           <div className="font-medium text-brand-ink">{c.name}</div>
                           {c.theme && (
-                            <div className="text-xs text-brand-slate/70">Theme: {c.theme}</div>
+                            <div className="text-xs text-brand-slate/85">Theme: {c.theme}</div>
                           )}
                         </td>
                         <td className="px-4 py-3 font-mono text-xs text-brand-slate">
@@ -112,7 +112,7 @@ export default async function CampaignsPage({ params }) {
                               {c.counts.pending}
                             </span>
                           ) : (
-                            <span className="text-brand-slate/40">—</span>
+                            <span className="text-brand-slate/85">—</span>
                           )}
                         </td>
                         <td className="px-4 py-3 text-right">
@@ -139,7 +139,7 @@ export default async function CampaignsPage({ params }) {
 
 function StatusPill({ status }) {
   const styles = {
-    active: 'bg-brand-jade/15 text-brand-jade',
+    active: 'bg-brand-jade/15 text-brand-jade-ink',
     draft: 'bg-brand-sand/60 text-brand-slate',
     paused: 'bg-amber-100 text-amber-800',
     completed: 'bg-brand-ink/10 text-brand-ink/70',

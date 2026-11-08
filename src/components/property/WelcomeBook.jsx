@@ -69,7 +69,7 @@ export function WelcomeBook({ property }) {
         {/* Text + actions */}
         <div className="flex flex-1 flex-col justify-between gap-5">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-brand-gold">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-brand-gold-ink">
               The Welcome Book
             </p>
             <h3 className="display mt-2 text-xl text-brand-ink sm:text-2xl">
@@ -118,7 +118,7 @@ export function WelcomeBook({ property }) {
                 </svg>
               </a>
             </div>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-brand-slate/60">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-brand-slate/85">
               PDF &middot; {book.pages}&nbsp;pages &middot; {book.sizeMb}&nbsp;MB
             </p>
           </div>

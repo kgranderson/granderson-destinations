@@ -29,7 +29,7 @@ export default async function MarketingSettingsPage({ params }) {
         <div className="mx-auto flex max-w-[88rem]">
           <AdminNav profile={profile} />
           <div className="min-w-0 flex-1 px-5 py-10 sm:px-8 lg:px-10">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">
               Marketing · {property.shortName}
             </p>
             <h1 className="display mt-2 text-display-lg text-brand-ink">{property.name}</h1>
@@ -77,7 +77,7 @@ export default async function MarketingSettingsPage({ params }) {
                   scheduled time.
                 </li>
               </ol>
-              <p className="mt-4 text-xs text-brand-slate/70">
+              <p className="mt-4 text-xs text-brand-slate/85">
                 Need a walkthrough?{' '}
                 <a
                   href="https://developers.facebook.com/docs/instagram-api/getting-started"

@@ -48,7 +48,7 @@ export default async function IntelPage() {
             <Container>
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">{feed.label}</p>
+                  <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">{feed.label}</p>
                   <h2 className="display mt-2 text-display-md text-brand-ink">{feed.label} intel feed</h2>
                 </div>
                 {feed.stub && (

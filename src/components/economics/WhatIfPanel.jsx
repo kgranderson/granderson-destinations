@@ -21,7 +21,7 @@ export function WhatIfPanel({ baseAdr, baseOccupancy, lastMonthRevenue }) {
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
       <div className="flex items-baseline justify-between">
         <h3 className="display text-xl text-brand-ink">Revenue levers</h3>
-        <p className="text-[11px] uppercase tracking-widest text-brand-slate/60">
+        <p className="text-[11px] uppercase tracking-widest text-brand-slate/85">
           monthly · USD
         </p>
       </div>
@@ -81,7 +81,7 @@ function Slider({ label, value, min, max, step, onChange, format }) {
   return (
     <label className="block">
       <div className="flex items-baseline justify-between">
-        <span className="text-xs uppercase tracking-widest text-brand-slate/70">{label}</span>
+        <span className="text-xs uppercase tracking-widest text-brand-slate/85">{label}</span>
         <span className="font-medium text-brand-ink tabular-nums">{format(value)}</span>
       </div>
       <input
@@ -104,8 +104,8 @@ function Stat({ label, value, sub, highlight = false }) {
         highlight ? 'border-brand-gold/40 bg-brand-gold/10' : 'border-brand-tan/60 bg-brand-sand/40'
       }`}
     >
-      <p className="text-[10px] uppercase tracking-widest text-brand-slate/70">{label}</p>
-      <p className={`display mt-1 text-xl ${highlight ? 'text-brand-gold' : 'text-brand-ink'}`}>{value}</p>
+      <p className="text-[10px] uppercase tracking-widest text-brand-slate/85">{label}</p>
+      <p className={`display mt-1 text-xl ${highlight ? 'text-brand-gold-ink' : 'text-brand-ink'}`}>{value}</p>
       {sub && <p className="text-xs text-brand-slate">{sub}</p>}
     </div>
   );

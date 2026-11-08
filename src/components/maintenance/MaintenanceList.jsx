@@ -13,17 +13,17 @@ const STATUS_LABEL = {
   cancelled: 'Cancelled',
 };
 const STATUS_STYLE = {
-  open: 'bg-brand-terracotta/15 text-brand-terracotta',
-  in_progress: 'bg-brand-gold/15 text-brand-gold',
+  open: 'bg-brand-terracotta/15 text-brand-terracotta-ink',
+  in_progress: 'bg-brand-gold/15 text-brand-gold-ink',
   scheduled: 'bg-brand-slate/15 text-brand-slate',
-  completed: 'bg-brand-jade/15 text-brand-jade',
+  completed: 'bg-brand-jade/15 text-brand-jade-ink',
   cancelled: 'bg-brand-tan/60 text-brand-slate',
 };
 const PRIORITY_STYLE = {
   low: 'text-brand-slate',
   normal: 'text-brand-slate',
-  high: 'text-brand-terracotta',
-  urgent: 'text-brand-terracotta font-semibold',
+  high: 'text-brand-terracotta-ink',
+  urgent: 'text-brand-terracotta-ink font-semibold',
 };
 
 export function MaintenanceList({ items = [] }) {
@@ -50,7 +50,7 @@ export function MaintenanceList({ items = [] }) {
 
       {filtered.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-dashed border-brand-tan bg-brand-sand/30 p-10 text-center">
-          <Wrench className="mx-auto text-brand-slate/60" size={28} />
+          <Wrench className="mx-auto text-brand-slate/85" size={28} />
           <p className="mt-3 text-sm text-brand-slate">
             {filter === 'all'
               ? 'No maintenance requests yet — submit the first one above.'
@@ -93,9 +93,9 @@ function RequestRow({ item }) {
       >
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-sand/60">
           {item.priority === 'urgent' ? (
-            <AlertTriangle size={16} className="text-brand-terracotta" />
+            <AlertTriangle size={16} className="text-brand-terracotta-ink" />
           ) : item.status === 'completed' ? (
-            <CheckCircle2 size={16} className="text-brand-jade" />
+            <CheckCircle2 size={16} className="text-brand-jade-ink" />
           ) : (
             <Clock size={16} className="text-brand-slate" />
           )}
@@ -109,11 +109,11 @@ function RequestRow({ item }) {
             <span className={`text-[10px] uppercase tracking-widest ${PRIORITY_STYLE[item.priority]}`}>
               {item.priority}
             </span>
-            <span className="text-[10px] uppercase tracking-widest text-brand-slate/60">
+            <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">
               {item.property?.short_name || item.property?.name}
             </span>
             {item.category && (
-              <span className="text-[10px] uppercase tracking-widest text-brand-slate/60">· {item.category}</span>
+              <span className="text-[10px] uppercase tracking-widest text-brand-slate/85">· {item.category}</span>
             )}
           </div>
           <p className="mt-1.5 text-sm font-medium text-brand-ink">{item.title}</p>
@@ -170,7 +170,7 @@ function RequestRow({ item }) {
 function Row({ k, v }) {
   return (
     <div>
-      <dt className="text-[10px] uppercase tracking-widest text-brand-slate/60">{k}</dt>
+      <dt className="text-[10px] uppercase tracking-widest text-brand-slate/85">{k}</dt>
       <dd className="text-brand-ink">{v}</dd>
     </div>
   );

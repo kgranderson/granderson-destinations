@@ -61,7 +61,7 @@ export default async function ExperiencesPage({ params: paramsPromise }) {
           <Container>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">{items.length} curated picks</p>
+                <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">{items.length} curated picks</p>
                 <h2 className="display mt-2 text-display-md text-brand-ink">Explore by category</h2>
               </div>
               {stub && (

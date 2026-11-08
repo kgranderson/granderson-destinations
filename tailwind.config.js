@@ -33,6 +33,12 @@ module.exports = {
           gold:      '#C9A86A', // --c-champagne-500
           'gold-soft':'#D6B97E',
           'gold-deep':'#B89859',
+          // Text-on-bone variants of the accents (AA ≥4.5:1 on cloud/sand/white).
+          // Use these for text and icons on light surfaces; the base accents
+          // are for dark surfaces and fills.
+          'gold-ink':       '#765B2B',
+          'jade-ink':       '#4B5E51',
+          'terracotta-ink': '#8A4829',
 
           // Property accents — used in section-scoped tints, never the master mark
           terracotta:'#B86F4A', // --c-terracotta-500

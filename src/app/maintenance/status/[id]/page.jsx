@@ -32,7 +32,7 @@ export default async function MaintenanceStatusPage({ params }) {
         <NavBar />
         <main className="min-h-[70vh] bg-brand-cloud pt-32">
           <Container size="md" className="pb-24 text-center">
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Maintenance</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Maintenance</p>
             <h1 className="display mt-3 text-display-lg text-brand-ink">Ticket not found</h1>
             <p className="mt-4 text-brand-slate">
               The status link may have expired, or the ticket was archived. If you submitted a
@@ -115,7 +115,7 @@ export default async function MaintenanceStatusPage({ params }) {
 
             {ticket.vendor_notes && (
               <div className="mt-4 rounded-md border border-brand-jade/20 bg-brand-jade/5 px-4 py-3 text-sm text-brand-ink/85">
-                <div className="text-xs uppercase tracking-widest text-brand-jade font-medium mb-1">Note from vendor</div>
+                <div className="text-xs uppercase tracking-widest text-brand-jade-ink font-medium mb-1">Note from vendor</div>
                 <div className="leading-relaxed whitespace-pre-wrap">{ticket.vendor_notes}</div>
               </div>
             )}

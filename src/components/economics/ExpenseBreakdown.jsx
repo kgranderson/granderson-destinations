@@ -39,7 +39,7 @@ export function ExpenseBreakdown({ monthly }) {
     <div className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
       <div className="flex items-baseline justify-between">
         <h3 className="display text-xl text-brand-ink">Expenses · trailing 12</h3>
-        <p className="text-[11px] uppercase tracking-widest text-brand-slate/60">
+        <p className="text-[11px] uppercase tracking-widest text-brand-slate/85">
           {usd(total)} total
         </p>
       </div>
@@ -74,7 +74,7 @@ export function ExpenseBreakdown({ monthly }) {
               </span>
               <span className="font-medium text-brand-ink tabular-nums">
                 {usd(d.value)}{' '}
-                <span className="ml-1 text-xs text-brand-slate/70">
+                <span className="ml-1 text-xs text-brand-slate/85">
                   ({((d.value / total) * 100).toFixed(0)}%)
                 </span>
               </span>

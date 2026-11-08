@@ -29,7 +29,7 @@ export function PropertyGallery({ property }) {
       <Container>
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/70">Inside the home</p>
+            <p className="text-xs uppercase tracking-[0.32em] text-brand-slate/85">Inside the home</p>
             <h2 className="display mt-3 text-display-lg text-brand-ink">Gallery</h2>
           </div>
           <p className="hidden text-sm text-brand-slate sm:block">

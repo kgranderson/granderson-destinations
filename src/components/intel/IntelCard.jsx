@@ -2,15 +2,15 @@ import { ArrowUpRight, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 const IMPACT_STYLES = {
   positive: {
-    chip: 'bg-brand-jade/15 text-brand-jade',
+    chip: 'bg-brand-jade/15 text-brand-jade-ink',
     icon: TrendingUp,
   },
   negative: {
-    chip: 'bg-brand-terracotta/15 text-brand-terracotta',
+    chip: 'bg-brand-terracotta/15 text-brand-terracotta-ink',
     icon: TrendingDown,
   },
   mixed: {
-    chip: 'bg-brand-gold/15 text-brand-gold',
+    chip: 'bg-brand-gold/15 text-brand-gold-ink',
     icon: Minus,
   },
 };
@@ -34,7 +34,7 @@ export function IntelCard({ item }) {
           {item.magnitude}
         </span>
         {item.earliestDate && (
-          <span className="ml-auto text-[10px] uppercase tracking-widest text-brand-slate/60">
+          <span className="ml-auto text-[10px] uppercase tracking-widest text-brand-slate/85">
             {item.earliestDate}
             {item.latestDate && item.latestDate !== item.earliestDate ? ` → ${item.latestDate}` : ''}
           </span>

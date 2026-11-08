@@ -57,9 +57,9 @@ export function TicketTimeline({ status, history }) {
             key={step.key}
             className={[
               'pt-2 px-2 border-t-2 text-center',
-              done && 'border-brand-jade text-brand-jade',
+              done && 'border-brand-jade text-brand-jade-ink',
               cur && 'border-blue-600 text-blue-700 font-medium',
-              !done && !cur && 'border-brand-slate/20 text-brand-slate/60',
+              !done && !cur && 'border-brand-slate/20 text-brand-slate/85',
             ]
               .filter(Boolean)
               .join(' ')}>

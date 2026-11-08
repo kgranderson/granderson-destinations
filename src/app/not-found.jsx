@@ -9,7 +9,7 @@ export default function NotFound() {
       <NavBar />
       <main className="min-h-[70vh] bg-brand-cloud pt-40">
         <Container size="md" className="text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/70">404</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/85">404</p>
           <h1 className="display mt-3 text-display-lg text-brand-ink">
             The page you&rsquo;re looking for has checked out.
           </h1>

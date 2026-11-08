@@ -158,7 +158,7 @@ export function QuarterView({
         {result && (
           <div
             className={`mt-3 flex items-start gap-2 rounded-md p-3 text-sm ${
-              result.ok ? 'bg-brand-jade/10 text-brand-jade' : 'bg-rose-50 text-rose-800'
+              result.ok ? 'bg-brand-jade/10 text-brand-jade-ink' : 'bg-rose-50 text-rose-800'
             }`}
           >
             {result.ok ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
@@ -169,7 +169,7 @@ export function QuarterView({
 
       {/* Executive summary */}
       <section className="rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/70">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/85">
           <Sparkles size={12} />
           Executive summary
         </div>
@@ -194,7 +194,7 @@ export function QuarterView({
         ) : (
           <div className="mt-4 overflow-hidden rounded-2xl border border-brand-tan/60 bg-brand-cloud">
             <table className="w-full text-sm">
-              <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/70">
+              <thead className="border-b border-brand-tan/60 bg-brand-sand/30 text-xs uppercase tracking-widest text-brand-slate/85">
                 <tr>
                   <th className="px-4 py-2 text-left">Event</th>
                   <th className="px-4 py-2 text-left">Window</th>
@@ -212,7 +212,7 @@ export function QuarterView({
                     <td className="px-4 py-3">
                       <div className="font-medium text-brand-ink">{pw.label}</div>
                       {pw.notes && (
-                        <div className="mt-0.5 text-xs text-brand-slate/80">{pw.notes}</div>
+                        <div className="mt-0.5 text-xs text-brand-slate/85">{pw.notes}</div>
                       )}
                     </td>
                     <td className="px-4 py-3 font-mono text-xs text-brand-slate">
@@ -261,13 +261,13 @@ export function QuarterView({
                 key={m.monthIdx}
                 className="flex flex-col rounded-2xl border border-brand-tan/60 bg-brand-cloud p-5 shadow-soft"
               >
-                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/70">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-brand-slate/85">
                   <Calendar size={12} />
                   {m.long} {m.year}
                 </div>
                 <div className="mt-3 space-y-2">
                   {monthEvents.length === 0 && monthIntel.length === 0 && (
-                    <p className="text-xs text-brand-slate/60">No events or signals.</p>
+                    <p className="text-xs text-brand-slate/85">No events or signals.</p>
                   )}
                   {monthEvents.map((e) => (
                     <div
@@ -295,7 +295,7 @@ export function QuarterView({
                         <ImpactIcon impact={it.expected_impact} />
                       </div>
                       {it.summary && (
-                        <p className="mt-1 line-clamp-3 text-brand-slate/80">{it.summary}</p>
+                        <p className="mt-1 line-clamp-3 text-brand-slate/85">{it.summary}</p>
                       )}
                     </div>
                   ))}
@@ -323,7 +323,7 @@ export function QuarterView({
                   <h3 className="text-sm font-medium text-brand-ink">{it.title}</h3>
                   <ImpactIcon impact={it.expected_impact} />
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-1 text-[10px] uppercase tracking-widest text-brand-slate/70">
+                <div className="mt-1 flex flex-wrap items-center gap-1 text-[10px] uppercase tracking-widest text-brand-slate/85">
                   {it.category && (
                     <span className="rounded-full bg-brand-sand/60 px-2 py-px">{it.category}</span>
                   )}
@@ -333,7 +333,7 @@ export function QuarterView({
                     </span>
                   )}
                   {it.earliest_date && (
-                    <span className="font-mono normal-case tracking-normal text-brand-slate/70">
+                    <span className="font-mono normal-case tracking-normal text-brand-slate/85">
                       {it.earliest_date}
                       {it.latest_date && it.latest_date !== it.earliest_date
                         ? ` → ${it.latest_date}`
@@ -401,7 +401,7 @@ function SourcePill({ source, perplexityLive }) {
 }
 
 function ImpactIcon({ impact }) {
-  if (impact === 'positive') return <TrendingUp size={12} className="text-brand-jade" />;
+  if (impact === 'positive') return <TrendingUp size={12} className="text-brand-jade-ink" />;
   if (impact === 'negative') return <TrendingDown size={12} className="text-rose-600" />;
   return <Minus size={12} className="text-brand-slate" />;
 }

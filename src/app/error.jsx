@@ -16,7 +16,7 @@ export default function RouteError({ error, reset }) {
       <NavBar />
       <main className="min-h-[70vh] pt-40">
         <Container size="md" className="text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/70">
+          <p className="text-xs uppercase tracking-[0.3em] text-brand-slate/85">
             Something didn’t go as planned
           </p>
           <h1 className="display mt-3 text-display-lg">We hit a snag.</h1>
